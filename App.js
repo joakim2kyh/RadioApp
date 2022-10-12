@@ -6,7 +6,7 @@ import { View,
   Button} from 'react-native';
 import React from 'react';
 import { musiclibrary } from './data';
-
+console.log("hello")
 
 export default function App() {
 const sound = new Audio.Sound()
