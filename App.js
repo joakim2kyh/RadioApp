@@ -5,8 +5,6 @@ import { View,
   StyleSheet,
   Button} from 'react-native';
 import React from 'react';
-import { musiclibrary } from './data';
-console.log("layout2")
 
 
 
@@ -45,10 +43,8 @@ async function pause() {
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
-      <Button title='Fetch list' onPress={fetchList2}></Button>
-      <Button title="Load audio" onPress={() => {loadSound(musiclibrary[0].url)}}></Button>
-      <Button title="Play audio" onPress={playSound}></Button>
-      <Button title="Pause audio" onPress={pause}></Button>
+      {getContent()}
+      
       <StatusBar style="auto" />
     </View>
   );
