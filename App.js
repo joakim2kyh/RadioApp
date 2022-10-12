@@ -11,15 +11,18 @@ import React from 'react';
 export default function App() {
 const sound = new Audio.Sound()
 let channelsArray = []
+let musiclibrary = []
 
 const fetchList2 = async () => {
   try {
-    let response = await fetch("http://api.sr.se/api/v2/channels?format=json%22");
+    let response = await fetch("http://api.sr.se/api/v2/channels?format=json");
     let json = await response.json();
     console.log(json.channels[0].liveaudio.url)
     channelsArray = json.channels
     console.log(json.channels)
     console.log({channelsArray})
+    musiclibrary.push(json.channels[0].liveaudio)
+    console.log({musiclibrary})
     return json;
   } catch (error) {
     console.error(error);
@@ -43,8 +46,10 @@ async function pause() {
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
-      {getContent()}
-      
+      <Button title='Fetch list' onPress={fetchList2}></Button>
+      <Button title="Load audio" onPress={() => {loadSound(musiclibrary[0].url)}}></Button>
+      <Button title="Play audio" onPress={playSound}></Button>
+      <Button title="Pause audio" onPress={pause}></Button>
       <StatusBar style="auto" />
     </View>
   );
