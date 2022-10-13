@@ -41,7 +41,7 @@ export default function MainContainer() {
     return (
         <View style={styles.container}>
 
-            <Text>Open up App.js to start working on your app!</Text>
+            <Text>Hallå Open up App.js to start working on your app!</Text>
             <Button title='Fetch list' onPress={fetchList2}></Button>
             <FlatList
                 data={channels}
