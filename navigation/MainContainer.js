@@ -7,62 +7,59 @@ import { View,
   Image,
   FlatList} from 'react-native';
 import React, {useState} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
+import HomeScreen from './screens/HomeScreen';
+import FavouritesScreen from './screens/FavouritesScreen';
+
+const homeName = "Home";
+const favouritesName = "Favourites"
+
+const Tab = createBottomTabNavigator();
 
 export default function MainContainer() {
 
-    const sound = new Audio.Sound()
-    const [channels, setChannels] = useState([])
-    let musiclibrary = []
-
-    const fetchList2 = async () => {
-        try {
-            let response = await fetch("http://api.sr.se/api/v2/channels?format=json");
-            let json = await response.json();
-            setChannels(json.channels)
-            return json;
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    async function loadSound(uri) {
-        await sound.loadAsync({
-            uri: uri
-        })
-    }
-
-    async function playSound() {
-        await sound.playAsync()
-    }
-
-    async function pause() {
-        await sound.pauseAsync()
-    }
+    
     return (
-        <View style={styles.container}>
+        <NavigationContainer>
+            <Tab.Navigator
+            initialRouteName={homeName}
+            screenOptions= {({route}) => ({
+                tabBarInactiveTintColor: 'grey',
+                tabBarActiveTintColor: 'tomato',
+                tabBarLabelStyle: { paddingBottom: 10, fontSize: 10},
+                tabBarStyle: { padding: 10, height:70 },
+                
+                tabBarIcon: ({focused, color, size}) => {
+                    let iconName;
+                    let rn = route.name
 
-            <Text>Hallå Open up App.js to start working on your app!</Text>
-            <Button title='Fetch list' onPress={fetchList2}></Button>
-            <FlatList
-                data={channels}
-                renderItem={({ item }) => (
-                    <Text style={styles.item}>{item.name}</Text>
-                )}
-            />
-        </View>
+                    if (rn === homeName) {
+                        iconName = focused ? 'home' : 'home-outline'
+                    } else if (rn === favouritesName) {
+                        iconName = focused ? 'heart' : 'heart-outline'
+                    }
+
+                    return <Ionicons name={iconName} size={size} color={color}/>
+                },
+
+            })}
+            // screenOptions={{
+            //     activeTintColor: 'tomato',
+            //     inactiveTintColor: 'grey',
+            //     labelStyle: { paddingBottom: 10, fontSize: 10},
+            //     style: { padding: 10, height: 70 }
+            // }}
+            
+            >
+                <Tab.Screen name={homeName} component={HomeScreen}/>
+                <Tab.Screen name={favouritesName} component={FavouritesScreen}/>
+
+            </Tab.Navigator>
+        </NavigationContainer>
 
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      padding: 20,
-    },
-    item: {
-      marginTop: 24,
-      padding: 30,
-      backgroundColor: "pink",
-    }
-  });
