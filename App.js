@@ -3,26 +3,22 @@ import { Audio } from "expo-av";
 import { View,
   Text,
   StyleSheet,
-  Button} from 'react-native';
-import React from 'react';
-
+  Button,
+  Image,
+  FlatList} from 'react-native';
+import React, {useState} from 'react';
 
 
 export default function App() {
 const sound = new Audio.Sound()
-let channelsArray = []
+const [channels, setChannels] = useState([])
 let musiclibrary = []
 
 const fetchList2 = async () => {
   try {
     let response = await fetch("http://api.sr.se/api/v2/channels?format=json");
     let json = await response.json();
-    console.log(json.channels[0].liveaudio.url)
-    channelsArray = json.channels
-    console.log(json.channels)
-    console.log({channelsArray})
-    musiclibrary.push(json.channels[0].liveaudio)
-    console.log({musiclibrary})
+    setChannels(json.channels)
     return json;
   } catch (error) {
     console.error(error);
@@ -45,12 +41,15 @@ async function pause() {
 
   return (
     <View style={styles.container}>
+      
       <Text>Open up App.js to start working on your app!</Text>
       <Button title='Fetch list' onPress={fetchList2}></Button>
-      <Button title="Load audio" onPress={() => {loadSound(musiclibrary[0].url)}}></Button>
-      <Button title="Play audio" onPress={playSound}></Button>
-      <Button title="Pause audio" onPress={pause}></Button>
-      <StatusBar style="auto" />
+      <FlatList
+        data={channels}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>{item.name}</Text>
+        )}
+      />
     </View>
   );
 }
@@ -59,7 +58,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
   },
+  item: {
+    marginTop: 24,
+    padding: 30,
+    backgroundColor: "pink",
+  }
 });
