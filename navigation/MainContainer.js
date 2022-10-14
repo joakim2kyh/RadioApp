@@ -11,10 +11,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import HomeScreen from './screens/HomeScreen';
+import HomeStackScreen from './screens/HomeStackScreen';
 import FavouritesScreen from './screens/FavouritesScreen';
 
-const homeName = "Home";
+const homeName = "HomeStack";
 const favouritesName = "Favourites"
 
 const Tab = createBottomTabNavigator();
@@ -54,8 +54,12 @@ export default function MainContainer() {
             // }}
             
             >
-                <Tab.Screen name={homeName} component={HomeScreen}/>
-                <Tab.Screen name={favouritesName} component={FavouritesScreen}/>
+                <Tab.Screen name={homeName} component={HomeStackScreen} options={{
+          headerShown: false,
+        }}/>
+                <Tab.Screen name={favouritesName} component={FavouritesScreen} options={{
+          headerShown: false,
+        }}/>
 
             </Tab.Navigator>
         </NavigationContainer>

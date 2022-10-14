@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {Card} from '../../components/Card';
 
 
-export default function HomeScreen({navigation}) {
+export function HomeScreen({navigation, component}) {
 
     const sound = new Audio.Sound()
     const [channels, setChannels] = useState([])
