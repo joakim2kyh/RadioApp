@@ -2,10 +2,15 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
 function Card(props) {
+
+  function onPress(){
+    console.log("CLICK")
+  }
+
   return (
-      <TouchableOpacity style ={styles.card}>
+      <TouchableOpacity style ={styles.card} onPress={onPress}>
           <Image style= {styles.cardImage} source={{uri: props.item.image}}/> 
-          <Text style={styles.cardText}>{props.item.tagline}</Text>
+          <Text style={styles.cardText}>{props.item.name}</Text>
       </TouchableOpacity>
   
   );

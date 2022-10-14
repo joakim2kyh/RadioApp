@@ -30,7 +30,7 @@ export default function MainContainer() {
                 tabBarInactiveTintColor: 'grey',
                 tabBarActiveTintColor: 'tomato',
                 tabBarLabelStyle: { paddingBottom: 10, fontSize: 10},
-                tabBarStyle: { padding: 10, height:70 },
+                //tabBarStyle: { marginTop: 10},
                 
                 tabBarIcon: ({focused, color, size}) => {
                     let iconName;
