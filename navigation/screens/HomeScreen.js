@@ -1,6 +1,8 @@
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import { Audio } from "expo-av";
 import React, {useState} from 'react';
+import Card from '../../components/Card';
+
 
 export default function HomeScreen({navigation}) {
 
@@ -64,8 +66,10 @@ export default function HomeScreen({navigation}) {
 
     return (
         <View style={styles.container}>
+            <Card/>
+            <Card/>
 
-        <Text>Open up App.js to start working on your app!</Text>
+        {/*<Text>Open up App.js to start working on your app!</Text>
         <Button title='Fetch list' onPress={fetchList2}></Button>
         <Button title='Fetch live' onPress={fetchSchedule}></Button>
         <Text>{live}</Text>
@@ -74,20 +78,22 @@ export default function HomeScreen({navigation}) {
             renderItem={({ item }) => (
                 <Text style={styles.item}>{item.name}</Text>
             )}
-        />
+            /> */}
     </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      padding: 20,
+     // flex: 1,
+    marginTop: 50,
+      backgroundColor: '#F5FCFF',
+    //  padding: 20,
     },
-    item: {
-      marginTop: 24,
-      padding: 30,
-      backgroundColor: "pink",
-    }
+    // item: {
+    //   marginTop: 24,
+    //   padding: 30,
+    //   backgroundColor: "pink",
+    // }
+
   });
