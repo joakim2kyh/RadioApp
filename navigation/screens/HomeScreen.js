@@ -6,6 +6,8 @@ export default function HomeScreen({navigation}) {
 
     const sound = new Audio.Sound()
     const [channels, setChannels] = useState([])
+    const [schedule, setSchedule] = useState([])
+    const [live, setLive] = useState("")
     let musiclibrary = []
 
     const fetchList2 = async () => {
@@ -18,6 +20,33 @@ export default function HomeScreen({navigation}) {
             console.error(error);
         }
     }
+
+    const fetchSchedule = async () => {
+        try {
+          const response = await fetch("http://api.sr.se/v2/scheduledepisodes?channelid=132&format=json&pagination=false");
+          let json = await response.json();
+          setSchedule(json.schedule)
+          const now = Date.now()
+          
+          schedule.forEach(element => {
+      
+            let startTime = element.starttimeutc
+            startTime = startTime.slice(6, -2)
+            let endTime = element.endtimeutc
+            endTime = endTime.slice(6, -2)
+      
+            if(startTime < now && endTime > now){
+              console.log(element.title)
+              setLive(element.title)
+            } else {
+              //console.log("NOPE")
+            }
+      
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
     async function loadSound(uri) {
         await sound.loadAsync({
@@ -36,8 +65,10 @@ export default function HomeScreen({navigation}) {
     return (
         <View style={styles.container}>
 
-        <Text>Hallå där kompis Open up App.js to start working on your app!</Text>
+        <Text>Open up App.js to start working on your app!</Text>
         <Button title='Fetch list' onPress={fetchList2}></Button>
+        <Button title='Fetch live' onPress={fetchSchedule}></Button>
+        <Text>{live}</Text>
         <FlatList
             data={channels}
             renderItem={({ item }) => (
