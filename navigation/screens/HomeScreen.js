@@ -1,7 +1,7 @@
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import { Audio } from "expo-av";
 import React, {useState} from 'react';
-import Card from '../../components/Card';
+import {Card} from '../../components/Card';
 
 
 export default function HomeScreen({navigation}) {
@@ -17,6 +17,7 @@ export default function HomeScreen({navigation}) {
             let response = await fetch("http://api.sr.se/api/v2/channels?format=json");
             let json = await response.json();
             setChannels(json.channels)
+            console.log(channels)
             return json;
         } catch (error) {
             console.error(error);
@@ -65,20 +66,20 @@ export default function HomeScreen({navigation}) {
     }
 
     return (
+      
         <View style={styles.container}>
-            <Card/>
-            <Card/>
+          <Button title='Fetch list' onPress={fetchList2}></Button>
 
-        {/*<Text>Open up App.js to start working on your app!</Text>
-        <Button title='Fetch list' onPress={fetchList2}></Button>
-        <Button title='Fetch live' onPress={fetchSchedule}></Button>
-        <Text>{live}</Text>
+        <Text>Open up App.js to start working on your app!</Text>
+        
+        {/* <Button title='Fetch live' onPress={fetchSchedule}></Button>
+        <Text>{live}</Text> */}
         <FlatList
             data={channels}
             renderItem={({ item }) => (
-                <Text style={styles.item}>{item.name}</Text>
+              <Card item={item}/>
             )}
-            /> */}
+            /> 
     </View>
     );
 }

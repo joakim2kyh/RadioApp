@@ -1,21 +1,17 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
-
-export default class Card extends React.PureComponent {
-  render() {
-
+function Card(props) {
+  return (
+      <TouchableOpacity style ={styles.card}>
+          <Image style= {styles.cardImage} source={{uri: props.item.image}}/> 
+          <Text style={styles.cardText}>{props.item.tagline}</Text>
+      </TouchableOpacity>
   
+  );
+}
 
-return (
-     <TouchableOpacity style ={styles.card}>
-        <Image style= {styles.cardImage} source={{uri:'https://pbs.twimg.com/profile_images/2848282725/40daf57852e656d1c705b2cb769e5fdf_400x400.jpeg'}}/> 
-        <Text style={styles.cardText}>Card title</Text>
-     </TouchableOpacity>
-  
-);
-}
-}
+export {Card}
 
 const styles = StyleSheet.create({
 
