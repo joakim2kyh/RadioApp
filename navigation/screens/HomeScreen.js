@@ -1,6 +1,6 @@
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import { Audio } from "expo-av";
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Card} from '../../components/Card';
 
 
@@ -12,12 +12,16 @@ export default function HomeScreen({navigation}) {
     const [live, setLive] = useState("")
     let musiclibrary = []
 
+    useEffect(() => {
+      fetchList2()
+  }, [])
+
     const fetchList2 = async () => {
         try {
             let response = await fetch("http://api.sr.se/api/v2/channels?format=json");
             let json = await response.json();
             setChannels(json.channels)
-            console.log(channels)
+            //console.log(channels)
             return json;
         } catch (error) {
             console.error(error);
@@ -42,7 +46,7 @@ export default function HomeScreen({navigation}) {
               console.log(element.title)
               setLive(element.title)
             } else {
-              //console.log("NOPE")
+              //console.log("NOPE") 
             }
       
           });
@@ -68,9 +72,9 @@ export default function HomeScreen({navigation}) {
     return (
       
         <View style={styles.container}>
-          <Button title='Fetch list' onPress={fetchList2}></Button>
+          {/* <Button title='Fetch list' onPress={fetchList2}></Button>
 
-        <Text>Open up App.js to start working on your app!</Text>
+        <Text>Open up App.js to start working on your app!</Text> */}
         
         {/* <Button title='Fetch live' onPress={fetchSchedule}></Button>
         <Text>{live}</Text> */}
@@ -87,7 +91,7 @@ export default function HomeScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
      // flex: 1,
-    marginTop: 50,
+      marginTop: 50,
       backgroundColor: '#F5FCFF',
     //  padding: 20,
     },
