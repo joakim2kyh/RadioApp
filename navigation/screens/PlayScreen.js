@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     },
     textInfo:{
         
-    }
+    },
     
     cardImage: {
     // width: '100%',
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 
 })  
-});
+
