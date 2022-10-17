@@ -123,7 +123,7 @@ export function HomeScreen({navigation, component}) {
         <FlatList
             data={channels}
             renderItem={({ item }) => (
-              <Card item={item} playRadio = {()=>playRadio()} addFavorite={()=>addFavorite(item.id)} onPress={() => navigation.navigate('Play', { name: item.id })}/>
+              <Card item={item} playRadio = {()=>playRadio()} addFavorite={()=>addFavorite(item.id)} onPress={() => navigation.navigate('Play', { item: item })}/>
             )}
             /> 
     </View>
