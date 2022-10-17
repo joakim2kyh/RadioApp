@@ -1,12 +1,38 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
 export function PlayScreen({navigation, route}) {
     
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={styles.container}>
+           <Image style={styles.channelImage} source={{ uri: route.params.item.image }}/>
+           <Text style={styles.textInfo}></Text>
+           <Text>
+                This is {route.params.item.name} </Text>
             <Text>
-                This is {route.params.name} </Text>
+                This is {route.params.item.id} </Text>
+            <Text>
+                This is {route.params.item.tagline} </Text>
+            
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'blue',
+        flex: 1
+    },
+    channelImage:{
+        height: 100,
+        width: 100,
+        borderRadius: 12,
+        padding: 15,
+        margin: 5,
+        resizeMode: 'cover'
+    },
+    textInfo:{
+        
+    }
+
+})
