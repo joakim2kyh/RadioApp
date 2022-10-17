@@ -6,7 +6,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 export default Card = (props) => {
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={props.onPress}>
+      <View style={styles.container}>
       <View style={[styles.cardContainer, {backgroundColor: '#'+props.item.color}]}>
         {/* <TouchableOpacity style ={styles.card} onPress={onPress}> */}
         <Image style={styles.cardImage} source={{ uri: props.item.image }} />
@@ -21,6 +22,8 @@ export default Card = (props) => {
         </View>
       </View>
     </View>
+    </TouchableOpacity>
+    
   );
 }
 

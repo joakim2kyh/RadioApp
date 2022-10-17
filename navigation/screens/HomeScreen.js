@@ -3,6 +3,7 @@ import { Audio } from "expo-av";
 import React, {useState, useEffect} from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PlayScreen } from './PlayScreen' 
 
 
 export function HomeScreen({navigation, component}) {
@@ -122,7 +123,7 @@ export function HomeScreen({navigation, component}) {
         <FlatList
             data={channels}
             renderItem={({ item }) => (
-              <Card item={item} playRadio = {()=>playRadio()} addFavorite={()=>addFavorite(item.id)}/>
+              <Card item={item} playRadio = {()=>playRadio()} addFavorite={()=>addFavorite(item.id)} onPress={() => navigation.navigate('Play', { name: item.id })}/>
             )}
             /> 
     </View>
