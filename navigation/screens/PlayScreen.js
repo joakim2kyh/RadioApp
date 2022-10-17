@@ -13,9 +13,7 @@ export function PlayScreen({navigation, route}) {
                 This is {route.params.item.name} </Text>
             <Text>
                 This is {route.params.item.id} </Text>
-            <Text>
-                This is {route.params.item.tagline} </Text>
-            
+                        
 
         </View>
     );
