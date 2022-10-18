@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-n
 import { Audio } from "expo-av";
 import React, { useState, useContext, useEffect } from 'react';
 import { Context1 } from './HomeScreen';
-
+import { AntDesign } from '@expo/vector-icons';
 
 
 export function PlayScreen({ navigation, route }) {
 
     
-    const [isPlaying, setPlaying] = useState(false)
+    const [isPlaying, setIsPlaying] = useState(false)
     const [schedule, setSchedule] = useState([])
     const [live, setLive] = useState("")
 
@@ -74,10 +74,20 @@ export function PlayScreen({ navigation, route }) {
                 {live.name}
             </Text>
 
-            <TouchableOpacity>
-
+            <TouchableOpacity onPress={() => {
+                console.log('isPlaying 81', isPlaying)
+                if (isPlaying) {
+                    sound.pauseAsync()
+                    setIsPlaying(false)
+                } else {
+                    loadSound(route.params.item.liveaudio.url)
+                    setIsPlaying(true)
+                }
+                
+                console.log('isPlaying 90',isPlaying) }}>
+                <AntDesign style={styles.play} name= { isPlaying ? "pausecircle" : "play" } size={80} color="black" />
             </TouchableOpacity>
-            <Button title='PLAY' onPress={() => loadSound(route.params.item.liveaudio.url)}></Button>
+            
         </View>
     );
 }
