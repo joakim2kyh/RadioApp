@@ -1,12 +1,14 @@
 
-import { View, Text, StyleSheet, Image, Button,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
 import { Audio } from "expo-av";
-import React, {useState, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { Context1 } from './HomeScreen';
 
 
-export function PlayScreen({navigation, route}) {
 
-    const sound = route.params.sound
+export function PlayScreen({ navigation, route }) {
+
+    
     const [isPlaying, setPlaying] = useState(false)
     const [schedule, setSchedule] = useState([])
     const [live, setLive] = useState("")
@@ -15,34 +17,9 @@ export function PlayScreen({navigation, route}) {
         fetchSchedule(route.params.item.id)
     })
 
-    async function loadSound(uri) {
 
-        try {
-            if(isPlaying){
-                await sound.pauseAsync()
-                setPlaying(false)
-                console.log("inne i if satsen")
-            
-            }
-            else{
-                setPlaying(true)
-                await sound.loadAsync(uri)
-                await sound.playAsync()
-                console.log("inne i else satsen")
-                
-            }
-        }
-        catch(error){
-            console.log(error)
+    const sound = useContext(Context1)
 
-        }
-
-        
-        //await sound.loadAsync({
-           // uri: uri
-        //})
-       
-    }
 
     const fetchSchedule = async (id) => {
         const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
@@ -76,20 +53,16 @@ export function PlayScreen({navigation, route}) {
         }
       }
 
-
-    async function playSound() {
-       
+    async function loadSound(uri) {
+        await sound.unloadAsync()
+        await sound.loadAsync({ uri: uri })
         await sound.playAsync()
-        
     }
 
-    async function pause() {
-        await sound.pauseAsync()
-    }
-    
     return (
 
         <View style={styles.container}>
+
            <Image style={styles.channelImage} source={{ uri: live.imageurl }}/>
           
             {/* <Text style={styles.tagline}>
@@ -100,10 +73,11 @@ export function PlayScreen({navigation, route}) {
             <Text>
                 {live.name}
             </Text>
+
             <TouchableOpacity>
-           
+
             </TouchableOpacity>
-                <Button title='PLAY' onPress={() => loadSound(route.params.item.liveaudio.url)}></Button>
+            <Button title='PLAY' onPress={() => loadSound(route.params.item.liveaudio.url)}></Button>
         </View>
     );
 }
@@ -114,33 +88,31 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-        
+
     },
-    channelImage:{
+    channelImage: {
         height: 250,
         width: 250,
         borderRadius: 12,
         padding: 15,
         marginBottom: 20,
         resizeMode: 'cover'
-        
+
     },
-    tagline:{
+    tagline: {
         color: 'black',
-        
-        
     },
-    
+
     cardImage: {
-    // width: '100%',
-    height: 100,
-    width: 100,
-    borderRadius: 12,
-    padding: 15,
-    margin: 5,
-    resizeMode: 'cover'
+        // width: '100%',
+        height: 100,
+        width: 100,
+        borderRadius: 12,
+        padding: 15,
+        margin: 5,
+        resizeMode: 'cover'
 
-  },
+    },
 
-})  
+})
 
