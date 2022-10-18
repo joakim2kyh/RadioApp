@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-
+import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -30,11 +29,9 @@ const fetchSchedule = async (id) => {
       endTime = endTime.slice(6, -2)
 
       if(startTime < now && endTime > now){
-       // console.log(element.title)
-       // console.log(live)
         setLive(element.title)
       } else {
-        //console.log("NOPE") 
+        //console.log("No Live Program") 
       }
 
     });
@@ -55,10 +52,8 @@ const fetchSchedule = async (id) => {
             <Text style={styles.programText}>{live}</Text>
           </View>
         </View>
-       
-        
         <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={()=>props.playRadio()}>
+        <TouchableOpacity onPress={()=> console.log(context)}>
           <AntDesign style={styles.play} name="play" size={30} color="black" />
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>props.addFavorite()}>
@@ -68,19 +63,10 @@ const fetchSchedule = async (id) => {
       </View>
     </View>
     </TouchableOpacity>
-    
   );
 }
 
-// export { Card }
-
 const styles = StyleSheet.create({
-
-  // item: {
-  //  marginTop: 24,
-  // padding: 30,
-  // backgroundColor: "pink",
-  // },
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -131,14 +117,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardImage: {
-    // width: '100%',
     height: 100,
     width: 100,
     borderRadius: 12,
     padding: 15,
     margin: 5,
     resizeMode: 'cover'
-
   },
   cardText: {
     padding: 1,
