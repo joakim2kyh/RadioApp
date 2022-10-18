@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import HomeStackScreen from './screens/HomeStackScreen';
 import FavouritesScreen from './screens/FavouritesScreen';
 
-const homeName = "HomeStack";
+const homeName = "Home";
 const favouritesName = "Favourites"
 
 const Tab = createBottomTabNavigator();
@@ -56,7 +56,7 @@ export default function MainContainer() {
             >
                 <Tab.Screen name={homeName} component={HomeStackScreen} options={{
           headerShown: false,
-        }}/>
+        }} />
                 <Tab.Screen name={favouritesName} component={FavouritesScreen} options={{
           headerShown: false,
         }}/>

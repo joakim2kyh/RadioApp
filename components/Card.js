@@ -1,9 +1,47 @@
-import React from "react";
+import React, {useState, useEffect} from 'react';
+
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default Card = (props) => {
+
+  const [schedule, setSchedule] = useState([])
+  const [live, setLive] = useState("")
+
+  useEffect(() => {
+    fetchSchedule(props.item.id)
+})
+
+const fetchSchedule = async (id) => {
+  const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
+
+  try {
+    const response = await fetch(uri);
+    let json = await response.json();
+    setSchedule(json.schedule)
+    const now = Date.now()
+    
+    schedule.forEach(element => {
+
+      let startTime = element.starttimeutc
+      startTime = startTime.slice(6, -2)
+      let endTime = element.endtimeutc
+      endTime = endTime.slice(6, -2)
+
+      if(startTime < now && endTime > now){
+       // console.log(element.title)
+       // console.log(live)
+        setLive(element.title)
+      } else {
+        //console.log("NOPE") 
+      }
+
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
 
   return (
     <TouchableOpacity onPress={props.onPress}>
@@ -11,7 +49,11 @@ export default Card = (props) => {
       <View style={[styles.cardContainer, {backgroundColor: '#'+props.item.color}]}>
         {/* <TouchableOpacity style ={styles.card} onPress={onPress}> */}
         <Image style={styles.cardImage} source={{ uri: props.item.image }} />
-        <Text style={styles.cardText}>{props.item.name}</Text>
+        <View style={styles.infoTextContainer}>
+          <Text style={styles.cardText}>{props.item.name}</Text>
+          <Text style={styles.programText}>{live}</Text>
+        </View>
+        
         <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={()=>props.playRadio()}>
           <AntDesign style={styles.play} name="play" size={30} color="black" />
@@ -94,9 +136,18 @@ const styles = StyleSheet.create({
   cardText: {
     padding: 10,
     fontSize: 20,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  programText: {
+    fontSize: 10
   },
   play: {
     marginEnd: 10
+  },
+  infoTextContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
   }
 });

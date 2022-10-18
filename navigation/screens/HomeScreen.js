@@ -54,6 +54,7 @@ export function HomeScreen({navigation, component}) {
 
     useEffect(() => {
       fetchList2()
+      
       console.info("effect " + favourites)
       storeData(favourites)
   }, [favourites])
@@ -70,9 +71,9 @@ export function HomeScreen({navigation, component}) {
         }
     }
 
-    const fetchSchedule = async () => {
+    const fetchSchedule = async (uri) => {
         try {
-          const response = await fetch("http://api.sr.se/v2/scheduledepisodes?channelid=132&format=json&pagination=false");
+          const response = await fetch(uri);
           let json = await response.json();
           setSchedule(json.schedule)
           const now = Date.now()
@@ -86,6 +87,7 @@ export function HomeScreen({navigation, component}) {
       
             if(startTime < now && endTime > now){
               console.log(element.title)
+              console.log(live)
               setLive(element.title)
             } else {
               //console.log("NOPE") 
@@ -123,7 +125,14 @@ export function HomeScreen({navigation, component}) {
         <FlatList
             data={channels}
             renderItem={({ item }) => (
-              <Card item={item} playRadio = {()=>playRadio()} addFavorite={()=>addFavorite(item.id)} onPress={() => navigation.navigate('Play', { item: item, sound: sound })}/>
+
+              <Card item={item} playRadio = {()=>playRadio()} addFavorite={()=>addFavorite(item.id)} onPress={
+                
+                () => {
+                  navigation.navigate('PlayScreen', { item: item })
+                }
+                
+              }/>
             )}
             /> 
     </View>
