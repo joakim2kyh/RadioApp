@@ -48,11 +48,14 @@ const fetchSchedule = async (id) => {
       <View style={styles.container}>
       <View style={[styles.cardContainer, {backgroundColor: '#'+props.item.color}]}>
         {/* <TouchableOpacity style ={styles.card} onPress={onPress}> */}
-        <Image style={styles.cardImage} source={{ uri: props.item.image }} />
-        <View style={styles.infoTextContainer}>
-          <Text style={styles.cardText}>{props.item.name}</Text>
-          <Text style={styles.programText}>{live}</Text>
+        <View style={styles.imgTextContainer}>
+          <Image style={styles.cardImage} source={{ uri: props.item.image }} />
+          <View style={styles.infoTextContainer}>
+            <Text style={styles.cardText}>{props.item.name}</Text>
+            <Text style={styles.programText}>{live}</Text>
+          </View>
         </View>
+       
         
         <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={()=>props.playRadio()}>
@@ -104,6 +107,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 10,
   },
+  imgTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   card: {
     backgroundColor: '#50A0B7',
     marginBottom: 20,
@@ -134,13 +141,15 @@ const styles = StyleSheet.create({
 
   },
   cardText: {
-    padding: 10,
+    padding: 1,
     fontSize: 20,
+    fontWeight: 'bold',
     alignItems: 'flex-start',
     justifyContent: 'flex-start'
   },
   programText: {
-    fontSize: 10
+    fontSize: 12,
+    fontWeight: '400'
   },
   play: {
     marginEnd: 10
