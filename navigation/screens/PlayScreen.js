@@ -1,17 +1,59 @@
 
 import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
 import { Audio } from "expo-av";
-import React, { useState, useContext } from 'react';
-
+import React, { useState, useContext, useEffect } from 'react';
 import { Context1 } from './HomeScreen';
+
 
 
 export function PlayScreen({ navigation, route }) {
 
+    
+    const [isPlaying, setPlaying] = useState(false)
+    const [schedule, setSchedule] = useState([])
+    const [live, setLive] = useState("")
+
+    useEffect(() => {
+        fetchSchedule(route.params.item.id)
+    })
+
+
     const sound = useContext(Context1)
 
-    async function loadSound(uri) {
 
+    const fetchSchedule = async (id) => {
+        const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
+
+        try {
+            const response = await fetch(uri);
+            let json = await response.json();
+           // let data = await Promise.all(json.)
+            setSchedule(json.schedule)
+            const now = Date.now()
+
+            // schedule.forEach(element => {
+
+            // for await (const element of schedule) {
+            //     let startTime = element.starttimeutc
+            //     startTime = startTime.slice(6, -2)
+            //     let endTime = element.endtimeutc
+            //     endTime = endTime.slice(6, -2)
+
+            //     if (startTime < now && endTime > now) {
+            //         // console.log(element.title)
+            //         // console.log(live)
+            //         setLive(element)
+            //     } else {
+            //         //console.log("NOPE") 
+            //     }
+
+            // };
+        } catch (error) {
+            console.error(error);
+        }
+      }
+
+    async function loadSound(uri) {
         await sound.unloadAsync()
         await sound.loadAsync({ uri: uri })
         await sound.playAsync()
@@ -20,10 +62,18 @@ export function PlayScreen({ navigation, route }) {
     return (
 
         <View style={styles.container}>
-            <Image style={styles.channelImage} source={{ uri: route.params.item.image }} />
 
-            <Text style={styles.tagline}>
-                This is {route.params.item.tagline} </Text>
+           <Image style={styles.channelImage} source={{ uri: live.imageurl }}/>
+          
+            {/* <Text style={styles.tagline}>
+                This is {route.params.item.tagline} </Text> */}
+            <Text>
+                { route.params.item.name }
+            </Text>
+            <Text>
+                {live.name}
+            </Text>
+
             <TouchableOpacity>
 
             </TouchableOpacity>
@@ -45,7 +95,7 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 12,
         padding: 15,
-        marginBottom: 100,
+        marginBottom: 20,
         resizeMode: 'cover'
 
     },
