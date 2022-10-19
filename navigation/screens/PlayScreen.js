@@ -9,22 +9,15 @@ import { SoundContext, SoundProvider } from '../../SoundContext';
 
 export function PlayScreen({ navigation, route }) {
 
-    
     const [isPlaying, setIsPlaying] = useState(false)
     const [schedule, setSchedule] = useState([])
     const [live, setLive] = useState("")
-    const soundDetails = useContext(SoundContext)
-    
-    
 
     useEffect(() => {
         fetchSchedule(route.params.item.id)
     })
 
-
     const sound = useContext(SoundContext)
-    //const sound = soundContext.sound
-
 
     const fetchSchedule = async (id) => {
         const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
@@ -59,9 +52,9 @@ export function PlayScreen({ navigation, route }) {
       }
 
     async function loadSound(uri) {
-        await soundDetails.sound.unloadAsync()
-        await soundDetails.sound.loadAsync({ uri: uri })
-        await soundDetails.sound.playAsync()
+        await sound.unloadAsync()
+        await sound.loadAsync({ uri: uri })
+        await sound.playAsync()
     }
 
     return (
