@@ -4,6 +4,7 @@ import { Audio } from "expo-av";
 import React, { useState, useContext, useEffect } from 'react';
 import { Context1 } from './HomeScreen';
 import { AntDesign } from '@expo/vector-icons';
+import { SoundContext, SoundProvider } from '../../SoundContext';
 
 
 export function PlayScreen({ navigation, route }) {
@@ -18,7 +19,8 @@ export function PlayScreen({ navigation, route }) {
     })
 
 
-    const sound = useContext(Context1)
+    const soundContext = useContext(SoundContext)
+    const sound = soundContext.sound
 
 
     const fetchSchedule = async (id) => {

@@ -3,8 +3,9 @@ import { Audio } from "expo-av";
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SoundContext, SoundProvider } from '../../SoundContext';
 
-export const Context1 = React.createContext(new Audio.Sound());
+//export const Context1 = React.createContext(new Audio.Sound());
 
 export function HomeScreen({ navigation, component }) {
 
@@ -12,7 +13,7 @@ export function HomeScreen({ navigation, component }) {
   const [schedule, setSchedule] = useState([])
   const [favourites, setFavourites] = useState([])
   const [live, setLive] = useState("")
-  const sound = useState(new Audio.Sound());
+  //const sound = useState(new Audio.Sound());
 
   const storeData = async (value) => {
     try {
@@ -110,7 +111,7 @@ export function HomeScreen({ navigation, component }) {
   }
 
   return (
-    <Context1.Provider value={sound}>
+    <SoundProvider>
       <View style={styles.container}>
 
         <FlatList
@@ -124,7 +125,7 @@ export function HomeScreen({ navigation, component }) {
           )}
         />
       </View>
-    </Context1.Provider>
+    </SoundProvider>
   );
 }
 
