@@ -21,20 +21,20 @@ const fetchSchedule = async (id) => {
     setSchedule(json.schedule)
     const now = Date.now()
     
-    // schedule.forEach(element => {
+    schedule.forEach(element => {
 
-    //   let startTime = element.starttimeutc
-    //   startTime = startTime.slice(6, -2)
-    //   let endTime = element.endtimeutc
-    //   endTime = endTime.slice(6, -2)
+      let startTime = element.starttimeutc
+      startTime = startTime.slice(6, -2)
+      let endTime = element.endtimeutc
+      endTime = endTime.slice(6, -2)
 
-    //   if(startTime < now && endTime > now){
-    //     setLive(element.title)
-    //   } else {
-    //     //console.log("No Live Program") 
-    //   }
+      if(startTime < now && endTime > now){
+        setLive(element.title)
+      } else {
+        //console.log("No Live Program") 
+      }
 
-    // });
+    });
   } catch (error) {
     console.error(error);
   }
@@ -57,7 +57,7 @@ const fetchSchedule = async (id) => {
           <AntDesign style={styles.play} name="play" size={45} color="black" />
         </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={()=>props.addFavorite()}>
+        <TouchableOpacity style={styles.heart} onPress={()=>props.addFavorite()}>
           <MaterialIcons name="favorite-outline" size={30} color="black" />
         </TouchableOpacity>
         
@@ -145,5 +145,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     flex: 1
+  },
+  heart: {
+   // alignSelf: 'flex-end'
+   position: 'absolute',
+   right: 5,
+   bottom: 5
   }
 });
