@@ -3,6 +3,7 @@ import { Audio } from "expo-av";
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { set } from 'react-native-reanimated';
 
 export const Context1 = React.createContext(new Audio.Sound());
 
@@ -13,6 +14,7 @@ export function HomeScreen({ navigation, component }) {
   const [favourites, setFavourites] = useState([])
   const [live, setLive] = useState("")
   const sound = useState(new Audio.Sound());
+  const [pageNumber, setPageNumber] = useState(2)
 
   const storeData = async (value) => {
     try {
@@ -51,16 +53,25 @@ export function HomeScreen({ navigation, component }) {
   }
 
   useEffect(() => {
-    fetchList2()
+    fetchList2("")
     //console.info("effect " + favourites)
     storeData(favourites)
   }, [favourites])
 
-  const fetchList2 = async () => {
+  const fetchList2 = async (page) => {
     try {
-      let response = await fetch("http://api.sr.se/api/v2/channels?format=json");
+      let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
       let json = await response.json();
-      setChannels(json.channels)
+      if (page == "") {
+        console.log("page =", pageNumber)
+        setChannels(json.channels)
+      } else {
+       // let channelsArray = [...channels, json.channels]
+        const channelsArray = channels.concat(json.channels)
+        setChannels(channelsArray)
+       // console.log("channels 71", channels)
+      }
+    
       return json;
     } catch (error) {
       console.error(error);
@@ -122,7 +133,15 @@ export function HomeScreen({ navigation, component }) {
               }
             } />
           )}
+        ListFooterComponent= {() => <Button title='ladda fler' onPress={ () => {
+          
+          setPageNumber((prev) => prev + 1)
+          console.log("pageNumber", `&page=${pageNumber}`)
+         // fetchList2(`&page=${pageNumber}`)
+          
+        }}></Button>}
         />
+       
       </View>
     </Context1.Provider>
   );
@@ -133,4 +152,5 @@ const styles = StyleSheet.create({
     marginTop: 50,
     backgroundColor: '#F5FCFF',
   },
+  
 });

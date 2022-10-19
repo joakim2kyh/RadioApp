@@ -21,20 +21,20 @@ const fetchSchedule = async (id) => {
     setSchedule(json.schedule)
     const now = Date.now()
     
-    schedule.forEach(element => {
+    // schedule.forEach(element => {
 
-      let startTime = element.starttimeutc
-      startTime = startTime.slice(6, -2)
-      let endTime = element.endtimeutc
-      endTime = endTime.slice(6, -2)
+    //   let startTime = element.starttimeutc
+    //   startTime = startTime.slice(6, -2)
+    //   let endTime = element.endtimeutc
+    //   endTime = endTime.slice(6, -2)
 
-      if(startTime < now && endTime > now){
-        setLive(element.title)
-      } else {
-        //console.log("No Live Program") 
-      }
+    //   if(startTime < now && endTime > now){
+    //     setLive(element.title)
+    //   } else {
+    //     //console.log("No Live Program") 
+    //   }
 
-    });
+    // });
   } catch (error) {
     console.error(error);
   }
@@ -48,18 +48,19 @@ const fetchSchedule = async (id) => {
         <View style={styles.imgTextContainer}>
           <Image style={styles.cardImage} source={{ uri: props.item.image }} />
           <View style={styles.infoTextContainer}>
-            <Text style={styles.cardText}>{props.item.name}</Text>
-            <Text style={styles.programText}>{live}</Text>
+            <Text style={styles.cardText} numberOfLines={1}>{props.item.name}</Text>
+            <Text style={styles.programText} numberOfLines={1}>{live}</Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={()=> console.log(context)}>
-          <AntDesign style={styles.play} name="play" size={30} color="black" />
+          <AntDesign style={styles.play} name="play" size={45} color="black" />
         </TouchableOpacity>
+        </View>
         <TouchableOpacity onPress={()=>props.addFavorite()}>
           <MaterialIcons name="favorite-outline" size={30} color="black" />
         </TouchableOpacity>
-        </View>
+        
       </View>
     </View>
     </TouchableOpacity>
@@ -95,7 +96,8 @@ const styles = StyleSheet.create({
   },
   imgTextContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 1
   },
   card: {
     backgroundColor: '#50A0B7',
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     }
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   programText: {
     fontSize: 12,
@@ -141,6 +143,7 @@ const styles = StyleSheet.create({
   infoTextContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    flex: 1
   }
 });
