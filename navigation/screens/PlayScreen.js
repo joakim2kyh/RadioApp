@@ -1,10 +1,8 @@
 
 import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
-import { Audio } from "expo-av";
 import React, { useState, useContext, useEffect } from 'react';
-import { Context1 } from './HomeScreen';
 import { AntDesign } from '@expo/vector-icons';
-import { SoundContext, SoundProvider } from '../../SoundContext';
+import { SoundContext } from '../../SoundContext';
 
 
 export function PlayScreen({ navigation, route }) {
