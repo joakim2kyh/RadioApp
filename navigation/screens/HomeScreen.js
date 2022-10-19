@@ -69,12 +69,12 @@ export function HomeScreen({ navigation, component }) {
         console.log("page =", pageNumber)
         setChannels(json.channels)
       } else {
-       // let channelsArray = [...channels, json.channels]
+        // let channelsArray = [...channels, json.channels]
         const channelsArray = channels.concat(json.channels)
         setChannels(channelsArray)
-       // console.log("channels 71", channels)
+        // console.log("channels 71", channels)
       }
-    
+
       return json;
     } catch (error) {
       console.error(error);
@@ -126,45 +126,45 @@ export function HomeScreen({ navigation, component }) {
   return (
     <SoundProvider>
       <View style={styles.container}>
-        
+
 
         <FlatList
           data={channels}
-          
+
           renderItem={({ item }) => (
             <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item.id)} onPress={
               () => {
-                
+
                 navigation.navigate('PlayScreen', { item: item })
               }
-              
+
             } />
           )}
-        ListFooterComponent= {() => <Button title='ladda fler' onPress={ () => {
-          
-          setPageNumber((prev) => prev + 1)
-          console.log("pageNumber", `&page=${pageNumber}`)
-         // fetchList2(`&page=${pageNumber}`)
-          
-        }}></Button>}
+          // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
+
+          //   setPageNumber((prev) => prev + 1)
+          //   console.log("pageNumber", `&page=${pageNumber}`)
+          //   // fetchList2(`&page=${pageNumber}`)
+
+          // }}></Button>}
         />
-        <View>
-          
-          <View style={styles.bottomBar}>
-          <View style={styles.channelContainer}>
-            <Text style={styles.channel}>P1</Text>
-            <Text style={styles.program}>Nu körs p1, ekot</Text>
-            <TouchableOpacity style={styles.play} onPress={()=> console.log('hej he hej')}>
-        <AntDesign style={styles.playss} name="play" size={35} color="black" />
-        </TouchableOpacity>
-          </View>
-
-          
-          </View>
-
         
 
-         </View>
+          <View style={styles.bottomBar}>
+            <View style={styles.channelContainer}>
+              <Text style={styles.channel}>P1</Text>
+              <Text style={styles.program}>Nu körs p1, ekot</Text>
+              <TouchableOpacity style={styles.play} onPress={() => console.log('hej he hej')}>
+                <AntDesign style={styles.playss} name="play" size={35} color="black" />
+              </TouchableOpacity>
+            </View>
+
+
+          </View>
+
+
+
+        
       </View>
     </SoundProvider>
   );
@@ -172,45 +172,45 @@ export function HomeScreen({ navigation, component }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 690,
+    height: '90%',
     marginTop: 50,
     backgroundColor: '#F5FCFF',
   },
 
-  bottomBar:{
-    backgroundColor:'white',
+  bottomBar: {
+    backgroundColor: 'white',
 
-    width: 400,
-    height: 80,
-   
+    // width: '100%',
+    height: '10%',
+
   },
   left: {
-    
-  },
-  channelContainer:{
-    flexDirection:'row',
-    justifyContent: 'space-between',
-    
 
   },
-  channel:{
+  channelContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+
+  },
+  channel: {
     backgroundColor: 'red',
     height: 80,
     width: 80,
-    flex:1
+    flex: 1
 
   },
-  program:{
-    backgroundColor:'green',
+  program: {
+    backgroundColor: 'green',
     height: 80,
-    width:200,
-    flex:3
-    
-    
+    width: 200,
+    flex: 3
+
+
   },
-  play:{
-    flex:1
+  play: {
+    flex: 1
 
   }
-    
+
 });
