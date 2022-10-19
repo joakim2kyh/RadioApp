@@ -1,14 +1,12 @@
 
 import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
-import { Audio } from "expo-av";
 import React, { useState, useContext, useEffect } from 'react';
-import { Context1 } from './HomeScreen';
 import { AntDesign } from '@expo/vector-icons';
+import { SoundContext } from '../../SoundContext';
 
 
 export function PlayScreen({ navigation, route }) {
 
-    
     const [isPlaying, setIsPlaying] = useState(false)
     const [schedule, setSchedule] = useState([])
     const [live, setLive] = useState("")
@@ -17,9 +15,7 @@ export function PlayScreen({ navigation, route }) {
         fetchSchedule(route.params.item.id)
     })
 
-
-    const sound = useContext(Context1)
-
+    const sound = useContext(SoundContext)
 
     const fetchSchedule = async (id) => {
         const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`

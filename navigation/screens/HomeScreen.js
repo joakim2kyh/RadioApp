@@ -1,11 +1,13 @@
-import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Audio } from "expo-av";
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { set } from 'react-native-reanimated';
+import { SoundContext, SoundProvider } from '../../SoundContext';
+import { AntDesign } from '@expo/vector-icons';
 
-export const Context1 = React.createContext(new Audio.Sound());
+
+//export const Context1 = React.createContext(new Audio.Sound());
 
 export function HomeScreen({ navigation, component }) {
 
@@ -13,8 +15,9 @@ export function HomeScreen({ navigation, component }) {
   const [schedule, setSchedule] = useState([])
   const [favourites, setFavourites] = useState([])
   const [live, setLive] = useState("")
-  const sound = useState(new Audio.Sound());
+  //const sound = useState(new Audio.Sound());
   const [pageNumber, setPageNumber] = useState(2)
+
 
   const storeData = async (value) => {
     try {
@@ -121,16 +124,20 @@ export function HomeScreen({ navigation, component }) {
   }
 
   return (
-    <Context1.Provider value={sound}>
+    <SoundProvider>
       <View style={styles.container}>
+        
 
         <FlatList
           data={channels}
+          
           renderItem={({ item }) => (
             <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item.id)} onPress={
               () => {
+                
                 navigation.navigate('PlayScreen', { item: item })
               }
+              
             } />
           )}
         ListFooterComponent= {() => <Button title='ladda fler' onPress={ () => {
@@ -141,16 +148,69 @@ export function HomeScreen({ navigation, component }) {
           
         }}></Button>}
         />
-       
+        <View>
+          
+          <View style={styles.bottomBar}>
+          <View style={styles.channelContainer}>
+            <Text style={styles.channel}>P1</Text>
+            <Text style={styles.program}>Nu körs p1, ekot</Text>
+            <TouchableOpacity style={styles.play} onPress={()=> console.log('hej he hej')}>
+        <AntDesign style={styles.playss} name="play" size={35} color="black" />
+        </TouchableOpacity>
+          </View>
+
+          
+          </View>
+
+        
+
+         </View>
       </View>
-    </Context1.Provider>
+    </SoundProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: 690,
     marginTop: 50,
     backgroundColor: '#F5FCFF',
   },
-  
+
+  bottomBar:{
+    backgroundColor:'white',
+
+    width: 400,
+    height: 80,
+   
+  },
+  left: {
+    
+  },
+  channelContainer:{
+    flexDirection:'row',
+    justifyContent: 'space-between',
+    
+
+  },
+  channel:{
+    backgroundColor: 'red',
+    height: 80,
+    width: 80,
+    flex:1
+
+  },
+  program:{
+    backgroundColor:'green',
+    height: 80,
+    width:200,
+    flex:3
+    
+    
+  },
+  play:{
+    flex:1
+
+  }
+    
 });
