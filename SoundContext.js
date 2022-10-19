@@ -1,7 +1,7 @@
 import React, { useState, createContext } from 'react';
 import { Audio } from "expo-av";
 
-const SoundContext = createContext();
+const SoundContext = createContext(new Audio.Sound());
 
 const SoundProvider = ({ children }) => {
     const sound = useState(new Audio.Sound());

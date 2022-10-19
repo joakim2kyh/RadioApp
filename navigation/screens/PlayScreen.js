@@ -19,8 +19,8 @@ export function PlayScreen({ navigation, route }) {
     })
 
 
-    const soundContext = useContext(SoundContext)
-    const sound = soundContext.sound
+    const sound = useContext(SoundContext)
+    //const sound = soundContext.sound
 
 
     const fetchSchedule = async (id) => {
