@@ -13,6 +13,9 @@ export function PlayScreen({ navigation, route }) {
     const [isPlaying, setIsPlaying] = useState(false)
     const [schedule, setSchedule] = useState([])
     const [live, setLive] = useState("")
+    const soundDetails = useContext(SoundContext)
+    
+    
 
     useEffect(() => {
         fetchSchedule(route.params.item.id)
@@ -56,9 +59,9 @@ export function PlayScreen({ navigation, route }) {
       }
 
     async function loadSound(uri) {
-        await sound.unloadAsync()
-        await sound.loadAsync({ uri: uri })
-        await sound.playAsync()
+        await soundDetails.sound.unloadAsync()
+        await soundDetails.sound.loadAsync({ uri: uri })
+        await soundDetails.sound.playAsync()
     }
 
     return (
