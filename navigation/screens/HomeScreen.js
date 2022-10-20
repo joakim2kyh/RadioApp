@@ -152,13 +152,16 @@ export function HomeScreen({ navigation, component }) {
 
           <View style={styles.bottomBar}>
             <View style={styles.channelContainer}>
-              <Text style={styles.channel}>P1</Text>
-              <Text style={styles.program}>Nu körs p1, ekot</Text>
+             
+              <Text style={styles.channelImage}>P1</Text>
+              <View style={styles.programContainer}>
+              <Text style={styles.programTitle}>Klassisk förmiddag</Text>
+              <Text style={styles.programTime}>11.11-12.09</Text>
+              </View>
               <TouchableOpacity style={styles.play} onPress={() => console.log('hej he hej')}>
                 <AntDesign style={styles.playss} name="play" size={35} color="black" />
               </TouchableOpacity>
             </View>
-
 
           </View>
 
@@ -172,7 +175,7 @@ export function HomeScreen({ navigation, component }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: '90%',
+    height: '92%',
     marginTop: 50,
     backgroundColor: '#F5FCFF',
   },
@@ -181,36 +184,52 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
 
     // width: '100%',
-    height: '10%',
+    height: '8%',
 
   },
-  left: {
-
-  },
+  
   channelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    height: 80
 
 
   },
-  channel: {
-    backgroundColor: 'red',
-    height: 80,
+  
+  channelImage: {
+    backgroundColor: 'blue',
+    color:'white',
     width: 80,
     flex: 1
 
   },
-  program: {
-    backgroundColor: 'green',
-    height: 80,
+
+  programContainer: {
+    backgroundColor: 'black',
+    color: 'white',
+    
+  },
+  programTitle: {
+    backgroundColor: 'red',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15,
+    height: '50%',
     width: 200,
     flex: 3
 
 
   },
+  
+  programTime: {
+    color: 'white',
+    height: '50%',
+
+  },
+
   play: {
     flex: 1
 
-  }
+  },
 
 });
