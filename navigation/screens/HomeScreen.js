@@ -1,13 +1,9 @@
-import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { Audio } from "expo-av";
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SoundContext, SoundProvider } from '../../SoundContext';
 import { AntDesign } from '@expo/vector-icons';
-
-
-//export const Context1 = React.createContext(new Audio.Sound());
 
 export function HomeScreen({ navigation, component }) {
 
@@ -15,9 +11,7 @@ export function HomeScreen({ navigation, component }) {
   const [schedule, setSchedule] = useState([])
   const [favourites, setFavourites] = useState([])
   const [live, setLive] = useState("")
-  //const sound = useState(new Audio.Sound());
   const [pageNumber, setPageNumber] = useState(2)
-
 
   const storeData = async (value) => {
     try {
@@ -56,24 +50,27 @@ export function HomeScreen({ navigation, component }) {
   }
 
   useEffect(() => {
-    fetchList2("")
+  //  fetchList2("Lokal%20kanal")
+  fetchList2("Rikskanal")
     //console.info("effect " + favourites)
     storeData(favourites)
   }, [favourites])
 
-  const fetchList2 = async (page) => {
+  const fetchList2 = async (channeltype) => {
     try {
-      let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
+     // let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
+      let response = await fetch(`https://api.sr.se/api/v2/channels?format=json&pagination=false&filter=channel.channeltype&filtervalue=${channeltype}`)
       let json = await response.json();
-      if (page == "") {
-        console.log("page =", pageNumber)
-        setChannels(json.channels)
-      } else {
-        // let channelsArray = [...channels, json.channels]
-        const channelsArray = channels.concat(json.channels)
-        setChannels(channelsArray)
-        // console.log("channels 71", channels)
-      }
+      setChannels(json.channels)
+      // if (page == "") {
+      //   console.log("page =", pageNumber)
+      //   setChannels(json.channels)
+      // } else {
+      //   // let channelsArray = [...channels, json.channels]
+      //   const channelsArray = channels.concat(json.channels)
+      //   setChannels(channelsArray)
+      //   // console.log("channels 71", channels)
+      // }
 
       return json;
     } catch (error) {
@@ -124,20 +121,33 @@ export function HomeScreen({ navigation, component }) {
   }
 
   return (
-    <SoundProvider>
       <View style={styles.container}>
 
+        <View style={styles.filterButtons}>
+          <Pressable style={styles.button} onPress={() => fetchList2("Rikskanal")}>
+            <Text style={styles.text}>Rikskanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Lokal%20kanal")}>
+            <Text style={styles.text}>Lokala kanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Minoritet%20och%20språk")}>
+            <Text style={styles.text}>Minoritet & språk</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Extrakanaler")}>
+            <Text style={styles.text}>Extrakanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Fler%20kanaler")}>
+            <Text style={styles.text}>Fler kanaler</Text>
+          </Pressable>
 
+        </View>
         <FlatList
           data={channels}
-
           renderItem={({ item }) => (
             <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item.id)} onPress={
               () => {
-
                 navigation.navigate('PlayScreen', { item: item })
               }
-
             } />
           )}
           // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
@@ -148,8 +158,6 @@ export function HomeScreen({ navigation, component }) {
 
           // }}></Button>}
         />
-        
-
           <View style={styles.bottomBar}>
             <View style={styles.channelContainer}>
              
@@ -162,14 +170,8 @@ export function HomeScreen({ navigation, component }) {
                 <AntDesign style={styles.playss} name="play" size={35} color="black" />
               </TouchableOpacity>
             </View>
-
           </View>
-
-
-
-        
       </View>
-    </SoundProvider>
   );
 }
 
@@ -231,5 +233,13 @@ const styles = StyleSheet.create({
     flex: 1
 
   },
+  filterButtons: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  button: {
+    color: 'tomato',
+    margin: 4
+  }
 
 });
