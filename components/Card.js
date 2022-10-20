@@ -69,7 +69,7 @@ const fetchSchedule = async (id) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={()=> console.log(context)}>
+        <TouchableOpacity onPress={()=> console.log()}>
           <AntDesign style={styles.play} name="play" size={45} color="black" />
         </TouchableOpacity>
         </View>

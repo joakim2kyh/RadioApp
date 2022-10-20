@@ -1,15 +1,9 @@
-import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { Audio } from "expo-av";
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SoundContext, SoundProvider } from '../../SoundContext';
 import { AntDesign } from '@expo/vector-icons';
-import CommonDataManager from '../../components/CommonDataManager';
-import { useFocusEffect } from '@react-navigation/native';
-
-
-//export const Context1 = React.createContext(new Audio.Sound());
 
 export function HomeScreen({ navigation, component }) {
 
@@ -18,9 +12,7 @@ export function HomeScreen({ navigation, component }) {
   const [favourites, setFavourites] = useState([])
   const [live, setLive] = useState("")
   const [refresh, setRefresh] = useState([true])
-  //const sound = useState(new Audio.Sound());
   const [pageNumber, setPageNumber] = useState(2)
-
 
   useFocusEffect(
     React.useCallback(() => {
@@ -38,7 +30,7 @@ export function HomeScreen({ navigation, component }) {
   }, [favourites])
 
   useEffect(()=>{
-    fetchList2("")
+    fetchList2("Rikskanal")
     getData()
     console.log("used effect 2")
   }, []) 
@@ -89,19 +81,21 @@ export function HomeScreen({ navigation, component }) {
 
 
 
-  const fetchList2 = async (page) => {
+  const fetchList2 = async (channeltype) => {
     try {
-      let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
+     // let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
+      let response = await fetch(`https://api.sr.se/api/v2/channels?format=json&pagination=false&filter=channel.channeltype&filtervalue=${channeltype}`)
       let json = await response.json();
-      if (page == "") {
-        console.log("page =", pageNumber)
-        setChannels(json.channels)
-      } else {
-        // let channelsArray = [...channels, json.channels]
-        const channelsArray = channels.concat(json.channels)
-        setChannels(channelsArray)
-        // console.log("channels 71", channels)
-      }
+      setChannels(json.channels)
+      // if (page == "") {
+      //   console.log("page =", pageNumber)
+      //   setChannels(json.channels)
+      // } else {
+      //   // let channelsArray = [...channels, json.channels]
+      //   const channelsArray = channels.concat(json.channels)
+      //   setChannels(channelsArray)
+      //   // console.log("channels 71", channels)
+      // }
 
       return json;
     } catch (error) {
@@ -152,10 +146,26 @@ export function HomeScreen({ navigation, component }) {
   }
 
   return (
-    <SoundProvider>
       <View style={styles.container}>
 
+        <View style={styles.filterButtons}>
+          <Pressable style={styles.button} onPress={() => fetchList2("Rikskanal")}>
+            <Text style={styles.text}>Rikskanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Lokal%20kanal")}>
+            <Text style={styles.text}>Lokala kanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Minoritet%20och%20språk")}>
+            <Text style={styles.text}>Minoritet & språk</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Extrakanaler")}>
+            <Text style={styles.text}>Extrakanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Fler%20kanaler")}>
+            <Text style={styles.text}>Fler kanaler</Text>
+          </Pressable>
 
+        </View>
         <FlatList
           data={channels}
           extraData={
@@ -166,7 +176,6 @@ export function HomeScreen({ navigation, component }) {
               () => {
                 navigation.navigate('PlayScreen', { item: item })
               }
-
             } />
           )}
           // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
@@ -177,31 +186,26 @@ export function HomeScreen({ navigation, component }) {
 
           // }}></Button>}
         />
-        
-
           <View style={styles.bottomBar}>
             <View style={styles.channelContainer}>
-              <Text style={styles.channel}>P1</Text>
-              <Text style={styles.program}>Nu körs p1, ekot</Text>
+             
+              <Text style={styles.channelImage}>P1</Text>
+              <View style={styles.programContainer}>
+              <Text style={styles.programTitle}>Klassisk förmiddag</Text>
+              <Text style={styles.programTime}>11.11-12.09</Text>
+              </View>
               <TouchableOpacity style={styles.play} onPress={() => console.log('hej he hej')}>
                 <AntDesign style={styles.playss} name="play" size={35} color="black" />
               </TouchableOpacity>
             </View>
-
-
           </View>
-
-
-
-        
       </View>
-    </SoundProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: '90%',
+    height: '92%',
     marginTop: 50,
     backgroundColor: '#F5FCFF',
   },
@@ -210,36 +214,60 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
 
     // width: '100%',
-    height: '10%',
+    height: '8%',
 
   },
-  left: {
-
-  },
+  
   channelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    height: 80
 
 
   },
-  channel: {
-    backgroundColor: 'red',
-    height: 80,
+  
+  channelImage: {
+    backgroundColor: 'blue',
+    color:'white',
     width: 80,
     flex: 1
 
   },
-  program: {
-    backgroundColor: 'green',
-    height: 80,
+
+  programContainer: {
+    backgroundColor: 'black',
+    color: 'white',
+    
+  },
+  programTitle: {
+    backgroundColor: 'red',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15,
+    height: '50%',
     width: 200,
     flex: 3
 
 
   },
+  
+  programTime: {
+    color: 'white',
+    height: '50%',
+
+  },
+
   play: {
     flex: 1
 
+  },
+  filterButtons: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  button: {
+    color: 'tomato',
+    margin: 4
   }
 
 });
