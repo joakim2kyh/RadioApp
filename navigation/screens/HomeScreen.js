@@ -5,6 +5,8 @@ import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SoundContext, SoundProvider } from '../../SoundContext';
 import { AntDesign } from '@expo/vector-icons';
+import CommonDataManager from '../../components/CommonDataManager';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 //export const Context1 = React.createContext(new Audio.Sound());
@@ -15,14 +17,41 @@ export function HomeScreen({ navigation, component }) {
   const [schedule, setSchedule] = useState([])
   const [favourites, setFavourites] = useState([])
   const [live, setLive] = useState("")
+  const [refresh, setRefresh] = useState([true])
   //const sound = useState(new Audio.Sound());
   const [pageNumber, setPageNumber] = useState(2)
 
 
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('Screen was focused');
+      
+      getData()
+        // .then(console.info("fav " + favourites))
+
+    }, [])
+  );
+
+  useEffect(() => {
+    storeData(favourites)
+    console.log("used effect 1")
+  }, [favourites])
+
+  useEffect(()=>{
+    fetchList2("")
+    getData()
+    console.log("used effect 2")
+  }, []) 
+
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)
-      console.info(jsonValue)
+      let commonFav = CommonDataManager.getInstance()
+      let ids = value.map(item => item.id)
+      commonFav.setFavIds(ids)
+      setRefresh({
+        refresh: !refresh
+      })
       await AsyncStorage.setItem('idArray', jsonValue)
     } catch (e) {
       console.log(e)
@@ -31,35 +60,34 @@ export function HomeScreen({ navigation, component }) {
 
   const getData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('idArray')
-      console.info("data = " + JSON.parse(jsonValue))
-      return jsonValue != null ? JSON.parse(jsonValue) : [];
+      const jsonValue = await AsyncStorage.getItem('idArray');
+      let json = JSON.parse(jsonValue)
+      let commonFav = CommonDataManager.getInstance()
+      let ids = json.map(item => item.id)
+      commonFav.setFavIds(ids)
+      setFavourites(json);
     } catch (e) {
       console.log(e)
     }
   }
 
+
   const playRadio = () => {
-    getData()
+    
   }
 
   const addFavorite = (item) => {
-    console.log(item)
-    if (favourites.includes(item) == false) {
+    let ids = favourites.map(o => o.id)
+    if (!ids.includes(item.id)) {
       setFavourites([...favourites, item])
-      console.log("added " + item)
+      console.log("added " + item.id)
     } else {
-
-      setFavourites(favourites.filter(name => name != item))
-      console.info("deleted item " + item + " from " + favourites)
+      setFavourites(favourites.filter(e => e.id != item.id))
+      console.info("deleted item " + item.id + " from " + favourites)
     }
   }
 
-  useEffect(() => {
-    fetchList2("")
-    //console.info("effect " + favourites)
-    storeData(favourites)
-  }, [favourites])
+
 
   const fetchList2 = async (page) => {
     try {
@@ -130,11 +158,12 @@ export function HomeScreen({ navigation, component }) {
 
         <FlatList
           data={channels}
-
+          extraData={
+            refresh
+          }
           renderItem={({ item }) => (
-            <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item.id)} onPress={
+            <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item)} onPress={
               () => {
-
                 navigation.navigate('PlayScreen', { item: item })
               }
 

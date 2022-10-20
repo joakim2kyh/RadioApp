@@ -2,53 +2,68 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import CommonDataManager from '../../components/CommonDataManager';
 
 
 export default function FavouritesScreen({ navigation }) {
 
   const [favourites, setFavourites] = useState([])
-  const [channels, setChannels] = useState([])
-  const DATA = []
+  const [refresh, setRefresh] = useState([true])
+
+  const route = useRoute();
 
   useFocusEffect(
     React.useCallback(() => {
       console.log('Screen was focused');
       
       getData()
-        .then(console.info("fav " + favourites))
+        // .then(console.info("fav " + favourites))
 
-    }, [favourites])
+    }, [])
   );
 
-  useEffect(() => {
-    
-    
-}, [channels])
+  useEffect(()=>{
+    storeData(favourites)
+  },[favourites])
 
+
+  //depricated
   const fetchStation = async () => {
-    try {
-      
-      let res = JSON.parse(favourites)
-      const arr = []; 
-
-      res.forEach(async id => {
-        let response = await fetch(`http://api.sr.se/api/v2/channels/${id}?format=json`);
+    try {      
+        let response = await fetch(`http://api.sr.se/api/v2/channels/?format=json`);
         let json = await response.json();
-        arr.push(json.channel)
-        console.log("arr " + DATA)
-        setChannels(arr)
-        // setChannels((channels) => ([...channels, json.channel]));
-      });
-      // console.log("arr " + DATA)
-      // setChannels([...channels, ...arr])
-      console.log(channels)
 
-      // setChannels([...channels, json.channel])
-      
-      // console.info("id "+json.channel)
-      // console.log(cha)
+        setChannels(json.channels)
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  const playRadio = () => {
+    
+  }
+
+  const addFavorite = (item) => {
+    let ids = favourites.map(o => o.id)
+    if (ids.includes(item.id)) {
+      setFavourites(favourites.filter(e => e.id != item.id))
+      console.info("deleted item " + item.id + " from " + favourites)
+    } 
+  }
+
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      let commonFav = CommonDataManager.getInstance()
+      let ids = value.map(item => item.id)
+      commonFav.setFavIds(ids)
+      setRefresh({
+        refresh: !refresh
+      })
+      await AsyncStorage.setItem('idArray', jsonValue)
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -56,15 +71,9 @@ export default function FavouritesScreen({ navigation }) {
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('idArray');
-      setFavourites(jsonValue);
-      let res = JSON.parse(jsonValue)
-      console.log("res "+ res)
-
-      fetchStation()
-      // await res.forEach(id => {
-      //   fetchStation(id)
-      // });
-      return jsonValue != null ? JSON.parse(jsonValue) : [];
+      let json = JSON.parse(jsonValue)
+      setFavourites(json);
+      console.info("json " + json)
     } catch (e) {
       console.log(e)
     }
@@ -72,18 +81,13 @@ export default function FavouritesScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-    {/* <Button title='Fetch list' onPress={fetchList2}></Button>
-
-  <Text>Open up App.js to start working on your app!</Text> */}
-  
-  {/* <Button title='Fetch live' onPress={fetchSchedule}></Button>
-  <Text>{live}</Text> */}
-
   <FlatList
-      data={channels} 
-      extraData={channels}
+      data={
+        favourites
+      } 
+      extraData = {refresh}
       renderItem={({ item }) => (
-        <Card item={item} />
+        <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item)} />
       )}
       /> 
 </View>
@@ -92,15 +96,7 @@ export default function FavouritesScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-   // flex: 1,
     marginTop: 50,
     backgroundColor: '#F5FCFF',
-  //  padding: 20,
   },
-  // item: {
-  //   marginTop: 24,
-  //   padding: 30,
-  //   backgroundColor: "pink",
-  // }
-
 });

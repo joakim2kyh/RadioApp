@@ -2,15 +2,31 @@ import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import CommonDataManager from './CommonDataManager';
 
 export default Card = (props) => {
 
   const [schedule, setSchedule] = useState([])
   const [live, setLive] = useState("")
 
+
   useEffect(() => {
+    if (schedule) return
     fetchSchedule(props.item.id)
-})
+    console.log("rerender")
+}, [schedule])
+
+
+const isFavorited = () => {
+  let dataManager =  CommonDataManager.getInstance()
+  let ids = dataManager.getFavIDs()
+  if(ids.includes(props.item.id)) {
+    return "favorite"
+  } else {
+    return "favorite-outline"
+  }
+
+}
 
 const fetchSchedule = async (id) => {
   const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
@@ -58,9 +74,8 @@ const fetchSchedule = async (id) => {
         </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.heart} onPress={()=>props.addFavorite()}>
-          <MaterialIcons name="favorite-outline" size={30} color="black" />
+          <MaterialIcons  name={isFavorited()} size={30} color="black" />
         </TouchableOpacity>
-        
       </View>
     </View>
     </TouchableOpacity>
