@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AntDesign } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
+import CommonDataManager from '../../components/CommonDataManager';
 
 export function HomeScreen({ navigation, component }) {
 
