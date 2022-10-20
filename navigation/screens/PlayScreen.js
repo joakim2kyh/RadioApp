@@ -1,8 +1,7 @@
 
 import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import { SoundContext } from '../../SoundContext';
 
 
 export function PlayScreen({ navigation, route }) {
@@ -14,8 +13,6 @@ export function PlayScreen({ navigation, route }) {
     useEffect(() => {
         fetchSchedule(route.params.item.id)
     })
-
-    const sound = useContext(SoundContext)
 
     const fetchSchedule = async (id) => {
         const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
@@ -50,9 +47,11 @@ export function PlayScreen({ navigation, route }) {
       }
 
     async function loadSound(uri) {
-        await sound.unloadAsync()
-        await sound.loadAsync({ uri: uri })
-        await sound.playAsync()
+        await global.soundHandler.sound.unloadAsync()
+        global.soundHandler.channel = route.params.item
+        await global.soundHandler.sound.loadAsync({ uri: uri })
+        await global.soundHandler.sound.playAsync()
+        console.log(global.soundHandler.channel)
     }
 
     return (
@@ -71,17 +70,17 @@ export function PlayScreen({ navigation, route }) {
             </Text>
 
             <TouchableOpacity onPress={() => {
-                console.log('isPlaying 81', isPlaying)
-                if (isPlaying) {
-                    sound.pauseAsync()
-                    setIsPlaying(false)
+                console.log('isPlaying 81', global.soundHandler.isPlaying)
+                if (global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id) {
+                    global.soundHandler.sound.pauseAsync()
+                    global.soundHandler.isPlaying = false
                 } else {
                     loadSound(route.params.item.liveaudio.url)
-                    setIsPlaying(true)
+                    global.soundHandler.isPlaying = true
                 }
                 
-                console.log('isPlaying 90',isPlaying) }}>
-                <AntDesign style={styles.play} name= { isPlaying ? "pausecircle" : "play" } size={80} color="black" />
+                console.log('isPlaying 90',global.soundHandler.isPlaying) }}>
+                <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" />
             </TouchableOpacity>
             
         </View>

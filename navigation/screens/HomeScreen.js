@@ -3,11 +3,7 @@ import { Audio } from "expo-av";
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SoundContext, SoundProvider } from '../../SoundContext';
 import { AntDesign } from '@expo/vector-icons';
-
-
-//export const Context1 = React.createContext(new Audio.Sound());
 
 export function HomeScreen({ navigation, component }) {
 
@@ -15,9 +11,7 @@ export function HomeScreen({ navigation, component }) {
   const [schedule, setSchedule] = useState([])
   const [favourites, setFavourites] = useState([])
   const [live, setLive] = useState("")
-  //const sound = useState(new Audio.Sound());
   const [pageNumber, setPageNumber] = useState(2)
-
 
   const storeData = async (value) => {
     try {
@@ -127,7 +121,6 @@ export function HomeScreen({ navigation, component }) {
   }
 
   return (
-    <SoundProvider>
       <View style={styles.container}>
 
         <View style={styles.filterButtons}>
@@ -150,14 +143,11 @@ export function HomeScreen({ navigation, component }) {
         </View>
         <FlatList
           data={channels}
-
           renderItem={({ item }) => (
             <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item.id)} onPress={
               () => {
-
                 navigation.navigate('PlayScreen', { item: item })
               }
-
             } />
           )}
           // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
@@ -168,8 +158,6 @@ export function HomeScreen({ navigation, component }) {
 
           // }}></Button>}
         />
-        
-
           <View style={styles.bottomBar}>
             <View style={styles.channelContainer}>
               <Text style={styles.channel}>P1</Text>
@@ -178,15 +166,8 @@ export function HomeScreen({ navigation, component }) {
                 <AntDesign style={styles.playss} name="play" size={35} color="black" />
               </TouchableOpacity>
             </View>
-
-
           </View>
-
-
-
-        
       </View>
-    </SoundProvider>
   );
 }
 
