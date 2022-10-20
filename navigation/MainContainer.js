@@ -20,8 +20,13 @@ const favouritesName = "Favourites"
 const Tab = createBottomTabNavigator();
 
 export default function MainContainer() {
-
     
+    global.soundHandler = {
+        sound: new Audio.Sound(),
+        isPlaying: false,
+        channel: {}
+    }
+
     return (
         <NavigationContainer>
             <Tab.Navigator
