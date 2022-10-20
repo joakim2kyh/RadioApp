@@ -1,4 +1,4 @@
-import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { Audio } from "expo-av";
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
@@ -56,24 +56,27 @@ export function HomeScreen({ navigation, component }) {
   }
 
   useEffect(() => {
-    fetchList2("")
+  //  fetchList2("Lokal%20kanal")
+  fetchList2("Rikskanal")
     //console.info("effect " + favourites)
     storeData(favourites)
   }, [favourites])
 
-  const fetchList2 = async (page) => {
+  const fetchList2 = async (channeltype) => {
     try {
-      let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
+     // let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
+      let response = await fetch(`https://api.sr.se/api/v2/channels?format=json&pagination=false&filter=channel.channeltype&filtervalue=${channeltype}`)
       let json = await response.json();
-      if (page == "") {
-        console.log("page =", pageNumber)
-        setChannels(json.channels)
-      } else {
-        // let channelsArray = [...channels, json.channels]
-        const channelsArray = channels.concat(json.channels)
-        setChannels(channelsArray)
-        // console.log("channels 71", channels)
-      }
+      setChannels(json.channels)
+      // if (page == "") {
+      //   console.log("page =", pageNumber)
+      //   setChannels(json.channels)
+      // } else {
+      //   // let channelsArray = [...channels, json.channels]
+      //   const channelsArray = channels.concat(json.channels)
+      //   setChannels(channelsArray)
+      //   // console.log("channels 71", channels)
+      // }
 
       return json;
     } catch (error) {
@@ -127,7 +130,24 @@ export function HomeScreen({ navigation, component }) {
     <SoundProvider>
       <View style={styles.container}>
 
+        <View style={styles.filterButtons}>
+          <Pressable style={styles.button} onPress={() => fetchList2("Rikskanal")}>
+            <Text style={styles.text}>Rikskanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Lokal%20kanal")}>
+            <Text style={styles.text}>Lokala kanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Minoritet%20och%20språk")}>
+            <Text style={styles.text}>Minoritet & språk</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Extrakanaler")}>
+            <Text style={styles.text}>Extrakanaler</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => fetchList2("Fler%20kanaler")}>
+            <Text style={styles.text}>Fler kanaler</Text>
+          </Pressable>
 
+        </View>
         <FlatList
           data={channels}
 
@@ -211,6 +231,14 @@ const styles = StyleSheet.create({
   play: {
     flex: 1
 
+  },
+  filterButtons: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  button: {
+    color: 'tomato',
+    margin: 4
   }
 
 });
