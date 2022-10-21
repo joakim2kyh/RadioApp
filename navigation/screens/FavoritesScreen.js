@@ -87,7 +87,9 @@ export default function FavoritesScreen({ navigation }) {
       } 
       extraData = {refresh}
       renderItem={({ item }) => (
-        <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item)} />
+        <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item)} onPress={
+          () => { navigation.navigate('PlayScreen', { item: item }) }
+        } />
       )}
       /> 
 </View>
