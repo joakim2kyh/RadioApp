@@ -56,6 +56,14 @@ const fetchSchedule = async (id) => {
   }
 }
 
+const isPlaying = () => {
+  if (global.soundHandler.channel.id == props.item.id && global.soundHandler.isPlaying){
+    return "pausecircle"
+  } else {
+    return "play"
+  }
+}
+
   return (
     <TouchableOpacity onPress={props.onPress}>
       <View style={styles.container}>
@@ -69,8 +77,8 @@ const fetchSchedule = async (id) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={()=> console.log()}>
-          <AntDesign style={styles.play} name="play" size={45} color="black" />
+        <TouchableOpacity onPress={()=> props.playRadio()}>
+          <AntDesign style={styles.play} name={isPlaying()} size={45} color="black" />
         </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={()=>props.addFavorite()}>
