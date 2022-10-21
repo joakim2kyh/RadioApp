@@ -11,7 +11,7 @@ export function HomeScreen({ navigation, component }) {
 
   const [channels, setChannels] = useState([])
   const [schedule, setSchedule] = useState([])
-  const [favourites, setFavourites] = useState([])
+  const [favorites, setFavorites] = useState([])
   const [live, setLive] = useState("")
   const [refresh, setRefresh] = useState([true])
   const [pageNumber, setPageNumber] = useState(2)
@@ -22,15 +22,15 @@ export function HomeScreen({ navigation, component }) {
       console.log('Screen was focused');
 
       getData()
-      // .then(console.info("fav " + favourites))
+        // .then(console.info("fav " + favorites))
 
     }, [])
   );
 
   useEffect(() => {
-    storeData(favourites)
+    storeData(favorites)
     console.log("used effect 1")
-  }, [favourites])
+  }, [favorites])
 
   useEffect(() => {
     fetchList2("Rikskanal")
@@ -60,7 +60,7 @@ export function HomeScreen({ navigation, component }) {
       let commonFav = CommonDataManager.getInstance()
       let ids = json.map(item => item.id)
       commonFav.setFavIds(ids)
-      setFavourites(json);
+      setFavorites(json);
     } catch (e) {
       console.log(e)
     }
@@ -70,13 +70,13 @@ export function HomeScreen({ navigation, component }) {
   
 
   const addFavorite = (item) => {
-    let ids = favourites.map(o => o.id)
+    let ids = favorites.map(o => o.id)
     if (!ids.includes(item.id)) {
-      setFavourites([...favourites, item])
+      setFavorites([...favorites, item])
       console.log("added " + item.id)
     } else {
-      setFavourites(favourites.filter(e => e.id != item.id))
-      console.info("deleted item " + item.id + " from " + favourites)
+      setFavorites(favorites.filter(e => e.id != item.id))
+      console.info("deleted item " + item.id + " from " + favorites)
     }
   }
 
@@ -168,27 +168,27 @@ export function HomeScreen({ navigation, component }) {
           <Pressable style={styles.button} onPress={() => {
             fetchList2("Rikskanal")
             setFilter(0)}}>
-            <Text style={{color: filter === 0 ? 'red' : 'black'}}>Rikskanaler</Text>
+            <Text style={{color: filter === 0 ? 'black' : 'gray', fontWeight: filter === 0 ? 'bold' : 'normal'}}>Rikskanaler</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => {
             fetchList2("Lokal%20kanal")
             setFilter(1)}}>
-            <Text style={{color: filter === 1 ? 'red' : 'black'}}>Lokala kanaler</Text>
+            <Text style={{color: filter === 1 ? 'black' : 'gray', fontWeight: filter === 1 ? 'bold' : 'normal'}}>Lokala kanaler</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => {
             fetchList2("Minoritet%20och%20språk")
             setFilter(2)}}>
-            <Text style={{color: filter === 2 ? 'red' : 'black'}}>Minoritet & språk</Text>
+            <Text style={{color: filter === 2 ? 'black' : 'gray', fontWeight: filter === 2 ? 'bold' : 'normal'}}>Minoritet & språk</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => {
             fetchList2("Extrakanaler")
             setFilter(3)}}>
-            <Text style={{color: filter === 3 ? 'red' : 'black'}}>Extrakanaler</Text>
+            <Text style={{color: filter === 3 ? 'black' : 'gray', fontWeight: filter === 3 ? 'bold' : 'normal'}}>Extrakanaler</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => {
             fetchList2("Fler%20kanaler")
             setFilter(4)}}>
-            <Text style={{color: filter === 4 ? 'red' : 'black'}}>Fler kanaler</Text>
+            <Text style={{color: filter === 4 ? 'black' : 'gray', fontWeight: filter === 4 ? 'bold' : 'normal'}}>Fler kanaler</Text>
           </Pressable>
 
       </View>
