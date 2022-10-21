@@ -19,9 +19,9 @@ export function HomeScreen({ navigation, component }) {
   useFocusEffect(
     React.useCallback(() => {
       console.log('Screen was focused');
-      
+
       getData()
-        // .then(console.info("fav " + favourites))
+      // .then(console.info("fav " + favourites))
 
     }, [])
   );
@@ -31,11 +31,11 @@ export function HomeScreen({ navigation, component }) {
     console.log("used effect 1")
   }, [favourites])
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchList2("Rikskanal")
     getData()
     console.log("used effect 2")
-  }, []) 
+  }, [])
 
   const storeData = async (value) => {
     try {
@@ -66,9 +66,7 @@ export function HomeScreen({ navigation, component }) {
   }
 
 
-  const playRadio = () => {
-    
-  }
+  
 
   const addFavorite = (item) => {
     let ids = favourites.map(o => o.id)
@@ -85,7 +83,7 @@ export function HomeScreen({ navigation, component }) {
 
   const fetchList2 = async (channeltype) => {
     try {
-     // let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
+      // let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
       let response = await fetch(`https://api.sr.se/api/v2/channels?format=json&pagination=false&filter=channel.channeltype&filtervalue=${channeltype}`)
       let json = await response.json();
       setChannels(json.channels)
@@ -133,10 +131,24 @@ export function HomeScreen({ navigation, component }) {
     }
   }
 
-  async function loadSound(uri) {
-    await sound.loadAsync({
-      uri: uri
+  const playRadio = (item) => {
+    if (global.soundHandler.isPlaying && global.soundHandler.channel.id == item.id) {
+      global.soundHandler.sound.pauseAsync()
+      global.soundHandler.isPlaying = false
+    } else {
+      loadSound(item)
+      global.soundHandler.isPlaying = true
+    }
+    setRefresh({
+      refresh: !refresh
     })
+  }
+
+  async function loadSound(item) {
+    await global.soundHandler.sound.unloadAsync()
+      .then(global.soundHandler.channel = item)
+    await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
+    await global.soundHandler.sound.playAsync()
   }
 
   async function playSound() {
@@ -148,60 +160,60 @@ export function HomeScreen({ navigation, component }) {
   }
 
   return (
-      <View style={styles.container}>
+    <View style={styles.container}>
 
-        <View style={styles.filterButtons}>
-          <Pressable style={styles.button} onPress={() => fetchList2("Rikskanal")}>
-            <Text style={styles.text}>Rikskanaler</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={() => fetchList2("Lokal%20kanal")}>
-            <Text style={styles.text}>Lokala kanaler</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={() => fetchList2("Minoritet%20och%20språk")}>
-            <Text style={styles.text}>Minoritet & språk</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={() => fetchList2("Extrakanaler")}>
-            <Text style={styles.text}>Extrakanaler</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={() => fetchList2("Fler%20kanaler")}>
-            <Text style={styles.text}>Fler kanaler</Text>
-          </Pressable>
+      <View style={styles.filterButtons}>
+        <Pressable style={styles.button} onPress={() => fetchList2("Rikskanal")}>
+          <Text style={styles.text}>Rikskanaler</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => fetchList2("Lokal%20kanal")}>
+          <Text style={styles.text}>Lokala kanaler</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => fetchList2("Minoritet%20och%20språk")}>
+          <Text style={styles.text}>Minoritet & språk</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => fetchList2("Extrakanaler")}>
+          <Text style={styles.text}>Extrakanaler</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => fetchList2("Fler%20kanaler")}>
+          <Text style={styles.text}>Fler kanaler</Text>
+        </Pressable>
 
-        </View>
-        <FlatList
-          data={channels}
-          extraData={
-            refresh
-          }
-          renderItem={({ item }) => (
-            <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item)} onPress={
-              () => {
-                navigation.navigate('PlayScreen', { item: item })
-              }
-            } />
-          )}
-          // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
-
-          //   setPageNumber((prev) => prev + 1)
-          //   console.log("pageNumber", `&page=${pageNumber}`)
-          //   // fetchList2(`&page=${pageNumber}`)
-
-          // }}></Button>}
-        />
-          <View style={styles.bottomBar}>
-            <View style={styles.channelContainer}>
-             
-              <Text style={styles.channelImage}>P1</Text>
-              <View style={styles.programContainer}>
-              <Text style={styles.programTitle}>Klassisk förmiddag</Text>
-              <Text style={styles.programTime}>11.11-12.09</Text>
-              </View>
-              <TouchableOpacity style={styles.play} onPress={() => console.log('hej he hej')}>
-                <AntDesign style={styles.playss} name="play" size={35} color="black" />
-              </TouchableOpacity>
-            </View>
-          </View>
       </View>
+      <FlatList
+        data={channels}
+        extraData={
+          refresh
+        }
+        renderItem={({ item }) => (
+          <Card item={item} playRadio={() => playRadio(item)} addFavorite={() => addFavorite(item)} onPress={
+            () => {
+              navigation.navigate('PlayScreen', { item: item })
+            }
+          } />
+        )}
+      // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
+
+      //   setPageNumber((prev) => prev + 1)
+      //   console.log("pageNumber", `&page=${pageNumber}`)
+      //   // fetchList2(`&page=${pageNumber}`)
+
+      // }}></Button>}
+      />
+      <View style={styles.bottomBar}>
+        <View style={styles.channelContainer}>
+
+          <Text style={styles.channelImage}>P1</Text>
+          <View style={styles.programContainer}>
+            <Text style={styles.programTitle}>Klassisk förmiddag</Text>
+            <Text style={styles.programTime}>11.11-12.09</Text>
+          </View>
+          <TouchableOpacity style={styles.play} onPress={() => console.log('hej he hej')}>
+            <AntDesign style={styles.playss} name="play" size={35} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -219,7 +231,7 @@ const styles = StyleSheet.create({
     height: '8%',
 
   },
-  
+
   channelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -227,10 +239,10 @@ const styles = StyleSheet.create({
 
 
   },
-  
+
   channelImage: {
     backgroundColor: 'blue',
-    color:'white',
+    color: 'white',
     width: 80,
     flex: 1
 
@@ -239,7 +251,7 @@ const styles = StyleSheet.create({
   programContainer: {
     backgroundColor: 'black',
     color: 'white',
-    
+
   },
   programTitle: {
     backgroundColor: 'red',
@@ -252,7 +264,7 @@ const styles = StyleSheet.create({
 
 
   },
-  
+
   programTime: {
     color: 'white',
     height: '50%',
