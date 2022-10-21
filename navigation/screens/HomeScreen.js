@@ -193,30 +193,29 @@ export function HomeScreen({ navigation, component }) {
           </Pressable>
 
 
-        </View>
-        <FlatList
-          data={channels}
-          extraData={
-            refresh
-          }
-          renderItem={({ item }) => (
-            <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item)} onPress={
-              () => {
-                navigation.navigate('PlayScreen', { item: item })
-              }
-            } />
-          )}
-          // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
+          </View>
+      <FlatList
+        data={channels}
+        extraData={
+          refresh
+        }
+        renderItem={({ item }) => (
+          <Card item={item} playRadio={() => playRadio(item)} addFavorite={() => addFavorite(item)} onPress={
+            () => {
+              navigation.navigate('PlayScreen', { item: item })
+            }
+          } />
+        )}
+      // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
 
-          //   setPageNumber((prev) => prev + 1)
-          //   console.log("pageNumber", `&page=${pageNumber}`)
-          //   // fetchList2(`&page=${pageNumber}`)
+      //   setPageNumber((prev) => prev + 1)
+      //   console.log("pageNumber", `&page=${pageNumber}`)
+      //   // fetchList2(`&page=${pageNumber}`)
 
-          // }}></Button>}
-        />
+      // }}></Button>}
+      />
           <MiniPlayer/>
       </View>
-    </View>
   );
 }
 
