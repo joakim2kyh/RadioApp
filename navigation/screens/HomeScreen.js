@@ -29,15 +29,17 @@ export function HomeScreen({ navigation, component }) {
   );
 
   useEffect(() => {
-    storeData(favorites)
-    console.log("used effect 1")
-  }, [favorites])
-
-  useEffect(() => {
     fetchList2("Rikskanal")
     getData()
     console.log("used effect 2")
   }, [])
+  
+  useEffect(() => {
+    storeData(favorites)
+    console.log("used effect 1")
+  }, [favorites])
+
+
 
   const storeData = async (value) => {
     try {
