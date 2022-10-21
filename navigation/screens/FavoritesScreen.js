@@ -6,9 +6,9 @@ import { useRoute } from '@react-navigation/native';
 import CommonDataManager from '../../components/CommonDataManager';
 
 
-export default function FavouritesScreen({ navigation }) {
+export function FavoritesScreen({ navigation }) {
 
-  const [favourites, setFavourites] = useState([])
+  const [favorites, setFavorites] = useState([])
   const [refresh, setRefresh] = useState([true])
 
   const route = useRoute();
@@ -18,14 +18,14 @@ export default function FavouritesScreen({ navigation }) {
       console.log('Screen was focused');
       
       getData()
-        // .then(console.info("fav " + favourites))
+        // .then(console.info("fav " + favorites))
 
     }, [])
   );
 
   useEffect(()=>{
-    storeData(favourites)
-  },[favourites])
+    storeData(favorites)
+  },[favorites])
 
 
   //depricated
@@ -40,15 +40,31 @@ export default function FavouritesScreen({ navigation }) {
     }
   }
 
-  const playRadio = () => {
-    
+  const playRadio = (item) => {
+    if (global.soundHandler.isPlaying && global.soundHandler.channel.id == item.id) {
+      global.soundHandler.sound.pauseAsync()
+      global.soundHandler.isPlaying = false
+    } else {
+      loadSound(item)
+      global.soundHandler.isPlaying = true
+    }
+    setRefresh({
+      refresh: !refresh
+    })
+  }
+
+  async function loadSound(item) {
+    await global.soundHandler.sound.unloadAsync()
+      .then(global.soundHandler.channel = item)
+    await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
+    await global.soundHandler.sound.playAsync()
   }
 
   const addFavorite = (item) => {
-    let ids = favourites.map(o => o.id)
+    let ids = favorites.map(o => o.id)
     if (ids.includes(item.id)) {
-      setFavourites(favourites.filter(e => e.id != item.id))
-      console.info("deleted item " + item.id + " from " + favourites)
+      setFavorites(favorites.filter(e => e.id != item.id))
+      console.info("deleted item " + item.id + " from " + favorites)
     } 
   }
 
@@ -72,7 +88,7 @@ export default function FavouritesScreen({ navigation }) {
     try {
       const jsonValue = await AsyncStorage.getItem('idArray');
       let json = JSON.parse(jsonValue)
-      setFavourites(json);
+      setFavorites(json);
       console.info("json " + json)
     } catch (e) {
       console.log(e)
@@ -83,11 +99,13 @@ export default function FavouritesScreen({ navigation }) {
     <View style={styles.container}>
   <FlatList
       data={
-        favourites
+        favorites
       } 
       extraData = {refresh}
       renderItem={({ item }) => (
-        <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item)} />
+        <Card item={item} playRadio={() => playRadio(item)} addFavorite={() => addFavorite(item)} onPress={
+          () => { navigation.navigate('PlayScreen', { item: item }) }
+        } />
       )}
       /> 
 </View>

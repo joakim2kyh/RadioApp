@@ -12,10 +12,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import HomeStackScreen from './screens/HomeStackScreen';
-import FavouritesScreen from './screens/FavouritesScreen';
+import FavoritesStackScreen from './screens/FavoritesStackScreen';
 
-const homeName = "Home";
-const favouritesName = "Favourites"
+const homeName = "Alla kanaler";
+const favoritesName = "Favoriter"
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +43,7 @@ export default function MainContainer() {
 
                     if (rn === homeName) {
                         iconName = focused ? 'home' : 'home-outline'
-                    } else if (rn === favouritesName) {
+                    } else if (rn === favoritesName) {
                         iconName = focused ? 'heart' : 'heart-outline'
                     }
 
@@ -62,7 +62,7 @@ export default function MainContainer() {
                 <Tab.Screen name={homeName} component={HomeStackScreen} options={{
           headerShown: false,
         }} />
-                <Tab.Screen name={favouritesName} component={FavouritesScreen} options={{
+                <Tab.Screen name={favoritesName} component={FavoritesStackScreen} options={{
           headerShown: false,
         }}/>
 
