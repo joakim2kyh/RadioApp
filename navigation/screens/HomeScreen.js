@@ -15,6 +15,7 @@ export function HomeScreen({ navigation, component }) {
   const [live, setLive] = useState("")
   const [refresh, setRefresh] = useState([true])
   const [pageNumber, setPageNumber] = useState(2)
+  const [filter, setFilter] = useState(0)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -151,20 +152,30 @@ export function HomeScreen({ navigation, component }) {
       <View style={styles.container}>
 
         <View style={styles.filterButtons}>
-          <Pressable style={styles.button} onPress={() => fetchList2("Rikskanal")}>
-            <Text style={styles.text}>Rikskanaler</Text>
+          <Pressable style={styles.button} onPress={() => {
+            fetchList2("Rikskanal")
+            setFilter(0)}}>
+            <Text style={{color: filter === 0 ? 'red' : 'black'}}>Rikskanaler</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => fetchList2("Lokal%20kanal")}>
-            <Text style={styles.text}>Lokala kanaler</Text>
+          <Pressable style={styles.button} onPress={() => {
+            fetchList2("Lokal%20kanal")
+            setFilter(1)}}>
+            <Text style={{color: filter === 1 ? 'red' : 'black'}}>Lokala kanaler</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => fetchList2("Minoritet%20och%20språk")}>
-            <Text style={styles.text}>Minoritet & språk</Text>
+          <Pressable style={styles.button} onPress={() => {
+            fetchList2("Minoritet%20och%20språk")
+            setFilter(2)}}>
+            <Text style={{color: filter === 2 ? 'red' : 'black'}}>Minoritet & språk</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => fetchList2("Extrakanaler")}>
-            <Text style={styles.text}>Extrakanaler</Text>
+          <Pressable style={styles.button} onPress={() => {
+            fetchList2("Extrakanaler")
+            setFilter(3)}}>
+            <Text style={{color: filter === 3 ? 'red' : 'black'}}>Extrakanaler</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => fetchList2("Fler%20kanaler")}>
-            <Text style={styles.text}>Fler kanaler</Text>
+          <Pressable style={styles.button} onPress={() => {
+            fetchList2("Fler%20kanaler")
+            setFilter(4)}}>
+            <Text style={{color: filter === 4 ? 'red' : 'black'}}>Fler kanaler</Text>
           </Pressable>
 
         </View>
@@ -268,8 +279,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   button: {
-    color: 'tomato',
     margin: 4
+  },
+  text: {
+   // color: 'tomato'
   }
 
 });
