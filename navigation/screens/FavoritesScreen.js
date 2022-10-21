@@ -40,8 +40,24 @@ export default function FavoritesScreen({ navigation }) {
     }
   }
 
-  const playRadio = () => {
-    
+  const playRadio = (item) => {
+    if (global.soundHandler.isPlaying && global.soundHandler.channel.id == item.id) {
+      global.soundHandler.sound.pauseAsync()
+      global.soundHandler.isPlaying = false
+    } else {
+      loadSound(item)
+      global.soundHandler.isPlaying = true
+    }
+    setRefresh({
+      refresh: !refresh
+    })
+  }
+
+  async function loadSound(item) {
+    await global.soundHandler.sound.unloadAsync()
+      .then(global.soundHandler.channel = item)
+    await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
+    await global.soundHandler.sound.playAsync()
   }
 
   const addFavorite = (item) => {
@@ -87,7 +103,7 @@ export default function FavoritesScreen({ navigation }) {
       } 
       extraData = {refresh}
       renderItem={({ item }) => (
-        <Card item={item} playRadio={() => playRadio()} addFavorite={() => addFavorite(item)} onPress={
+        <Card item={item} playRadio={() => playRadio(item)} addFavorite={() => addFavorite(item)} onPress={
           () => { navigation.navigate('PlayScreen', { item: item }) }
         } />
       )}
