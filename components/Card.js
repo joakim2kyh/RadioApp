@@ -73,7 +73,7 @@ const fetchSchedule = async (id) => {
           <AntDesign style={styles.play} name="play" size={45} color="black" />
         </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.heart} onPress={()=>props.addFavorite()}>
+        <TouchableOpacity onPress={()=>props.addFavorite()}>
           <MaterialIcons  name={isFavorited()} size={30} color="black" />
         </TouchableOpacity>
       </View>
@@ -162,9 +162,5 @@ const styles = StyleSheet.create({
     flex: 1
   },
   heart: {
-   // alignSelf: 'flex-end'
-   position: 'absolute',
-   right: 5,
-   bottom: 5
   }
 });
