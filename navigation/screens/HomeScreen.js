@@ -176,7 +176,7 @@ export function HomeScreen({ navigation, component }) {
             <Text style={{color: filter === 1 ? 'red' : 'black'}}>Lokala kanaler</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => {
-            fetchList2("Minoritet%20och%20språk")
+            fetchList2("Minoritet%20och%20spr&aring;k")
             setFilter(2)}}>
             <Text style={{color: filter === 2 ? 'red' : 'black'}}>Minoritet & språk</Text>
           </Pressable>
