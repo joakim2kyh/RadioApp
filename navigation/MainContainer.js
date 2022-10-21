@@ -12,7 +12,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import HomeStackScreen from './screens/HomeStackScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
+import FavoritesStackScreen from './screens/FavoritesStackScreen';
 
 const homeName = "Alla kanaler";
 const favoritesName = "Favoriter"
@@ -62,7 +62,7 @@ export default function MainContainer() {
                 <Tab.Screen name={homeName} component={HomeStackScreen} options={{
           headerShown: false,
         }} />
-                <Tab.Screen name={favoritesName} component={FavoritesScreen} options={{
+                <Tab.Screen name={favoritesName} component={FavoritesStackScreen} options={{
           headerShown: false,
         }}/>
 

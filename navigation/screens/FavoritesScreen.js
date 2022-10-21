@@ -6,7 +6,7 @@ import { useRoute } from '@react-navigation/native';
 import CommonDataManager from '../../components/CommonDataManager';
 
 
-export default function FavoritesScreen({ navigation }) {
+export function FavoritesScreen({ navigation }) {
 
   const [favorites, setFavorites] = useState([])
   const [refresh, setRefresh] = useState([true])
