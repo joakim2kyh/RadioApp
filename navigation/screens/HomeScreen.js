@@ -147,11 +147,11 @@ export function HomeScreen({ navigation, component }) {
             setFilter(2)}}>
             <Text style={{color: filter === 2 ? 'black' : 'gray', fontWeight: filter === 2 ? 'bold' : 'normal'}}>Minoritet & språk</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => {
+          {/* <Pressable style={styles.button} onPress={() => {
             fetchList2("Extrakanaler")
             setFilter(3)}}>
             <Text style={{color: filter === 3 ? 'black' : 'gray', fontWeight: filter === 3 ? 'bold' : 'normal'}}>Extrakanaler</Text>
-          </Pressable>
+          </Pressable> */}
           <Pressable style={styles.button} onPress={() => {
             fetchList2("Fler%20kanaler")
             setFilter(4)}}>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginLeft: 5
+    marginLeft: 6
   },
 
   flatlist: {
