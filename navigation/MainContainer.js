@@ -24,7 +24,8 @@ export default function MainContainer() {
     global.soundHandler = {
         sound: new Audio.Sound(),
         isPlaying: false,
-        channel: {}
+        channel: {},
+        program: {}
     }
 
     return (

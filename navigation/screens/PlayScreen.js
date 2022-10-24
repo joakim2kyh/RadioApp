@@ -38,9 +38,11 @@ export function PlayScreen({ navigation, route }) {
     async function loadSound(uri) {
         await global.soundHandler.sound.unloadAsync()
         global.soundHandler.channel = route.params.item
+        global.soundHandler.program = live
         await global.soundHandler.sound.loadAsync({ uri: uri })
         await global.soundHandler.sound.playAsync()
         console.log(global.soundHandler.channel)
+
     }
 
     return (
