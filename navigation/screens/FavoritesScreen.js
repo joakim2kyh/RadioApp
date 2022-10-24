@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import CommonDataManager from '../../components/CommonDataManager';
+import MiniPlayer from '../../components/MiniPlayer';
 
 
 export function FavoritesScreen({ navigation }) {
@@ -104,17 +105,20 @@ export function FavoritesScreen({ navigation }) {
       extraData = {refresh}
       renderItem={({ item }) => (
         <Card item={item} playRadio={() => playRadio(item)} addFavorite={() => addFavorite(item)} onPress={
-          () => { navigation.navigate('PlayScreen', { item: item }) }
+          (schedule) => { navigation.navigate('PlayScreen', { item: item, schedule: schedule }) }
         } />
       )}
       /> 
+      { global.soundHandler.isPlaying ? <MiniPlayer/> : null}
 </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: '92%',
     marginTop: 50,
     backgroundColor: '#F5FCFF',
   },
 });
+

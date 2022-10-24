@@ -161,6 +161,7 @@ export function HomeScreen({ navigation, component }) {
 
           </View>
       <FlatList
+        style={styles.flatlist}
         data={channels}
         extraData={
           refresh
@@ -173,7 +174,8 @@ export function HomeScreen({ navigation, component }) {
           } />
         )}
       />
-          <MiniPlayer/>
+        { global.soundHandler.isPlaying ? <MiniPlayer/> : null}
+          
       </View>
   );
 }
@@ -187,8 +189,17 @@ const styles = StyleSheet.create({
 
   filterButtons: {
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    padding: 10
   },
+
+  button: {
+    marginLeft: 5
+  },
+
+  flatlist: {
+    backgroundColor: '#F5FCFF'
+  }
 
 
 });

@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   
   programTitle: {
-    backgroundColor: 'red',
+    backgroundColor: '#F5FCFF',
     color: 'white',
     fontWeight: 'bold',
     fontSize: 15,
