@@ -31,12 +31,12 @@ export function HomeScreen({ navigation, component }) {
   useEffect(() => {
     fetchList2("Rikskanal")
     getData()
-    console.log("used effect 2")
+    //console.log("used effect 2")
   }, [])
   
   useEffect(() => {
     storeData(favorites)
-    console.log("used effect 1")
+    //console.log("used effect 1")
   }, [favorites])
 
 
@@ -96,40 +96,13 @@ export function HomeScreen({ navigation, component }) {
     }
   }
 
-  const fetchSchedule = async (uri) => {
-    try {
-      const response = await fetch(uri);
-      let json = await response.json();
-      setSchedule(json.schedule)
-      const now = Date.now()
-
-      schedule.forEach(element => {
-
-        let startTime = element.starttimeutc
-        startTime = startTime.slice(6, -2)
-        let endTime = element.endtimeutc
-        endTime = endTime.slice(6, -2)
-
-        if (startTime < now && endTime > now) {
-          console.log(element.title)
-          console.log(live)
-          setLive(element.title)
-        } else {
-          //console.log("NOPE") 
-        }
-
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const playRadio = (item) => {
+  const playRadio = (item, live) => {
+    //console.log("live", live);
     if (global.soundHandler.isPlaying && global.soundHandler.channel.id == item.id) {
       global.soundHandler.sound.pauseAsync()
       global.soundHandler.isPlaying = false
     } else {
-      loadSound(item)
+      loadSound(item, live)
       global.soundHandler.isPlaying = true
     }
     setRefresh({
@@ -137,9 +110,13 @@ export function HomeScreen({ navigation, component }) {
     })
   }
 
-  async function loadSound(item) {
+  async function loadSound(item, live) {
     await global.soundHandler.sound.unloadAsync()
-      .then(global.soundHandler.channel = item)
+      .then(
+        global.soundHandler.channel = item,
+        global.soundHandler.program = live,
+        console.log(live)
+        )
     await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
     await global.soundHandler.sound.playAsync()
   }
@@ -191,7 +168,7 @@ export function HomeScreen({ navigation, component }) {
           refresh
         }
         renderItem={({ item }) => (
-          <Card item={item} playRadio={() => playRadio(item)} addFavorite={() => addFavorite(item)} onPress={
+          <Card item={item} playRadio={(live) => playRadio(item, live)} addFavorite={() => addFavorite(item)} onPress={
             (schedule) => {
               navigation.navigate('PlayScreen', { item: item, schedule: schedule })
             }

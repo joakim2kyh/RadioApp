@@ -2,46 +2,30 @@ import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import MainContainer from '../navigation/MainContainer';
+import moment from 'moment';
+
 export default function MiniPlayer(){
 
 
 function getStartAndEndTime(){
   
-    //console.log(global.soundHandler.program);
-  
-
     if (global.soundHandler.program.starttimeutc != null) {
 
       let startTime = global.soundHandler.program.starttimeutc
-      //console.log(global.soundHandler.program)
-      
       startTime = startTime.slice(6, -2)
       let endTime = global.soundHandler.program.endtimeutc
       endTime = endTime.slice(6, -2)
-      console.log(endTime);
+      //console.log(endTime);
 
-      var date = new Date(parseInt(startTime))
-      var localDate = date.toString()
-      console.log("local date", localDate);
-        console.log("Date:: ", date.toLocaleTimeString());
-      return "return something"
+      var startTimeUtc = new Date(parseInt(startTime))
+      var endTimeUtc = new Date(parseInt(endTime))
 
-      // startTime = element.starttimeutc
-   // console.log(startTime);
-   // startTime = startTime.slice(6, -2)
-    // //console.log(startTime);
-    // let endTime = element.endtimeutc
-    // endTime = endTime.slice(6, -2)
+      var startTimeFormat = moment(startTimeUtc).format("HH:mm");
+      var endTimeFormat = moment(endTimeUtc).format("HH:mm");
 
-    // if(startTime < now && endTime > now){
+      var timeFormat = startTimeFormat.toString() + " - " + endTimeFormat.toString()
 
-    // var date = new Date(parseInt(startTime))
-    // console.log(date.toString())
-    //   setLive(element.title)
-    //   setImage(element.imageurl)
-    // } else {
-    //   //console.log("No Live Program") 
-    // }
+      return timeFormat
     }
 
    return " u did it"
