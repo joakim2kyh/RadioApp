@@ -104,7 +104,7 @@ export function FavoritesScreen({ navigation }) {
       } 
       extraData = {refresh}
       renderItem={({ item }) => (
-        <Card item={item} playRadio={() => playRadio(item)} addFavorite={() => addFavorite(item)} onPress={
+        <Card item={item} playRadio={(live) => playRadio(item, live)} addFavorite={() => addFavorite(item)} onPress={
           (schedule) => { navigation.navigate('PlayScreen', { item: item, schedule: schedule }) }
         } />
       )}

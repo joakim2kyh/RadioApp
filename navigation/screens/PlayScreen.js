@@ -57,20 +57,20 @@ export function PlayScreen({ navigation, route }) {
     const getLive = () => {
         const now = Date.now()
         console.log("59", schedule);
-        // schedule.forEach(element => {
-        //   let startTime = element.starttimeutc
-        //   startTime = startTime.slice(6, -2)
-        //   let endTime = element.endtimeutc
-        //   endTime = endTime.slice(6, -2)
+        schedule.forEach(element => {
+          let startTime = element.starttimeutc
+          startTime = startTime.slice(6, -2)
+          let endTime = element.endtimeutc
+          endTime = endTime.slice(6, -2)
       
-        //   if(startTime < now && endTime > now){
-        //     setLive(element)
-        //     //setImage(element.imageurl)
-        //   } else {
-        //     //console.log("No Live Program") 
-        //   }
-      
-        // });
+          if(startTime < now && endTime > now){
+            setLive(element)
+            //setImage(element.imageurl)
+          } else {
+            //console.log("No Live Program") 
+          }
+
+        });
       }
 
     return (
