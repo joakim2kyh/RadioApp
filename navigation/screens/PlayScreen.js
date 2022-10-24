@@ -6,16 +6,49 @@ import { AntDesign } from '@expo/vector-icons';
 
 export function PlayScreen({ navigation, route }) {
 
-    const [isPlaying, setIsPlaying] = useState(false)
+   // const [isPlaying, setIsPlaying] = useState(false)
     const [schedule, setSchedule] = useState(route.params.schedule)
     const [live, setLive] = useState({})
     const [image, setImage] = useState("")
+    const [refresh, setRefresh] = useState([true])
+
 
     useEffect(() => {
         //console.log(schedule)
         getLive()
     },[])
 
+
+    const isPlaying = () => {
+        if (global.soundHandler.channel.id == route.params.item.id && global.soundHandler.isPlaying){
+          return "pausecircle"
+        } else {
+          return "play"
+        }
+      }
+
+      async function loadSound(item) {
+        await global.soundHandler.sound.unloadAsync()
+          .then(global.soundHandler.channel = item)
+          console.log("rad 34 url", item.liveaudio.url);
+        await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
+        await global.soundHandler.sound.playAsync()
+      }
+
+      const playRadio = (item) => {
+        if (global.soundHandler.isPlaying && global.soundHandler.channel.id == item.id) {
+          global.soundHandler.sound.pauseAsync()
+          global.soundHandler.isPlaying = false
+         console.log("42")
+        } else {
+          loadSound(item)
+          global.soundHandler.isPlaying = true
+         console.log("46");
+        }
+        setRefresh({
+          refresh: !refresh
+        })
+      }  
 
     const getLive = () => {
         const now = Date.now()
@@ -35,16 +68,6 @@ export function PlayScreen({ navigation, route }) {
         });
       }
 
-    async function loadSound(uri) {
-        await global.soundHandler.sound.unloadAsync()
-        global.soundHandler.channel = route.params.item
-        global.soundHandler.program = live
-        await global.soundHandler.sound.loadAsync({ uri: uri })
-        await global.soundHandler.sound.playAsync()
-        console.log(global.soundHandler.channel)
-
-    }
-
     return (
 
         <View style={styles.container}>
@@ -59,18 +82,10 @@ export function PlayScreen({ navigation, route }) {
                 {live.title}
             </Text>
 
-            <TouchableOpacity onPress={() => {
-                console.log('isPlaying 81', global.soundHandler.isPlaying)
-                if (global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id) {
-                    global.soundHandler.sound.pauseAsync()
-                    global.soundHandler.isPlaying = false
-                } else {
-                    loadSound(route.params.item.liveaudio.url)
-                    global.soundHandler.isPlaying = true
-                }
-                
-                console.log('isPlaying 90',global.soundHandler.isPlaying) }}>
-                <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" />
+            <TouchableOpacity onPress={()=> playRadio(route.params.item)}>
+                    
+                {/* <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" /> */}
+                <AntDesign style={styles.play} name={isPlaying()} size={45} color="black" />
             </TouchableOpacity>
             
         </View>
