@@ -7,57 +7,33 @@ import { AntDesign } from '@expo/vector-icons';
 export function PlayScreen({ navigation, route }) {
 
     const [isPlaying, setIsPlaying] = useState(false)
-    const [schedule, setSchedule] = useState([])
-    const [live, setLive] = useState("")
+    const [schedule, setSchedule] = useState(route.params.schedule)
+    const [live, setLive] = useState({})
+    const [image, setImage] = useState("")
 
     useEffect(() => {
-        
-        const fetchSchedule = async (id) => {
-            const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
-          //  console.log("17", uri);
-            try {
-                const response = await fetch(uri)
-                let json = await response.json()
-               
-                    setSchedule(json.schedule)
-                   // console.log("26", json.schedule)
-                   // console.log("27", schedule)
-               
-                   // schedule.forEach(element => {console.log(element)})
-                    
-    
-                
-                const now = Date.now()
-               // console.log("now", now);
-    
-                 schedule.forEach(element => {
-                    let startTime = element.starttimeutc
-                   // console.log("startTime", startTime)
-                    startTime = startTime.slice(6, -2)
-                    let endTime = element.endtimeutc
-                   // console.log("endTime", endTime);
-                    endTime = endTime.slice(6, -2)
-    
-                    if (startTime < now && endTime > now) {
-                        // console.log(element.title)
-                        // console.log(live)
-                        setLive(element)
-                        console.log("45", element)
-                    } else {
-                        //console.log("NOPE") 
-                    }
-    
-                });
-            
-            } catch (error) {
-                console.error(error);
-            }
-          }
-         // console.log("58", route.params.item.id);
-          fetchSchedule(route.params.item.id).catch(console.error)
+        //console.log(schedule)
+        getLive()
     },[])
 
-    
+
+    const getLive = () => {
+        const now = Date.now()
+        schedule.forEach(element => {
+          let startTime = element.starttimeutc
+          startTime = startTime.slice(6, -2)
+          let endTime = element.endtimeutc
+          endTime = endTime.slice(6, -2)
+      
+          if(startTime < now && endTime > now){
+            setLive(element)
+            //setImage(element.imageurl)
+          } else {
+            //console.log("No Live Program") 
+          }
+      
+        });
+      }
 
     async function loadSound(uri) {
         await global.soundHandler.sound.unloadAsync()
@@ -70,7 +46,6 @@ export function PlayScreen({ navigation, route }) {
     return (
 
         <View style={styles.container}>
-
            <Image style={styles.channelImage} source={{ uri: live.imageurl }}/>
           
             {/* <Text style={styles.tagline}>
@@ -79,7 +54,7 @@ export function PlayScreen({ navigation, route }) {
                 { route.params.item.name }
             </Text>
             <Text>
-                {live.name}
+                {live.title}
             </Text>
 
             <TouchableOpacity onPress={() => {
@@ -129,8 +104,6 @@ const styles = StyleSheet.create({
         padding: 15,
         margin: 5,
         resizeMode: 'cover'
-
     },
-
 })
 
