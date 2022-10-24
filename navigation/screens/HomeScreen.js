@@ -1,9 +1,7 @@
 import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
-import { Audio } from "expo-av";
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import CommonDataManager from '../../components/CommonDataManager';
 import MiniPlayer from '../../components/MiniPlayer';
@@ -197,13 +195,6 @@ export function HomeScreen({ navigation, component }) {
             }
           } />
         )}
-      // ListFooterComponent={() => <Button title='ladda fler' onPress={() => {
-
-      //   setPageNumber((prev) => prev + 1)
-      //   console.log("pageNumber", `&page=${pageNumber}`)
-      //   // fetchList2(`&page=${pageNumber}`)
-
-      // }}></Button>}
       />
           <MiniPlayer/>
       </View>
