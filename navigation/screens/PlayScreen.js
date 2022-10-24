@@ -29,7 +29,8 @@ export function PlayScreen({ navigation, route }) {
 
       async function loadSound(item) {
         await global.soundHandler.sound.unloadAsync()
-          .then(global.soundHandler.channel = item)
+          .then(global.soundHandler.channel = item,
+            global.soundHandler.program = live)
           console.log("rad 34 url", item.liveaudio.url);
         await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
         await global.soundHandler.sound.playAsync()

@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import MainContainer from '../navigation/MainContainer';
 import moment from 'moment';
 
 export default function MiniPlayer(){

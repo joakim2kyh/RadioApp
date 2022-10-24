@@ -113,7 +113,7 @@ export function HomeScreen({ navigation, component }) {
       .then(
         global.soundHandler.channel = item,
         global.soundHandler.program = live,
-        console.log(live)
+        //console.log(live)
         )
     await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
     await global.soundHandler.sound.playAsync()
