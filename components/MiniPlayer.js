@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
 
     // width: '100%',
-    height: '8%'
+    height: '10.5%'
   },
   
   channelContainer: {
@@ -77,18 +77,19 @@ const styles = StyleSheet.create({
 
   programContainer: {
     backgroundColor: 'black',
-    color: 'white'
+    color: 'white',
+    padding: 5
 
   },
   
   programTitle: {
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'black',
     color: 'white',
     fontWeight: 'bold',
     fontSize: 15,
     height: '50%',
     width: 200,
-    flex: 3
+    flex: 3,
 
   },
   
