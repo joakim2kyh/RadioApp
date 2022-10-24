@@ -7,8 +7,7 @@ import CommonDataManager from './CommonDataManager';
 export default Card = (props) => {
 
   const [schedule, setSchedule] = useState([])
-  const [live, setLive] = useState("")
-  const [image, setImage] = useState("")
+  const [live, setLive] = useState({})
 
 
   useEffect(() => {
@@ -64,8 +63,7 @@ const getLive = () => {
     endTime = endTime.slice(6, -2)
 
     if(startTime < now && endTime > now){
-      setLive(element.title)
-      setImage(element.imageurl)
+      setLive(element)
     } else {
       //console.log("No Live Program") 
     }
@@ -91,12 +89,12 @@ const isPlaying = () => {
           <Image style={styles.cardImage} source={{ uri: props.item.image }} />
           <View style={styles.infoTextContainer}>
             <Text style={styles.cardText} numberOfLines={1}>{props.item.name}</Text>
-            <Text style={styles.programText} numberOfLines={1}>{live}</Text>
-            <Image style={styles.programImage} source={{ uri: programImage() }} />
+            <Text style={styles.programText} numberOfLines={1}>{live.title}</Text>
+            <Image style={styles.programImage} source={{ uri: live.imageurl }} />
           </View>
         </View>
         <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={()=> props.playRadio()}>
+        <TouchableOpacity onPress={()=> props.playRadio(live)}>
           <AntDesign style={styles.play} name={isPlaying()} size={45} color="black" />
         </TouchableOpacity>
         </View>
