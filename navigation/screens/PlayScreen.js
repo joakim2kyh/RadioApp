@@ -68,7 +68,6 @@ export function PlayScreen({ navigation, route }) {
           } else {
             //console.log("No Live Program") 
           }
-      
         });
       }
 
