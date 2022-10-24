@@ -83,7 +83,7 @@ const isPlaying = () => {
 }
 
   return (
-    <TouchableOpacity onPress={props.onPress}>
+    <TouchableOpacity onPress={() => props.onPress(schedule)}>
       <View style={styles.container}>
       <View style={[styles.cardContainer, {backgroundColor: '#'+props.item.color}]}>
         {/* <TouchableOpacity style ={styles.card} onPress={onPress}> */}

@@ -83,23 +83,12 @@ export function HomeScreen({ navigation, component }) {
     }
   }
 
-
-
   const fetchList2 = async (channeltype) => {
     try {
       // let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
       let response = await fetch(`https://api.sr.se/api/v2/channels?format=json&pagination=false&filter=channel.channeltype&filtervalue=${channeltype}`)
       let json = await response.json();
       setChannels(json.channels)
-      // if (page == "") {
-      //   console.log("page =", pageNumber)
-      //   setChannels(json.channels)
-      // } else {
-      //   // let channelsArray = [...channels, json.channels]
-      //   const channelsArray = channels.concat(json.channels)
-      //   setChannels(channelsArray)
-      //   // console.log("channels 71", channels)
-      // }
 
       return json;
     } catch (error) {
@@ -203,8 +192,8 @@ export function HomeScreen({ navigation, component }) {
         }
         renderItem={({ item }) => (
           <Card item={item} playRadio={() => playRadio(item)} addFavorite={() => addFavorite(item)} onPress={
-            () => {
-              navigation.navigate('PlayScreen', { item: item })
+            (schedule) => {
+              navigation.navigate('PlayScreen', { item: item, schedule: schedule })
             }
           } />
         )}
