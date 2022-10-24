@@ -8,12 +8,19 @@ export default Card = (props) => {
 
   const [schedule, setSchedule] = useState([])
   const [live, setLive] = useState("")
+  const [image, setImage] = useState("")
 
 
   useEffect(() => {
-    if (schedule) return
+    // if (live != "") return
     fetchSchedule(props.item.id)
-    console.log("rerender")
+    // console.log("live called")
+}, [live])
+
+useEffect(() => {
+  getLive()
+  // console.log("schedule loaded for " + props.item.name)
+  // console.log("image url " + image )
 }, [schedule])
 
 
@@ -25,7 +32,14 @@ const isFavorited = () => {
   } else {
     return "favorite-outline"
   }
+}
 
+const programImage = () => {
+  if (image == "") {
+    return props.item.image
+  } else {
+    return image
+  }
 }
 
 const fetchSchedule = async (id) => {
@@ -35,26 +49,30 @@ const fetchSchedule = async (id) => {
     const response = await fetch(uri);
     let json = await response.json();
     setSchedule(json.schedule)
-    const now = Date.now()
-    
-    schedule.forEach(element => {
 
-      let startTime = element.starttimeutc
-      startTime = startTime.slice(6, -2)
-      let endTime = element.endtimeutc
-      endTime = endTime.slice(6, -2)
-
-      if(startTime < now && endTime > now){
-        setLive(element.title)
-      } else {
-        //console.log("No Live Program") 
-      }
-
-    });
   } catch (error) {
     console.error(error);
   }
 }
+
+const getLive = () => {
+  const now = Date.now()
+  schedule.forEach(element => {
+    let startTime = element.starttimeutc
+    startTime = startTime.slice(6, -2)
+    let endTime = element.endtimeutc
+    endTime = endTime.slice(6, -2)
+
+    if(startTime < now && endTime > now){
+      setLive(element.title)
+      setImage(element.imageurl)
+    } else {
+      //console.log("No Live Program") 
+    }
+
+  });
+}
+
 
 const isPlaying = () => {
   if (global.soundHandler.channel.id == props.item.id && global.soundHandler.isPlaying){
@@ -74,6 +92,7 @@ const isPlaying = () => {
           <View style={styles.infoTextContainer}>
             <Text style={styles.cardText} numberOfLines={1}>{props.item.name}</Text>
             <Text style={styles.programText} numberOfLines={1}>{live}</Text>
+            <Image style={styles.programImage} source={{ uri: programImage() }} />
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -146,6 +165,14 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 12,
     padding: 15,
+    margin: 5,
+    resizeMode: 'cover'
+  },
+  programImage: {
+    height: 50,
+    width: 50,
+    borderRadius: 5,
+    padding: 3,
     margin: 5,
     resizeMode: 'cover'
   },
