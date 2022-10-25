@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
 import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
@@ -6,10 +6,11 @@ import SoundHandler from './SoundHandler';
 import { PressableScale } from 'react-native-pressable-scale';
 import { Fontisto } from '@expo/vector-icons';
 
-export default function MiniPlayer() {
+export default function MiniPlayer(props) {
 
   const soundManager = new SoundHandler()
   const [refresh, setRefresh] = useState([true])
+  const [schedule, setSchedule] = useState([])
 
   const isPlaying = () => {
     if (
@@ -46,19 +47,22 @@ export default function MiniPlayer() {
 
 
   return (
-    <View style={styles.bottomBar}>
-      <View style={styles.channelContainer}>
+    <Pressable onPress={() => props.onPress(schedule)}>
+      <View style={styles.bottomBar}>
+        <View style={styles.channelContainer}>
 
-        <Image style={styles.channelImage} source={{ uri: soundManager.channel.image }} />
-        <View style={styles.programContainer}>
-          <Text style={styles.programTitle}>{soundManager.program.title}</Text>
-          <Text style={styles.programTime}>{getStartAndEndTime()}</Text>
+          <Image style={styles.channelImage} source={{ uri: soundManager.channel.image }} />
+          <View style={styles.programContainer}>
+            <Text style={styles.programTitle}>{soundManager.program.title}</Text>
+            <Text style={styles.programTime}>{getStartAndEndTime()}</Text>
+          </View>
+          <PressableScale style={styles.play} onPress={() => { soundManager.playRadio(), setRefresh({ refresh: !refresh }) }}>
+            <Fontisto name={isPlaying()} size={30} color="white" />
+          </PressableScale>
         </View>
-        <PressableScale style={styles.play} onPress={() => { soundManager.playRadio(), setRefresh({ refresh: !refresh }) }}>
-          <Fontisto name={isPlaying()} size={30} color="white" />
-        </PressableScale>
       </View>
-    </View>
+    </Pressable>
+
   );
 }
 

@@ -171,16 +171,11 @@ export function HomeScreen({ navigation, component }) {
           } />
         )}
       />
-        {/* { soundManager.isPlaying ? 
-        <Pressable onPress={
-          (schedule) => {
-            navigation.navigate('PlayScreen', { item: item, schedule: schedule })
-          }
-        }>
-          <MiniPlayer /> </Pressable> : null} */}
-        
-        
-          
+        { soundManager.isPlaying ? <MiniPlayer onPress={
+            (schedule) => {
+              navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
+            }
+          } /> : null }
       </View>
   );
 }

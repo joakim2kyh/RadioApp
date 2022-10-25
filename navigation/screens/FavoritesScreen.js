@@ -110,7 +110,7 @@ export function FavoritesScreen({ navigation }) {
         } />
       )}
       /> 
-      { global.soundHandler.isPlaying ? <MiniPlayer/> : null}
+      { global.soundHandler.isPlaying ? <MiniPlayer /> : null}
 </View>
   );
 }
