@@ -19,10 +19,10 @@ export function PlayScreen({ navigation, route }) {
     useEffect(() => {
         //console.log(schedule)
         getLive()
-        if (!soundManager.isPlaying) {
+        if (!soundManager.isPlaying || soundManager.channel.id != route.params.item.id ) {
             soundManager.playRadio(route.params.item, live)
-        }
-        //console.log(route.params.item)
+        } 
+        
     },[])
 
 
@@ -58,7 +58,7 @@ export function PlayScreen({ navigation, route }) {
   return (
 
     <View style={styles.container}>
-      <ImageBackground style={styles.channelImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} 
+      <ImageBackground style={styles.channelImage} imageStyle={{ borderRadius: 20}} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} 
       >
         <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
         <TouchableOpacity onPress={addFavorite()}>
@@ -110,10 +110,10 @@ const styles = StyleSheet.create({
     channelImage: {
         height: 250,
         width: 250,
-        borderRadius: 12,
+        borderRadius: 15 ,
         padding: 15,
         marginBottom: 20,
-        resizeMode: 'cover'
+       // resizeMode: 'cover'
     },
     headText: {
       fontSize: 30,
