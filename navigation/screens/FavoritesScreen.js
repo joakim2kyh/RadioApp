@@ -17,9 +17,7 @@ export function FavoritesScreen({ navigation }) {
   const route = useRoute();
 
   useFocusEffect(
-    React.useCallback(() => {
-      console.log('Screen was focused');
-      
+    React.useCallback(() => {      
       getData()
         // .then(console.info("fav " + favorites))
 
