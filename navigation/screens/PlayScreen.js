@@ -8,23 +8,21 @@ import { PressableScale } from 'react-native-pressable-scale';
 
 export function PlayScreen({ navigation, route }) {
 
-   // const [isPlaying, setIsPlaying] = useState(false)
-    // const [schedule, setSchedule] = useState(route.params.schedule)
     let schedule = route.params.schedule
     const [live, setLive] = useState({})
-    const [image, setImage] = useState("")
     const [refresh, setRefresh] = useState([true])
     const soundManager = new SoundHandler()
 
     useEffect(() => {
-        //console.log(schedule)
         getLive()
         if (!soundManager.isPlaying || soundManager.channel.id != route.params.item.id ) {
             soundManager.playRadio(route.params.item, live)
-        } 
-        
+        }
     },[])
 
+    useEffect(() => {
+      soundManager.program = live
+    }, [live])
 
     const isPlaying = () => {
       if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying){
@@ -48,7 +46,6 @@ export function PlayScreen({ navigation, route }) {
       
           if(startTime < now && endTime > now){
             setLive(element)
-            //setImage(element.imageurl)
           } else {
             //console.log("No Live Program") 
           }
@@ -67,8 +64,6 @@ export function PlayScreen({ navigation, route }) {
    </View>
       </ImageBackground>
 
-      {/* <Text style={styles.tagline}>
-                This is {route.params.item.tagline} </Text> */}
       <View style={styles.rowConatainer}>
         <Image style={styles.channelCover} source={{ uri: route.params.item.image }}/>
         <Text style={styles.headText}>
@@ -80,9 +75,8 @@ export function PlayScreen({ navigation, route }) {
         {live.title}
       </Text>
 
-      <PressableScale onPress={() => soundManager.playRadio(route.params.item, live)}>
+      <PressableScale onPress={() => {soundManager.playRadio(route.params.item, live), setRefresh({refresh: !refresh})}}>
 
-        {/* <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" /> */}
         <AntDesign style={styles.play} name={isPlaying()} size={90} color="black" />
       </PressableScale>
 

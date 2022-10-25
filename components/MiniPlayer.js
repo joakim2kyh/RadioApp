@@ -1,16 +1,27 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 import SoundHandler from './SoundHandler';
 import { PressableScale } from 'react-native-pressable-scale';
+import { Fontisto } from '@expo/vector-icons';
 
-export default function MiniPlayer(){
+export default function MiniPlayer() {
 
   const soundManager = new SoundHandler()
+  const [refresh, setRefresh] = useState([true])
 
-function getStartAndEndTime(){
-  
+  const isPlaying = () => {
+    if (
+      soundManager.isPlaying) {
+      return "pause"
+    } else {
+      return "play"
+    }
+  }
+
+  function getStartAndEndTime() {
+
     if (soundManager.program.starttimeutc != null) {
 
       let startTime = soundManager.program.starttimeutc
@@ -30,24 +41,24 @@ function getStartAndEndTime(){
       return timeFormat
     }
 
-   return " u did it"
-}
+    return " u did it"
+  }
 
 
-  return(
+  return (
     <View style={styles.bottomBar}>
-            <View style={styles.channelContainer}>
-             
-              <Image style={styles.channelImage} source= {{uri: soundManager.channel.image}}/>
-              <View style={styles.programContainer}>
-              <Text style={styles.programTitle}>{soundManager.program.title}</Text>
-              <Text style={styles.programTime}>{getStartAndEndTime()}</Text>
-              </View>
-              <PressableScale style={styles.play} onPress={() => console.log('hej hej hej')}>
-                <AntDesign style={styles.playss} name="play" size={35} color="black" />
-              </PressableScale>
-            </View>
-          </View>
+      <View style={styles.channelContainer}>
+
+        <Image style={styles.channelImage} source={{ uri: soundManager.channel.image }} />
+        <View style={styles.programContainer}>
+          <Text style={styles.programTitle}>{soundManager.program.title}</Text>
+          <Text style={styles.programTime}>{getStartAndEndTime()}</Text>
+        </View>
+        <PressableScale style={styles.play} onPress={() => { soundManager.playRadio(), setRefresh({ refresh: !refresh }) }}>
+          <Fontisto name={isPlaying()} size={30} color="white" />
+        </PressableScale>
+      </View>
+    </View>
   );
 }
 
@@ -55,36 +66,40 @@ const styles = StyleSheet.create({
   container: {
     height: '92%',
     marginTop: 50,
-    backgroundColor: '#F5FCFF',
+    // backgroundColor: '#F5FCFF',
+    backgroundColor: 'black'
   },
 
   bottomBar: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
 
     // width: '100%',
-    height: '10.5%'
+    height: '11%'
   },
-  
+
   channelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 80
+    backgroundColor: 'black',
+    padding: 10
+    // height: 80
   },
-  
+
   channelImage: {
     height: 80,
     width: 80,
     resizeMode: 'cover',
-    flex: 1
+    flex: 1,
+    borderRadius: 10
   },
 
   programContainer: {
     backgroundColor: 'black',
     color: 'white',
-    padding: 5
-
+    padding: 5,
+    paddingLeft: 10
   },
-  
+
   programTitle: {
     backgroundColor: 'black',
     color: 'white',
@@ -95,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 3,
 
   },
-  
+
   programTime: {
     color: 'white',
     height: '50%',
@@ -103,8 +118,9 @@ const styles = StyleSheet.create({
   },
 
   play: {
-    flex: 1
-
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   filterButtons: {
     flexDirection: 'row',
@@ -116,6 +132,6 @@ const styles = StyleSheet.create({
 
   },
   text: {
-   // color: 'tomato'
+    // color: 'tomato'
   }
 });

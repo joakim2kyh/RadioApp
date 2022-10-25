@@ -1,4 +1,4 @@
-import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Pressable } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -183,8 +183,9 @@ export function HomeScreen({ navigation, component }) {
 const styles = StyleSheet.create({
   container: {
     height: '92%',
-    marginTop: 50,
-    backgroundColor: '#F5FCFF',
+    marginTop: 30,
+   // backgroundColor: '#F5FCFF',
+   backgroundColor: '#f5eee7'
   },
 
   filterButtons: {
@@ -198,7 +199,8 @@ const styles = StyleSheet.create({
   },
 
   flatlist: {
-    backgroundColor: '#F5FCFF'
+   // backgroundColor: '#F5FCFF'
+   backgroundColor: '#f5eee7'
   }
 
 

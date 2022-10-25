@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Pressable } from "react-native";
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -16,88 +16,88 @@ export default Card = (props) => {
     // if (live != "") return
     fetchSchedule(props.item.id)
     // console.log("live called")
-}, [live])
+  }, [live])
 
-useEffect(() => {
-  getLive()
-  // console.log("schedule loaded for " + props.item.name)
-  // console.log("image url " + image )
-}, [schedule])
-
-
-const isFavorited = () => {
-  let dataManager =  CommonDataManager.getInstance()
-  let ids = dataManager.getFavIDs()
-  if(ids.includes(props.item.id)) {
-    return "favorite"
-  } else {
-    return "favorite-outline"
-  }
-}
+  useEffect(() => {
+    getLive()
+    // console.log("schedule loaded for " + props.item.name)
+    // console.log("image url " + image )
+  }, [schedule])
 
 
-const fetchSchedule = async (id) => {
-  const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
-
-  try {
-    const response = await fetch(uri);
-    let json = await response.json();
-    setSchedule(json.schedule)
-
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-const getLive = () => {
-  const now = Date.now()
-  schedule.forEach(element => {
-    let startTime = element.starttimeutc
-    startTime = startTime.slice(6, -2)
-    let endTime = element.endtimeutc
-    endTime = endTime.slice(6, -2)
-
-    if(startTime < now && endTime > now){
-      setLive(element)
+  const isFavorited = () => {
+    let dataManager = CommonDataManager.getInstance()
+    let ids = dataManager.getFavIDs()
+    if (ids.includes(props.item.id)) {
+      return "favorite"
     } else {
-      //console.log("No Live Program") 
+      return "favorite-outline"
     }
-
-  });
-}
-
-
-const isPlaying = () => {
-  if (soundManager.channel.id == props.item.id && soundManager.isPlaying){
-    return "pause"
-  } else {
-    return "play"
   }
-}
+
+
+  const fetchSchedule = async (id) => {
+    const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
+
+    try {
+      const response = await fetch(uri);
+      let json = await response.json();
+      setSchedule(json.schedule)
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const getLive = () => {
+    const now = Date.now()
+    schedule.forEach(element => {
+      let startTime = element.starttimeutc
+      startTime = startTime.slice(6, -2)
+      let endTime = element.endtimeutc
+      endTime = endTime.slice(6, -2)
+
+      if (startTime < now && endTime > now) {
+        setLive(element)
+      } else {
+        //console.log("No Live Program") 
+      }
+
+    });
+  }
+
+
+  const isPlaying = () => {
+    if (soundManager.channel.id == props.item.id && soundManager.isPlaying) {
+      return "pause"
+    } else {
+      return "play"
+    }
+  }
 
   return (
     <PressableScale onPress={() => props.onPress(schedule)}>
       <View style={styles.container}>
-      <View style={[styles.cardContainer, {backgroundColor: '#'+props.item.color}]}>
-        {/* <TouchableOpacity style ={styles.card} onPress={onPress}> */}
-        <View style={styles.imgTextContainer}>
-          <Image style={styles.cardImage} source={{ uri: props.item.image }} />
-          <View style={styles.infoTextContainer}>
-            <Text style={styles.cardText} numberOfLines={1}>{props.item.name}</Text>
-            <Text style={styles.programText} numberOfLines={1}>{live.title}</Text>
-            <Image style={styles.programImage} source={{ uri: live.imageurl }} />
+        <View style={[styles.cardContainer, { backgroundColor: '#' + props.item.color }]}>
+          {/* <TouchableOpacity style ={styles.card} onPress={onPress}> */}
+          <View style={styles.imgTextContainer}>
+            <Image style={styles.cardImage} source={{ uri: props.item.image }} />
+            <View style={styles.infoTextContainer}>
+              <Text style={styles.cardText} numberOfLines={1}>{props.item.name}</Text>
+              <Text style={styles.programText} numberOfLines={1}>{live.title}</Text>
+              <Text>{soundManager.getStartAndEndTime(live)}</Text>
+            </View>
           </View>
+          <View style={styles.buttonContainer}>
+            <PressableScale onPress={() => props.playRadio(live)}>
+              <Fontisto style={styles.play} name={isPlaying()} size={25} color="black" />
+            </PressableScale>
+          </View>
+          <PressableScale onPress={() => props.addFavorite()}>
+            <MaterialIcons name={isFavorited()} size={30} color="black" />
+          </PressableScale>
         </View>
-        <View style={styles.buttonContainer}>
-        <PressableScale onPress={()=> props.playRadio(live)}>
-          <Fontisto style={styles.play} name={isPlaying()} size={25} color="black" />
-        </PressableScale>
-        </View>
-        <PressableScale onPress={()=>props.addFavorite()}>
-          <MaterialIcons  name={isFavorited()} size={30} color="black" />
-        </PressableScale>
       </View>
-    </View>
     </PressableScale>
   );
 }
@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     shadowColor: 'black',
     shadowColor: 'black',
-    shadowOpacity: 1,
-    shadowRadius: 1,
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
     elevation: 5,
     shadowOffset: {
       width: 3,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   imgTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1
+    flex: 1,
   },
   card: {
     backgroundColor: '#50A0B7',
@@ -149,9 +149,10 @@ const styles = StyleSheet.create({
     }
   },
   buttonContainer: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    width: "15%"
   },
   cardImage: {
     height: 100,
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     fontWeight: '400'
   },
   play: {
-    marginEnd: 10
+    marginEnd: 10,
   },
   infoTextContainer: {
     flexDirection: 'column',
@@ -189,5 +190,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1
   },
-  
+
 });
