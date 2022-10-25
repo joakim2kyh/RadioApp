@@ -16,7 +16,7 @@ export default Card = (props) => {
     // if (live != "") return
     fetchSchedule(props.item.id)
     // console.log("live called")
-  }, [live])
+  }, [])
 
   useEffect(() => {
     getLive()

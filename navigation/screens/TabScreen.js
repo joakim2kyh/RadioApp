@@ -39,6 +39,7 @@ export default function TabScreen({ navigation }) {
       <Tab.Screen name={favoritesName} component={FavoritesScreen} options={{
         headerShown: false,
       }} />
+      
     </Tab.Navigator>
   );
 }
