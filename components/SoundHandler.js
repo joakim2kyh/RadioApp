@@ -1,4 +1,5 @@
 import { Audio } from "expo-av";
+import moment from "moment";
 
 export default class SoundHandler {
 
@@ -36,4 +37,28 @@ export default class SoundHandler {
         await this.sound.loadAsync({ uri: item.liveaudio.url }).then(console.log("LOADED"))
         await this.sound.playAsync()
       }
+
+      getStartAndEndTime(program = this.program){
+  
+        if (program.starttimeutc != null) {
+    
+          let startTime = program.starttimeutc
+          startTime = startTime.slice(6, -2)
+          let endTime = program.endtimeutc
+          endTime = endTime.slice(6, -2)
+          //console.log(endTime);
+    
+          var startTimeUtc = new Date(parseInt(startTime))
+          var endTimeUtc = new Date(parseInt(endTime))
+    
+          var startTimeFormat = moment(startTimeUtc).format("HH:mm");
+          var endTimeFormat = moment(endTimeUtc).format("HH:mm");
+    
+          var timeFormat = startTimeFormat.toString() + " - " + endTimeFormat.toString()
+    
+          return timeFormat
+        }
+    
+       return " u did it"
+    }
 }
