@@ -99,6 +99,7 @@ export function FavoritesScreen({ navigation }) {
   return (
     <View style={styles.container}>
   <FlatList
+      style={styles.flatlist}
       data={
         favorites
       } 
@@ -120,5 +121,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
     backgroundColor: '#F5FCFF',
   },
+  flatlist: {
+    backgroundColor: '#f5eee7'
+   }
 });
 

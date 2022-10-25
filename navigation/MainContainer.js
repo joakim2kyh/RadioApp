@@ -1,4 +1,5 @@
 import { Audio } from "expo-av";
+import { StatusBar, SafeAreaView } from 'react-native';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -17,7 +18,9 @@ export default function MainContainer() {
     }
 
     return (
-        <NavigationContainer>
+       
+        <NavigationContainer backgroundColor={'#f5eee7'}>
+            <StatusBar backgroundColor={'#f5eee7'}/>
             <Stack.Navigator>
                 <Stack.Screen name="TabScreen" component={TabScreen} options={{
                     headerShown: false
