@@ -16,11 +16,11 @@ export function PlayScreen({ navigation, route }) {
 
     useEffect(() => {
         //console.log(schedule)
-        getLive()
-        if (!global.soundHandler.isPlaying) {
-            playRadio(route.params.item)
-        }
-        console.log(route.params.item)
+        // getLive()
+        // if (!global.soundHandler.isPlaying) {
+        //     playRadio(route.params.item)
+        // }
+        // console.log(route.params.item)
     },[])
 
 
@@ -82,7 +82,7 @@ export function PlayScreen({ navigation, route }) {
     <View style={styles.container}>
       <ImageBackground style={styles.channelImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} 
       >
-        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'top', alignItems: 'start'}}>
+        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
         <TouchableOpacity onPress={addFavorite()}>
           <MaterialIcons style={styles.heart} name={"favorite"} size={60} color="black" />
         </TouchableOpacity>
