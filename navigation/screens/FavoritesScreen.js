@@ -5,12 +5,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import CommonDataManager from '../../components/CommonDataManager';
 import MiniPlayer from '../../components/MiniPlayer';
+import SoundHandler from '../../components/SoundHandler';
 
 
 export function FavoritesScreen({ navigation }) {
 
   const [favorites, setFavorites] = useState([])
   const [refresh, setRefresh] = useState([true])
+  const soundManager = new SoundHandler()
 
   const route = useRoute();
 
@@ -27,39 +29,6 @@ export function FavoritesScreen({ navigation }) {
   useEffect(()=>{
     storeData(favorites)
   },[favorites])
-
-
-  //depricated
-  const fetchStation = async () => {
-    try {      
-        let response = await fetch(`http://api.sr.se/api/v2/channels/?format=json`);
-        let json = await response.json();
-
-        setChannels(json.channels)
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const playRadio = (item) => {
-    if (global.soundHandler.isPlaying && global.soundHandler.channel.id == item.id) {
-      global.soundHandler.sound.pauseAsync()
-      global.soundHandler.isPlaying = false
-    } else {
-      loadSound(item)
-      global.soundHandler.isPlaying = true
-    }
-    setRefresh({
-      refresh: !refresh
-    })
-  }
-
-  async function loadSound(item) {
-    await global.soundHandler.sound.unloadAsync()
-      .then(global.soundHandler.channel = item)
-    await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
-    await global.soundHandler.sound.playAsync()
-  }
 
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
@@ -84,7 +53,6 @@ export function FavoritesScreen({ navigation }) {
     }
   }
 
-
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('idArray');
@@ -100,12 +68,10 @@ export function FavoritesScreen({ navigation }) {
     <View style={styles.container}>
   <FlatList
       style={styles.flatlist}
-      data={
-        favorites
-      } 
+      data={favorites} 
       extraData = {refresh}
       renderItem={({ item }) => (
-        <Card item={item} playRadio={(live) => playRadio(item, live)} addFavorite={() => addFavorite(item)} onPress={
+        <Card item={item} playRadio={(live) => soundManager.playRadio(item, live)} addFavorite={() => addFavorite(item)} onPress={
           (schedule) => { navigation.navigate('PlayScreen', { item: item, schedule: schedule }) }
         } />
       )}
