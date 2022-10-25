@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import CommonDataManager from '../../components/CommonDataManager';
 import MiniPlayer from '../../components/MiniPlayer';
+import SoundHandler from '../../components/SoundHandler';
 
 export function HomeScreen({ navigation, component }) {
 
@@ -15,6 +16,7 @@ export function HomeScreen({ navigation, component }) {
   const [refresh, setRefresh] = useState([true])
   const [pageNumber, setPageNumber] = useState(2)
   const [filter, setFilter] = useState(0)
+  const soundManager = new SoundHandler()
 
   useFocusEffect(
     React.useCallback(() => {
@@ -36,8 +38,6 @@ export function HomeScreen({ navigation, component }) {
     storeData(favorites)
     //console.log("used effect 1")
   }, [favorites])
-
-
 
   const storeData = async (value) => {
     try {
@@ -66,9 +66,6 @@ export function HomeScreen({ navigation, component }) {
       console.log(e)
     }
   }
-
-
-  
 
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
@@ -167,14 +164,17 @@ export function HomeScreen({ navigation, component }) {
           refresh
         }
         renderItem={({ item }) => (
-          <Card item={item} playRadio={(live) => playRadio(item, live)} addFavorite={() => addFavorite(item)} onPress={
+          <Card item={item} playRadio={(live) => {soundManager.playRadio(item, live),         setRefresh({
+               refresh: !refresh
+            })
+          }} addFavorite={() => addFavorite(item)} onPress={
             (schedule) => {
               navigation.navigate('PlayScreen', { item: item, schedule: schedule })
             }
           } />
         )}
       />
-        { global.soundHandler.isPlaying ? <MiniPlayer/> : null}
+        { soundManager.isPlaying ? <MiniPlayer/> : null}
           
       </View>
   );

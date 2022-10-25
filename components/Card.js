@@ -3,13 +3,14 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, Pressable } from "reac
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import CommonDataManager from './CommonDataManager';
+import SoundHandler from './SoundHandler';
 import { PressableScale } from 'react-native-pressable-scale';
 
 export default Card = (props) => {
 
   const [schedule, setSchedule] = useState([])
   const [live, setLive] = useState({})
-
+  const soundManager = new SoundHandler()
 
   useEffect(() => {
     // if (live != "") return
@@ -67,7 +68,7 @@ const getLive = () => {
 
 
 const isPlaying = () => {
-  if (global.soundHandler.channel.id == props.item.id && global.soundHandler.isPlaying){
+  if (soundManager.channel.id == props.item.id && soundManager.isPlaying){
     return "pausecircle"
   } else {
     return "play"
