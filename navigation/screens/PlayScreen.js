@@ -1,7 +1,7 @@
 
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign,Fontisto, MaterialIcons } from '@expo/vector-icons';
 import SoundHandler from '../../components/SoundHandler';
 import { PressableScale } from 'react-native-pressable-scale';
 
@@ -26,7 +26,7 @@ export function PlayScreen({ navigation, route }) {
 
     const isPlaying = () => {
       if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying){
-        return "pausecircle"
+        return "pause"
       } else {
         return "play"
       }
@@ -55,29 +55,32 @@ export function PlayScreen({ navigation, route }) {
   return (
 
     <View style={styles.container}>
-      <ImageBackground style={styles.channelImage} imageStyle={{ borderRadius: 20}} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} 
-      >
+<View style={styles.rowConatainer}>
+        <Image style={styles.channelCover} source={{ uri: route.params.item.image }}/>
+        {/*<Text style={styles.headText}>
+          {route.params.item.name}
+        </Text>*/}
+        
+      </View>
+      <View>
+      <Text style={styles.channelDescription}>{live.description}</Text>
+      </View>
+      <ImageBackground style={styles.channelImage} imageStyle={{ borderRadius: 20, borderColor: 'black', borderWidth: 3}} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} >
         <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
         <TouchableOpacity onPress={addFavorite()}>
           <MaterialIcons style={styles.heart} name={"favorite"} size={60} color="black" />
         </TouchableOpacity>
-   </View>
+      </View>
       </ImageBackground>
 
-      <View style={styles.rowConatainer}>
-        <Image style={styles.channelCover} source={{ uri: route.params.item.image }}/>
-        <Text style={styles.headText}>
-          {route.params.item.name}
-        </Text>
-
-      </View>
-      <Text style={styles.lineText}>
+      
+      <Text style={styles.programDescripton}>
         {live.title}
       </Text>
 
       <PressableScale onPress={() => {soundManager.playRadio(route.params.item, live), setRefresh({refresh: !refresh})}}>
 
-        <AntDesign style={styles.play} name={isPlaying()} size={90} color="black" />
+        <Fontisto style={styles.play} name={isPlaying()} size={40} color="black" />
       </PressableScale>
 
     </View>
@@ -102,43 +105,37 @@ const styles = StyleSheet.create({
       // flex: 1,
     },
     channelImage: {
-        height: 250,
-        width: 250,
+        height: 300,
+        width: 300,
         borderRadius: 15 ,
-        padding: 15,
-        marginBottom: 20,
-       // resizeMode: 'cover'
+        padding: 40
+        //resizeMode: 'cover'
     },
-    headText: {
-      fontSize: 30,
-      fontWeight: 'bold'
-    },
-    lineText: {
-      fontSize: 20
+    programDescripton: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      margin: 20
+
     },
     play: {
-      margin: 20
     },
     channelCover:{
-      height: 50,
-      width: 50,
+      height: 80,
+      width: 80,
       borderRadius: 5,
-      // padding: 10,
-      marginEnd: 10,
-      resizeMode: 'cover'
+      marginBottom: 20,
+      borderColor: 'black',
+      borderWidth: 1
+      //resizeMode: 'cover'
     },
-    tagline: {
-        color: 'black',
-    },
+    channelDescription:{
+      fontSize: 15,
+      color: 'black',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      marginBottom: 20
 
-    cardImage: {
-        // width: '100%',
-        height: 100,
-        width: 100,
-        borderRadius: 12,
-        padding: 15,
-        margin: 5,
-        resizeMode: 'cover'
     },
+  
 })
 
