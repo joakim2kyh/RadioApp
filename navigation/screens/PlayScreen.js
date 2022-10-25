@@ -2,6 +2,7 @@
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import SoundHandler from '../../components/SoundHandler';
 
 
 export function PlayScreen({ navigation, route }) {
@@ -12,53 +13,29 @@ export function PlayScreen({ navigation, route }) {
     const [live, setLive] = useState({})
     const [image, setImage] = useState("")
     const [refresh, setRefresh] = useState([true])
-
+    const soundManager = new SoundHandler()
 
     useEffect(() => {
-        console.log(schedule)
+        //console.log(schedule)
         getLive()
-        if (!global.soundHandler.isPlaying) {
-            playRadio(route.params.item)
+        if (!soundManager.isPlaying) {
+            soundManager.playRadio(route.params.item, live)
         }
-        console.log(route.params.item)
+        //console.log(route.params.item)
     },[])
 
 
     const isPlaying = () => {
-        if (global.soundHandler.channel.id == route.params.item.id && global.soundHandler.isPlaying){
-          return "pausecircle"
-        } else {
-          return "play"
-        }
+      if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying){
+        return "pausecircle"
+      } else {
+        return "play"
       }
+    }
 
       const addFavorite = () => {
         console.log("pressed favorite")
       }
-
-      async function loadSound(item) {
-        await global.soundHandler.sound.unloadAsync()
-          .then(global.soundHandler.channel = item,
-            global.soundHandler.program = live)
-          console.log("rad 34 url", item.liveaudio.url);
-        await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
-        await global.soundHandler.sound.playAsync()
-      }
-
-      const playRadio = (item) => {
-        if (global.soundHandler.isPlaying && global.soundHandler.channel.id == item.id) {
-          global.soundHandler.sound.pauseAsync()
-          global.soundHandler.isPlaying = false
-         console.log("42")
-        } else {
-          loadSound(item)
-          global.soundHandler.isPlaying = true
-         console.log("46");
-        }
-        setRefresh({
-          refresh: !refresh
-        })
-      }  
 
     const getLive = () => {
         const now = Date.now()
@@ -102,10 +79,12 @@ export function PlayScreen({ navigation, route }) {
         {live.title}
       </Text>
 
-      <TouchableOpacity onPress={() => playRadio(route.params.item)}>
+      <TouchableOpacity onPress={() => {soundManager.playRadio(route.params.item, live), 
+      setRefresh({refresh: !refresh})
+      }}>
 
         {/* <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" /> */}
-        <AntDesign style={styles.play} name={isPlaying()} size={90} color="black" />
+        <AntDesign style={styles.play} name={isPlaying(route.params.item)} size={90} color="black" />
       </TouchableOpacity>
 
     </View>

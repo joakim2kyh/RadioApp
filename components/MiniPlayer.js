@@ -2,17 +2,19 @@ import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
+import SoundHandler from './SoundHandler';
 
 export default function MiniPlayer(){
 
+  const soundManager = new SoundHandler()
 
 function getStartAndEndTime(){
   
-    if (global.soundHandler.program.starttimeutc != null) {
+    if (soundManager.program.starttimeutc != null) {
 
-      let startTime = global.soundHandler.program.starttimeutc
+      let startTime = soundManager.program.starttimeutc
       startTime = startTime.slice(6, -2)
-      let endTime = global.soundHandler.program.endtimeutc
+      let endTime = soundManager.program.endtimeutc
       endTime = endTime.slice(6, -2)
       //console.log(endTime);
 
@@ -35,9 +37,9 @@ function getStartAndEndTime(){
     <View style={styles.bottomBar}>
             <View style={styles.channelContainer}>
              
-              <Image style={styles.channelImage} source= {{uri: global.soundHandler.channel.image}}/>
+              <Image style={styles.channelImage} source= {{uri: soundManager.channel.image}}/>
               <View style={styles.programContainer}>
-              <Text style={styles.programTitle}>{global.soundHandler.program.title}</Text>
+              <Text style={styles.programTitle}>{soundManager.program.title}</Text>
               <Text style={styles.programTime}>{getStartAndEndTime()}</Text>
               </View>
               <TouchableOpacity style={styles.play} onPress={() => console.log('hej hej hej')}>
