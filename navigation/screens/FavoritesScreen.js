@@ -71,12 +71,19 @@ export function FavoritesScreen({ navigation }) {
       data={favorites} 
       extraData = {refresh}
       renderItem={({ item }) => (
-        <Card item={item} playRadio={(live) => soundManager.playRadio(item, live)} addFavorite={() => addFavorite(item)} onPress={
-          (schedule) => { navigation.navigate('PlayScreen', { item: item, schedule: schedule }) }
-        } />
+        <Card item={item} playRadio={(live) => {soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
+          addFavorite={() => addFavorite(item)} onPress={
+            (schedule) => {
+              navigation.navigate('PlayScreen', { item: item, schedule: schedule })
+            }
+          } />
       )}
       /> 
-      { global.soundHandler.isPlaying ? <MiniPlayer /> : null}
+      { global.soundHandler.isPlaying ? <MiniPlayer onPress={
+            (schedule) => {
+              navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
+            }
+          }  /> : null}
 </View>
   );
 }
