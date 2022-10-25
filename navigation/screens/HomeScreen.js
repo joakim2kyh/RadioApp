@@ -14,7 +14,6 @@ export function HomeScreen({ navigation, component }) {
   const [favorites, setFavorites] = useState([])
   const [live, setLive] = useState("")
   const [refresh, setRefresh] = useState([true])
-  const [pageNumber, setPageNumber] = useState(2)
   const [filter, setFilter] = useState(0)
   const soundManager = new SoundHandler()
 
@@ -164,17 +163,23 @@ export function HomeScreen({ navigation, component }) {
           refresh
         }
         renderItem={({ item }) => (
-          <Card item={item} playRadio={(live) => {soundManager.playRadio(item, live),         setRefresh({
-               refresh: !refresh
-            })
-          }} addFavorite={() => addFavorite(item)} onPress={
+          <Card item={item} playRadio={(live) => {soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
+          addFavorite={() => addFavorite(item)} onPress={
             (schedule) => {
               navigation.navigate('PlayScreen', { item: item, schedule: schedule })
             }
           } />
         )}
       />
-        { soundManager.isPlaying ? <MiniPlayer/> : null}
+        {/* { soundManager.isPlaying ? 
+        <Pressable onPress={
+          (schedule) => {
+            navigation.navigate('PlayScreen', { item: item, schedule: schedule })
+          }
+        }>
+          <MiniPlayer /> </Pressable> : null} */}
+        
+        
           
       </View>
   );
