@@ -15,12 +15,12 @@ export function PlayScreen({ navigation, route }) {
 
 
     useEffect(() => {
-        //console.log(schedule)
-        // getLive()
-        // if (!global.soundHandler.isPlaying) {
-        //     playRadio(route.params.item)
-        // }
-        // console.log(route.params.item)
+        console.log(schedule)
+        getLive()
+        if (!global.soundHandler.isPlaying) {
+            playRadio(route.params.item)
+        }
+        console.log(route.params.item)
     },[])
 
 
