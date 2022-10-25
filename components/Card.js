@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, Pressable } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import CommonDataManager from './CommonDataManager';
 import SoundHandler from './SoundHandler';
+import { PressableScale } from 'react-native-pressable-scale';
 
 export default Card = (props) => {
 
@@ -75,7 +76,7 @@ const isPlaying = () => {
 }
 
   return (
-    <TouchableOpacity onPress={() => props.onPress(schedule)}>
+    <PressableScale onPress={() => props.onPress(schedule)}>
       <View style={styles.container}>
       <View style={[styles.cardContainer, {backgroundColor: '#'+props.item.color}]}>
         {/* <TouchableOpacity style ={styles.card} onPress={onPress}> */}
@@ -88,16 +89,16 @@ const isPlaying = () => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={()=> props.playRadio(live)}>
+        <PressableScale onPress={()=> props.playRadio(live)}>
           <AntDesign style={styles.play} name={isPlaying()} size={45} color="black" />
-        </TouchableOpacity>
+        </PressableScale>
         </View>
-        <TouchableOpacity onPress={()=>props.addFavorite()}>
+        <PressableScale onPress={()=>props.addFavorite()}>
           <MaterialIcons  name={isFavorited()} size={30} color="black" />
-        </TouchableOpacity>
+        </PressableScale>
       </View>
     </View>
-    </TouchableOpacity>
+    </PressableScale>
   );
 }
 
@@ -188,6 +189,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1
   },
-  heart: {
-  }
+  
 });

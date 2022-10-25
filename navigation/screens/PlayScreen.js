@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacit
 import React, { useState, useEffect } from 'react';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import SoundHandler from '../../components/SoundHandler';
+import { PressableScale } from 'react-native-pressable-scale';
 
 
 export function PlayScreen({ navigation, route }) {
@@ -79,13 +80,11 @@ export function PlayScreen({ navigation, route }) {
         {live.title}
       </Text>
 
-      <TouchableOpacity onPress={() => {soundManager.playRadio(route.params.item, live), 
-      setRefresh({refresh: !refresh})
-      }}>
+      <PressableScale onPress={() => soundManager.playRadio(route.params.item, live)}>
 
         {/* <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" /> */}
-        <AntDesign style={styles.play} name={isPlaying(route.params.item)} size={90} color="black" />
-      </TouchableOpacity>
+        <AntDesign style={styles.play} name={isPlaying()} size={90} color="black" />
+      </PressableScale>
 
     </View>
   );

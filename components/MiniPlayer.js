@@ -3,6 +3,7 @@ import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 import SoundHandler from './SoundHandler';
+import { PressableScale } from 'react-native-pressable-scale';
 
 export default function MiniPlayer(){
 
@@ -42,9 +43,9 @@ function getStartAndEndTime(){
               <Text style={styles.programTitle}>{soundManager.program.title}</Text>
               <Text style={styles.programTime}>{getStartAndEndTime()}</Text>
               </View>
-              <TouchableOpacity style={styles.play} onPress={() => console.log('hej hej hej')}>
+              <PressableScale style={styles.play} onPress={() => console.log('hej hej hej')}>
                 <AntDesign style={styles.playss} name="play" size={35} color="black" />
-              </TouchableOpacity>
+              </PressableScale>
             </View>
           </View>
   );
