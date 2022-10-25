@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Pressable } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import CommonDataManager from './CommonDataManager';
 import SoundHandler from './SoundHandler';
@@ -69,7 +69,7 @@ const getLive = () => {
 
 const isPlaying = () => {
   if (soundManager.channel.id == props.item.id && soundManager.isPlaying){
-    return "pausecircle"
+    return "pause"
   } else {
     return "play"
   }
@@ -90,7 +90,7 @@ const isPlaying = () => {
         </View>
         <View style={styles.buttonContainer}>
         <PressableScale onPress={()=> props.playRadio(live)}>
-          <AntDesign style={styles.play} name={isPlaying()} size={45} color="black" />
+          <Fontisto style={styles.play} name={isPlaying()} size={25} color="black" />
         </PressableScale>
         </View>
         <PressableScale onPress={()=>props.addFavorite()}>
