@@ -1,13 +1,14 @@
 
-import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 
 export function PlayScreen({ navigation, route }) {
 
    // const [isPlaying, setIsPlaying] = useState(false)
-    const [schedule, setSchedule] = useState(route.params.schedule)
+    // const [schedule, setSchedule] = useState(route.params.schedule)
+    let schedule = route.params.schedule
     const [live, setLive] = useState({})
     const [image, setImage] = useState("")
     const [refresh, setRefresh] = useState([true])
@@ -19,6 +20,7 @@ export function PlayScreen({ navigation, route }) {
         if (!global.soundHandler.isPlaying) {
             playRadio(route.params.item)
         }
+        console.log(route.params.item)
     },[])
 
 
@@ -28,6 +30,10 @@ export function PlayScreen({ navigation, route }) {
         } else {
           return "play"
         }
+      }
+
+      const addFavorite = () => {
+        console.log("pressed favorite")
       }
 
       async function loadSound(item) {
@@ -71,37 +77,57 @@ export function PlayScreen({ navigation, route }) {
         });
       }
 
-    return (
+  return (
 
-        <View style={styles.container}>
-           <Image style={styles.channelImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }}/>
-          
-            {/* <Text style={styles.tagline}>
+    <View style={styles.container}>
+      <ImageBackground style={styles.channelImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} 
+      >
+        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'top', alignItems: 'start'}}>
+        <TouchableOpacity onPress={addFavorite()}>
+          <MaterialIcons style={styles.heart} name={"favorite"} size={60} color="black" />
+        </TouchableOpacity>
+   </View>
+      </ImageBackground>
+
+      {/* <Text style={styles.tagline}>
                 This is {route.params.item.tagline} </Text> */}
-            <Text>
-                { route.params.item.name }
-            </Text>
-            <Text>
-                {live.title}
-            </Text>
+      <View style={styles.rowConatainer}>
+        <Image style={styles.channelCover} source={{ uri: route.params.item.image }}/>
+        <Text style={styles.headText}>
+          {route.params.item.name}
+        </Text>
 
-            <TouchableOpacity onPress={()=> playRadio(route.params.item)}>
-                    
-                {/* <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" /> */}
-                <AntDesign style={styles.play} name={isPlaying()} size={45} color="black" />
-            </TouchableOpacity>
-            
-        </View>
-    );
+      </View>
+      <Text style={styles.lineText}>
+        {live.title}
+      </Text>
+
+      <TouchableOpacity onPress={() => playRadio(route.params.item)}>
+
+        {/* <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" /> */}
+        <AntDesign style={styles.play} name={isPlaying()} size={90} color="black" />
+      </TouchableOpacity>
+
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: '#f5eee7',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-
+    },
+    heart: {
+      margin: 10
+    },
+    rowConatainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 15
+      // flex: 1,
     },
     channelImage: {
         height: 250,
@@ -110,7 +136,24 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 20,
         resizeMode: 'cover'
-
+    },
+    headText: {
+      fontSize: 30,
+      fontWeight: 'bold'
+    },
+    lineText: {
+      fontSize: 20
+    },
+    play: {
+      margin: 20
+    },
+    channelCover:{
+      height: 50,
+      width: 50,
+      borderRadius: 5,
+      // padding: 10,
+      marginEnd: 10,
+      resizeMode: 'cover'
     },
     tagline: {
         color: 'black',

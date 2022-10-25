@@ -33,13 +33,6 @@ const isFavorited = () => {
   }
 }
 
-const programImage = () => {
-  if (image == "") {
-    return props.item.image
-  } else {
-    return image
-  }
-}
 
 const fetchSchedule = async (id) => {
   const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
