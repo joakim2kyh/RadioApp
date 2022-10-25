@@ -2,6 +2,7 @@
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { PressableScale } from 'react-native-pressable-scale';
 
 
 export function PlayScreen({ navigation, route }) {
@@ -102,11 +103,11 @@ export function PlayScreen({ navigation, route }) {
         {live.title}
       </Text>
 
-      <TouchableOpacity onPress={() => playRadio(route.params.item)}>
+      <PressableScale onPress={() => playRadio(route.params.item)}>
 
         {/* <AntDesign style={styles.play} name= { global.soundHandler.isPlaying && global.soundHandler.channel.id == route.params.item.id ? "pausecircle" : "play" } size={80} color="black" /> */}
         <AntDesign style={styles.play} name={isPlaying()} size={90} color="black" />
-      </TouchableOpacity>
+      </PressableScale>
 
     </View>
   );
