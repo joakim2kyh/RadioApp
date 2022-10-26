@@ -9,6 +9,7 @@ import { shadow } from 'react-native-paper';
 import CommonDataManager from '../../components/CommonDataManager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProgressBar from 'react-native-progress/Bar';
+import { color } from 'react-native-reanimated';
 
 
 export function PlayScreen({ navigation, route }) {
@@ -18,7 +19,7 @@ export function PlayScreen({ navigation, route }) {
   const [refresh, setRefresh] = useState([true])
   const soundManager = new SoundHandler()
   const [favorites, setFavorites] = useState([])
-
+  const [timeElapsed, setTimeElapsed] = useState(0)
 
   var ids = []
   let dataManager = null
@@ -35,11 +36,17 @@ export function PlayScreen({ navigation, route }) {
 
   useEffect(() => {
     soundManager.program = live
+    if (Object.keys(live).length != 0) {
+      getProgress()
+    }
   }, [live])
 
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
+
+  useEffect(() => {
+  }, [])
 
   const isPlaying = () => {
     if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying) {
@@ -49,6 +56,12 @@ export function PlayScreen({ navigation, route }) {
     }
   }
 
+  const getProgress = () => {
+    let totalLengthInSeconds = (Number(live.endtimeutc.slice(6, -2)) - Number(live.starttimeutc.slice(6, -2)) )
+    let timeElapsedInSeconds = Date.now() - Number(live.starttimeutc.slice(6, -2)) 
+    let progress = timeElapsedInSeconds/totalLengthInSeconds
+    setTimeElapsed(progress)
+  }
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (!ids.includes(item.id)) {
@@ -120,8 +133,6 @@ export function PlayScreen({ navigation, route }) {
   return (
 
     <View style={styles.container}>
-
-
       {/*<ImageBackground style={styles.channelImage} imageStyle={{ borderRadius: 20, borderColor: 'black', borderWidth: 3}} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} >
         <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
         <TouchableOpacity onPress={()=>addFavorite(route.params.item)}>
@@ -130,41 +141,27 @@ export function PlayScreen({ navigation, route }) {
       </View>
       </ImageBackground>
   */}
-
+      <View style={{ position: 'absolute', top: 10, right: 10 }}>
+        <TouchableOpacity onPress={() => addFavorite(route.params.item)}>
+          <MaterialIcons style={styles.heart} name={isFavorited()} size={40} color="black" />
+        </TouchableOpacity>
+      </View>
       <Image style={styles.programImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} ></Image>
       <View style={styles.infoContainer}>
         <View style={styles.rowContainer}>
           <Image style={styles.channelCover} source={{ uri: route.params.item.image }} />
-          {/*<Text style={styles.headText}>
-          {route.params.item.name}
-        </Text>*/}
-
           <View style={styles.programContainer}>
-            <Text style={styles.programDescripton}>
-              {live.title}
-            </Text>
+            <Text style={styles.programTitle}>{live.title}</Text>
             <Text style={styles.getTime}>{soundManager.getStartAndEndTime(live)}</Text>
+            <ProgressBar progress={timeElapsed} width={null} color={'black'} style={styles.progressBar} />
           </View>
-
         </View>
-
-        <Text style={styles.channelDescription} adjustsFontSizeToFit>{live.description}</Text>
+        <Text style={styles.programDescription} >{live.description}</Text>
       </View>
 
-
-
-
-      
-      <Text style={styles.programDescripton}>
-        {live.title}
-      </Text>
-      <ProgressBar progress={0.5}/>
-
       <PressableScale onPress={() => { soundManager.playRadio(route.params.item, live), setRefresh({ refresh: !refresh }) }}>
-
         <Fontisto style={styles.play} name={isPlaying()} size={40} color="black" />
       </PressableScale>
-
     </View>
   );
 }
@@ -175,7 +172,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 30
+    padding: 50
   },
   heart: {
     margin: 10,
@@ -192,61 +189,52 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 4
-
   },
   programImage: {
     aspectRatio: 1,
-    width: '50%',
-    margin: 10,
-    marginBottom: 20,
-
-
-    //  height: '50%',
-    //width: '90%',
-    //resizeMode: 'cover'
+    width: '100%',
+    marginBottom: 50,
+    borderRadius: 20
   },
-  programDescripton: {
+  programTitle: {
     fontSize: 25,
     fontWeight: 'bold',
-    marginLeft: 10
-
-
   },
   getTime: {
-    marginLeft: 30
+    fontSize: 14,
+    fontWeight: '600',
   },
-
+  progressBar: {
+    marginTop: 5
+  },
   play: {
-    paddingTop: 20
+    marginTop: 20
   },
   channelCover: {
-    //   height: 80,
-    //   width: 80,
+    flex: 1.5,
     aspectRatio: 1,
-    flex: 1,
     borderRadius: 5,
-    marginBottom: 20,
     borderColor: 'black',
-    borderWidth: 1
-    //resizeMode: 'cover'
+    borderWidth: 1,
+    marginLeft: 5
   },
-  channelDescription: {
-    fontSize: 15,
+  programDescription: {
+    fontSize: 14,
     color: 'black',
     justifyContent: 'center',
     alignItems: 'center',
-    fontStyle: 'italic',
-    padding: 15
-
+    // fontStyle: 'italic',
+    marginVertical: 15,
+    marginHorizontal: 15
   },
   infoContainer: {
-
+    marginHorizontal: 20,
   },
   programContainer: {
-    flex: 4
+    flex: 4.5,
+    marginLeft: 5,
+    padding: 5,
+    paddingTop: 0,
   }
-
-
 })
 
