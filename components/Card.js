@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Pressable } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image } from "react-native";
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import CommonDataManager from './CommonDataManager';
@@ -11,17 +11,25 @@ export default Card = (props) => {
   const [schedule, setSchedule] = useState([])
   const [live, setLive] = useState({})
   const soundManager = new SoundHandler()
+  const MINUTE_MS = 30000;
 
   useEffect(() => {
     // if (live != "") return
     fetchSchedule(props.item.id)
-    // console.log("live called")
   }, [])
 
   useEffect(() => {
     getLive()
     // console.log("schedule loaded for " + props.item.name)
     // console.log("image url " + image )
+  }, [schedule])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log('Logs every 30sec ');
+      getLive()
+    }, MINUTE_MS);
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [schedule])
 
   const isFavorited = () => {
@@ -48,15 +56,20 @@ export default Card = (props) => {
   }
 
   const getLive = () => {
-    const now = Date.now()
+    var now = Date.now()
+    
     schedule.forEach(element => {
       let startTime = element.starttimeutc
-      startTime = startTime.slice(6, -2)
+      startTime = Number(startTime.slice(6, -2))
       let endTime = element.endtimeutc
-      endTime = endTime.slice(6, -2)
+      endTime = Number(endTime.slice(6, -2))
 
       if (startTime < now && endTime > now) {
-        setLive(element)
+        
+          setLive(element)
+          //console.log(element);
+        
+        
       } else {
         //console.log("No Live Program") 
       }
