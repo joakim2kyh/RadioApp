@@ -20,6 +20,10 @@ export function PlayScreen({ navigation, route }) {
   const soundManager = new SoundHandler()
   const [favorites, setFavorites] = useState([])
   const [timeElapsed, setTimeElapsed] = useState(0)
+  const MINUTE_MS_1S = 30000;
+  const MINUTE_MS_30S = 1000;
+
+
 
   var ids = []
   let dataManager = null
@@ -46,6 +50,19 @@ export function PlayScreen({ navigation, route }) {
   }, [favorites])
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log('Logs every 30sec ');
+      getProgress()
+    }, MINUTE_MS_1S);
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log('Logs every 30sec ');
+      getLive()
+    }, MINUTE_MS_1S);
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [])
 
   const isPlaying = () => {
