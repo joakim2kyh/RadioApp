@@ -52,7 +52,9 @@ export function PlayScreen({ navigation, route }) {
   useEffect(() => {
     const interval = setInterval(() => {
       //console.log('Logs every 30sec ');
-      getProgress()
+      if (Object.keys(live).length != 0) {
+        getProgress()
+      }
     }, MINUTE_MS_1S);
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [])
