@@ -56,7 +56,7 @@ export default function MiniPlayer(props) {
             <Text style={styles.programTitle}>{soundManager.program.title}</Text>
             <Text style={styles.programTime}>{getStartAndEndTime()}</Text>
           </View>
-          <PressableScale style={styles.play} onPress={() => { soundManager.playRadio(), setRefresh({ refresh: !refresh }) }}>
+          <PressableScale style={styles.play} onPress={() => { soundManager.playRadio(), setRefresh({ refresh: !refresh }), props.setRefreshList(!props.refreshList) }}>
             <Fontisto name={isPlaying()} size={30} color="white" />
           </PressableScale>
         </View>

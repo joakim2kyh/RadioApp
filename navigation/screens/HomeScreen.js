@@ -10,9 +10,7 @@ import SoundHandler from '../../components/SoundHandler';
 export function HomeScreen({ navigation, component }) {
 
   const [channels, setChannels] = useState([])
-  const [schedule, setSchedule] = useState([])
   const [favorites, setFavorites] = useState([])
-  const [live, setLive] = useState("")
   const [refresh, setRefresh] = useState([true])
   const [filter, setFilter] = useState(0)
   const soundManager = new SoundHandler()
@@ -90,38 +88,6 @@ export function HomeScreen({ navigation, component }) {
     }
   }
 
-  const playRadio = (item, live) => {
-    //console.log("live", live);
-    if (global.soundHandler.isPlaying && global.soundHandler.channel.id == item.id) {
-      global.soundHandler.sound.pauseAsync()
-      global.soundHandler.isPlaying = false
-    } else {
-      loadSound(item, live)
-      global.soundHandler.isPlaying = true
-    }
-    setRefresh({
-      refresh: !refresh
-    })
-  }
-
-  async function loadSound(item, live) {
-    await global.soundHandler.sound.unloadAsync()
-      .then(
-        global.soundHandler.channel = item,
-        global.soundHandler.program = live,
-        //console.log(live)
-        )
-    await global.soundHandler.sound.loadAsync({ uri: item.liveaudio.url })
-    await global.soundHandler.sound.playAsync()
-  }
-
-  async function playSound() {
-    await sound.playAsync()
-  }
-
-  async function pause() {
-    await sound.pauseAsync()
-  }
 
   return (
 
@@ -171,7 +137,10 @@ export function HomeScreen({ navigation, component }) {
           } />
         )}
       />
-        { soundManager.isPlaying ? <MiniPlayer onPress={
+        { soundManager.isPlaying ? <MiniPlayer 
+        setRefreshList={setRefresh} 
+        refreshList={refresh} 
+        onPress={
             (schedule) => {
               navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
             }

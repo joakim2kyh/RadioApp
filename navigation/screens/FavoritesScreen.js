@@ -77,7 +77,10 @@ export function FavoritesScreen({ navigation }) {
           } />
       )}
       /> 
-      { global.soundHandler.isPlaying ? <MiniPlayer onPress={
+      { soundManager.isPlaying ? <MiniPlayer 
+      setRefreshList={setRefresh} 
+      refreshList={refresh} 
+      onPress={
             (schedule) => {
               navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
             }
