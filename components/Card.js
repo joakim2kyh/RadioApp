@@ -24,7 +24,6 @@ export default Card = (props) => {
     // console.log("image url " + image )
   }, [schedule])
 
-
   const isFavorited = () => {
     let dataManager = CommonDataManager.getInstance()
     let ids = dataManager.getFavIDs()
@@ -34,7 +33,6 @@ export default Card = (props) => {
       return "favorite-outline"
     }
   }
-
 
   const fetchSchedule = async (id) => {
     const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
@@ -62,10 +60,8 @@ export default Card = (props) => {
       } else {
         //console.log("No Live Program") 
       }
-
     });
   }
-
 
   const isPlaying = () => {
     if (soundManager.channel.id == props.item.id && soundManager.isPlaying) {
