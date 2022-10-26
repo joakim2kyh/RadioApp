@@ -8,6 +8,7 @@ import { PressableScale } from 'react-native-pressable-scale';
 import { shadow } from 'react-native-paper';
 import CommonDataManager from '../../components/CommonDataManager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProgressBar from 'react-native-progress/Bar';
 
 
 export function PlayScreen({ navigation, route }) {
@@ -140,6 +141,7 @@ export function PlayScreen({ navigation, route }) {
       <Text style={styles.programDescripton}>
         {live.title}
       </Text>
+      <ProgressBar progress={0.5}/>
 
       <PressableScale onPress={() => {soundManager.playRadio(route.params.item, live), setRefresh({refresh: !refresh})}}>
 
