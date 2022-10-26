@@ -92,7 +92,7 @@ export function FavoritesScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     height: '92%',
-    marginTop: 50,
+    marginTop: 30,
     backgroundColor: '#F5FCFF',
   },
   flatlist: {

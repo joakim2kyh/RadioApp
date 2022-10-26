@@ -20,7 +20,7 @@ export function HomeScreen({ navigation, component }) {
       console.log('Screen was focused');
 
       getData()
-        // .then(console.info("fav " + favorites))
+      // .then(console.info("fav " + favorites))
 
     }, [])
   );
@@ -30,7 +30,7 @@ export function HomeScreen({ navigation, component }) {
     getData()
     //console.log("used effect 2")
   }, [])
-  
+
   useEffect(() => {
     storeData(favorites)
     //console.log("used effect 1")
@@ -91,37 +91,39 @@ export function HomeScreen({ navigation, component }) {
 
   return (
 
-      <View style={styles.container}>
+    <View style={styles.container}>
 
-        <View style={styles.filterButtons}>
-          <Pressable style={styles.button} onPress={() => {
-            fetchList2("Rikskanal")
-            setFilter(0)}}>
-            <Text style={{color: filter === 0 ? 'black' : 'gray', fontWeight: filter === 0 ? 'bold' : 'normal'}}>Rikskanaler</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={() => {
-            fetchList2("Lokal%20kanal")
-            setFilter(1)}}>
-            <Text style={{color: filter === 1 ? 'black' : 'gray', fontWeight: filter === 1 ? 'bold' : 'normal'}}>Lokala kanaler</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={() => {
-            fetchList2("Minoritet%20och%20spr&aring;k")
-            setFilter(2)}}>
-            <Text style={{color: filter === 2 ? 'black' : 'gray', fontWeight: filter === 2 ? 'bold' : 'normal'}}>Minoritet & språk</Text>
-          </Pressable>
-          {/* <Pressable style={styles.button} onPress={() => {
+      <View style={styles.filterButtons}>
+        <Pressable style={styles.button} onPress={() => {
+          fetchList2("Rikskanal")
+          setFilter(0)
+        }}>
+          <Text style={{ color: filter === 0 ? 'black' : 'gray', fontWeight: filter === 0 ? 'bold' : 'normal' }}>Rikskanaler</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => {
+          fetchList2("Lokal%20kanal")
+          setFilter(1)
+        }}>
+          <Text style={{ color: filter === 1 ? 'black' : 'gray', fontWeight: filter === 1 ? 'bold' : 'normal' }}>Lokala kanaler</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => {
+          fetchList2("Minoritet%20och%20spr&aring;k")
+          setFilter(2)
+        }}>
+          <Text style={{ color: filter === 2 ? 'black' : 'gray', fontWeight: filter === 2 ? 'bold' : 'normal' }}>Minoritet & språk</Text>
+        </Pressable>
+        {/* <Pressable style={styles.button} onPress={() => {
             fetchList2("Extrakanaler")
             setFilter(3)}}>
             <Text style={{color: filter === 3 ? 'black' : 'gray', fontWeight: filter === 3 ? 'bold' : 'normal'}}>Extrakanaler</Text>
           </Pressable> */}
-          <Pressable style={styles.button} onPress={() => {
-            fetchList2("Fler%20kanaler")
-            setFilter(4)}}>
-            <Text style={{color: filter === 4 ? 'black' : 'gray', fontWeight: filter === 4 ? 'bold' : 'normal'}}>Fler kanaler</Text>
-          </Pressable>
-
-
-          </View>
+        <Pressable style={styles.button} onPress={() => {
+          fetchList2("Fler%20kanaler")
+          setFilter(4)
+        }}>
+          <Text style={{ color: filter === 4 ? 'black' : 'gray', fontWeight: filter === 4 ? 'bold' : 'normal' }}>Fler kanaler</Text>
+        </Pressable>
+      </View>
       <FlatList
         style={styles.flatlist}
         data={channels}
@@ -129,23 +131,23 @@ export function HomeScreen({ navigation, component }) {
           refresh
         }
         renderItem={({ item }) => (
-          <Card item={item} playRadio={(live) => {soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
-          addFavorite={() => addFavorite(item)} onPress={
-            (schedule) => {
-              navigation.navigate('PlayScreen', { item: item, schedule: schedule})
-            }
-          } />
+          <Card item={item} playRadio={(live) => { soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
+            addFavorite={() => addFavorite(item)} onPress={
+              (schedule) => {
+                navigation.navigate('PlayScreen', { item: item, schedule: schedule })
+              }
+            } />
         )}
       />
-        { soundManager.isPlaying ? <MiniPlayer 
-        setRefreshList={setRefresh} 
-        refreshList={refresh} 
+      {soundManager.isPlaying ? <MiniPlayer
+        setRefreshList={setRefresh}
+        refreshList={refresh}
         onPress={
-            (schedule) => {
-              navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
-            }
-          } /> : null }
-      </View>
+          (schedule) => {
+            navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
+          }
+        } /> : null}
+    </View>
   );
 }
 
@@ -153,8 +155,8 @@ const styles = StyleSheet.create({
   container: {
     height: '92%',
     marginTop: 30,
-   // backgroundColor: '#F5FCFF',
-   backgroundColor: '#f5eee7'
+    // backgroundColor: '#F5FCFF',
+    backgroundColor: '#f5eee7'
   },
 
   filterButtons: {
@@ -168,8 +170,8 @@ const styles = StyleSheet.create({
   },
 
   flatlist: {
-   // backgroundColor: '#F5FCFF'
-   backgroundColor: '#f5eee7'
+    // backgroundColor: '#F5FCFF'
+    backgroundColor: '#f5eee7'
   }
 
 
