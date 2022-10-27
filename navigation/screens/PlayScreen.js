@@ -12,10 +12,10 @@ import ProgressBar from 'react-native-progress/Bar';
 
 export function PlayScreen({ route }) {
 
+  const soundManager = new SoundHandler()
   let schedule = route.params.schedule
   const [live, setLive] = useState({})
   const [refresh, setRefresh] = useState([true])
-  const soundManager = new SoundHandler()
   const [favorites, setFavorites] = useState([])
   const [timeElapsed, setTimeElapsed] = useState(0)
   const TENSEC_MS = 10000;
@@ -28,6 +28,10 @@ export function PlayScreen({ route }) {
     React.useCallback(() => {
       getData()
       getLive()
+      if (live.title == undefined) {
+        console.log("undefined", soundManager.channel.name)
+        console.log("soundManager.program.title", soundManager.program.title)
+      }
       if (!soundManager.isPlaying || soundManager.channel.id != route.params.item.id) {
         soundManager.playRadio(route.params.item, live)
       }
@@ -44,20 +48,18 @@ export function PlayScreen({ route }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      //console.log('Logs every 10sec ');
       getLive()
     }, TENSEC_MS);
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    return () => clearInterval(interval);
   }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      //console.log('Logs every 2sec ');
       if (Object.keys(live).length != 0) {
         getProgress()
       }
     }, ONESEC_MS);
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    return () => clearInterval(interval);
   }, [live])
 
   const isPlaying = () => {
@@ -69,11 +71,12 @@ export function PlayScreen({ route }) {
   }
 
   const getProgress = () => {
-    let totalLengthInSeconds = (Number(live.endtimeutc.slice(6, -2)) - Number(live.starttimeutc.slice(6, -2)) )
-    let timeElapsedInSeconds = Date.now() - Number(live.starttimeutc.slice(6, -2)) 
-    let progress = timeElapsedInSeconds/totalLengthInSeconds
+    let totalLengthInSeconds = (Number(live.endtimeutc.slice(6, -2)) - Number(live.starttimeutc.slice(6, -2)))
+    let timeElapsedInSeconds = Date.now() - Number(live.starttimeutc.slice(6, -2))
+    let progress = timeElapsedInSeconds / totalLengthInSeconds
     setTimeElapsed(progress)
   }
+
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (!ids.includes(item.id)) {
@@ -86,17 +89,12 @@ export function PlayScreen({ route }) {
   const isFavorited = () => {
     dataManager = CommonDataManager.getInstance()
     ids = dataManager.getFavIDs()
-    //console.log("icon updated")
     if (ids.includes(route.params.item.id)) {
       return "favorite"
     } else {
       return "favorite-outline"
     }
   }
-
-  // const handleFav = (value) => {
-  //   route.params.addFavorite(value)
-  // }
 
   const getData = async () => {
     try {
@@ -134,7 +132,7 @@ export function PlayScreen({ route }) {
 
       if (startTime < now && endTime > now) {
         setLive(element)
-        
+
       } else {
       }
     });
@@ -153,12 +151,12 @@ export function PlayScreen({ route }) {
         <View style={styles.rowContainer}>
           <Image style={styles.channelCover} source={{ uri: route.params.item.image }} />
           <View style={styles.programContainer}>
-            <Text style={styles.programTitle} numberOfLines={2} adjustsFontSizeToFit={true}>{live.title}</Text>
+            <Text style={styles.programTitle} numberOfLines={2} adjustsFontSizeToFit={true}>{live.title == undefined ? soundManager.channel.name : live.title}</Text>
             <Text style={styles.getTime}>{soundManager.getStartAndEndTime(live)}</Text>
             <ProgressBar progress={timeElapsed} width={null} color={'black'} style={styles.progressBar} />
           </View>
         </View>
-        <Text style={styles.programDescription} >{live.description}</Text>
+        <Text style={styles.programDescription} numberOfLines={5}>{live.description}</Text>
       </View>
 
       <PressableScale onPress={() => { soundManager.playRadio(route.params.item, live), setRefresh({ refresh: !refresh }) }}>
@@ -226,7 +224,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'black',
     borderWidth: 1,
-    marginLeft: 5
+    marginLeft: 5,
   },
 
   programDescription: {
@@ -243,15 +241,13 @@ const styles = StyleSheet.create({
     maxHeight: '30%',
     justifyContent: 'space-between'
   },
-  
+
   programContainer: {
     flex: 4.5,
     marginLeft: 10,
     padding: 5,
     paddingTop: 0,
-    marginTop: 0,
     marginRight: 20,
-    maxHeight: '40%',    
+    maxHeight: '40%',
   }
 })
-

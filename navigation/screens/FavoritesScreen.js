@@ -8,9 +8,9 @@ import SoundHandler from '../../components/SoundHandler';
 
 export function FavoritesScreen({ navigation }) {
 
+  const soundManager = new SoundHandler()
   const [favorites, setFavorites] = useState([])
   const [refresh, setRefresh] = useState([true])
-  const soundManager = new SoundHandler()
 
   useFocusEffect(
     React.useCallback(() => {
@@ -58,44 +58,36 @@ export function FavoritesScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-
-<View style={styles.heading}>
-      <Text style={{ color: 'black', fontWeight: 'bold' }}></Text>
+      <View style={styles.heading}>
+        <Text style={{ color: 'black', fontWeight: 'bold' }}></Text>
       </View>
-      
-  <FlatList
-      style={styles.flatlist}
-      data={favorites} 
-      extraData = {refresh}
-      renderItem={({ item }) => (
-        <Card item={item} playRadio={(live) => {soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
-          addFavorite={() => addFavorite(item)} onPress={
-            (schedule) => {
-              navigation.navigate('PlayScreen', { item: item, schedule: schedule })
-            }
-          } />
-      )}
-      /> 
-      { soundManager.showMiniplayer ? <MiniPlayer 
-      setRefreshList={setRefresh} 
-      refreshList={refresh} 
-      onPress={
-            () => {
-              navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: soundManager.schedule })
-            }
-          }  /> : null}
-</View>
+      <FlatList
+        data={favorites}
+        extraData={refresh}
+        renderItem={({ item }) => (
+          <Card item={item} playRadio={(live) => { soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
+            addFavorite={() => addFavorite(item)} onPress={
+              (schedule) => {
+                navigation.navigate('PlayScreen', { item: item, schedule: schedule })
+              }
+            } />
+        )}
+      />
+      {soundManager.showMiniplayer ? <MiniPlayer
+        setRefreshList={setRefresh}
+        refreshList={refresh}
+        onPress={() => {
+            navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: soundManager.schedule })
+          }
+        } /> : null}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-   // marginTop: 30,
     backgroundColor: '#f5eee7',
-  },
-  flatlist: {
-    backgroundColor: '#f5eee7'
   },
   heading: {
     padding: 10,
@@ -103,4 +95,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5eee7'
   },
 });
-

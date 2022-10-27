@@ -17,7 +17,6 @@ export default function TabScreen({ navigation }) {
         tabBarInactiveTintColor: 'grey',
         tabBarActiveTintColor: 'tomato',
         tabBarLabelStyle: { paddingBottom: 10, paddingTop: 0, fontSize: 10 },
-       // tabBarIconStyle: { paddingBottom: 15 },
         tabBarStyle: { height: '8%'},
 
         tabBarIcon: ({ focused, color, size }) => {
@@ -29,10 +28,8 @@ export default function TabScreen({ navigation }) {
           } else if (rn === favoritesName) {
             iconName = focused ? 'heart' : 'heart-outline'
           }
-
           return <Ionicons name={iconName} size={size} color={color} />
         },
-
       })} >
       <Tab.Screen name={homeName} component={HomeScreen} options={{
         headerShown: false,
