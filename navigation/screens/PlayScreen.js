@@ -21,6 +21,7 @@ export function PlayScreen({ navigation, route }) {
   const [favorites, setFavorites] = useState([])
   const [timeElapsed, setTimeElapsed] = useState(0)
   const TENSEC_MS = 10000;
+  const ONESEC_MS = 1000;
 
   var ids = []
   let dataManager = null
@@ -37,17 +38,11 @@ export function PlayScreen({ navigation, route }) {
 
   useEffect(() => {
     soundManager.program = live
-    if (Object.keys(live).length != 0) {
-      getProgress()
-    }
   }, [live])
 
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
-
-  useEffect(() => {
-  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,6 +51,16 @@ export function PlayScreen({ navigation, route }) {
     }, TENSEC_MS);
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log('Logs every 2sec ');
+      if (Object.keys(live).length != 0) {
+        getProgress()
+      }
+    }, ONESEC_MS);
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [live])
 
   const isPlaying = () => {
     if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying) {
@@ -69,6 +74,8 @@ export function PlayScreen({ navigation, route }) {
     let totalLengthInSeconds = (Number(live.endtimeutc.slice(6, -2)) - Number(live.starttimeutc.slice(6, -2)) )
     let timeElapsedInSeconds = Date.now() - Number(live.starttimeutc.slice(6, -2)) 
     let progress = timeElapsedInSeconds/totalLengthInSeconds
+    console.log("time elapsed: ", timeElapsedInSeconds);
+    console.log("progress: ", progress);
     setTimeElapsed(progress)
   }
   const addFavorite = (item) => {
@@ -85,7 +92,7 @@ export function PlayScreen({ navigation, route }) {
   const isFavorited = () => {
     dataManager = CommonDataManager.getInstance()
     ids = dataManager.getFavIDs()
-    console.log("icon updated")
+    //console.log("icon updated")
     if (ids.includes(route.params.item.id)) {
       return "favorite"
     } else {
@@ -133,6 +140,7 @@ export function PlayScreen({ navigation, route }) {
 
       if (startTime < now && endTime > now) {
         setLive(element)
+        
       } else {
         //console.log("No Live Program") 
       }
