@@ -10,11 +10,15 @@ export default function MiniPlayer(props) {
 
   const soundManager = new SoundHandler()
   const [refresh, setRefresh] = useState([true])
-  const [schedule, setSchedule] = useState([])
+  const [schedule, setSchedule] = useState(soundManager.schedule)
   const [live, setLive] = useState(soundManager.program)
   const [timeElapsed, setTimeElapsed] = useState(0)
   const ONESEC_MS = 1000;
   const TENSEC_MS = 10000;
+
+  useEffect(() => {
+    getLive()
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,8 +31,9 @@ export default function MiniPlayer(props) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getLive()
-    }, TENSEC_MS);
+        getLive()
+      
+    }, ONESEC_MS);
     return () => clearInterval(interval); 
   }, [schedule])
 
@@ -50,6 +55,7 @@ export default function MiniPlayer(props) {
 
   const getLive = () => {
     var now = Date.now()
+    //console.log("schedule: ", schedule);
     schedule.forEach(element => {
       let startTime = element.starttimeutc
       startTime = Number(startTime.slice(6, -2))
@@ -57,6 +63,7 @@ export default function MiniPlayer(props) {
       endTime = Number(endTime.slice(6, -2))
 
       if (startTime < now && endTime > now) {
+          //soundManager.program = element
           setLive(element)
       } else {
       }
