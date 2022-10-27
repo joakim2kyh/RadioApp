@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   },
 
   progressBar: {
-    marginTop: 5
+    marginTop: 5,
   },
 
   play: {
@@ -226,14 +226,16 @@ const styles = StyleSheet.create({
   },
 
   infoContainer: {
-    marginHorizontal: 20,
+    marginHorizontal: 5,
+
   },
   
   programContainer: {
     flex: 4.5,
-    marginLeft: 5,
+    marginLeft: 10,
     padding: 5,
     paddingTop: 0,
+    marginRight: 20
   }
 })
 
