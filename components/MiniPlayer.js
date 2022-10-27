@@ -1,15 +1,36 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import SoundHandler from './SoundHandler';
 import { PressableScale } from 'react-native-pressable-scale';
 import { Fontisto } from '@expo/vector-icons';
+import ProgressBar from 'react-native-progress/Bar';
 
 export default function MiniPlayer(props) {
 
   const soundManager = new SoundHandler()
   const [refresh, setRefresh] = useState([true])
   const [schedule, setSchedule] = useState([])
+  const [live, setLive] = useState(soundManager.program)
+  const [timeElapsed, setTimeElapsed] = useState(0)
+  const ONESEC_MS = 1000;
+  const TENSEC_MS = 10000;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Object.keys(live).length != 0) {
+        getProgress()
+      }
+    }, ONESEC_MS);
+    return () => clearInterval(interval);
+  }, [live])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getLive()
+    }, TENSEC_MS);
+    return () => clearInterval(interval); 
+  }, [schedule])
 
   const isPlaying = () => {
     if (
@@ -20,6 +41,28 @@ export default function MiniPlayer(props) {
     }
   }
 
+  const getProgress = () => {
+    let totalLengthInSeconds = (Number(live.endtimeutc.slice(6, -2)) - Number(live.starttimeutc.slice(6, -2)) )
+    let timeElapsedInSeconds = Date.now() - Number(live.starttimeutc.slice(6, -2)) 
+    let progress = timeElapsedInSeconds/totalLengthInSeconds
+    setTimeElapsed(progress)
+  }
+
+  const getLive = () => {
+    var now = Date.now()
+    schedule.forEach(element => {
+      let startTime = element.starttimeutc
+      startTime = Number(startTime.slice(6, -2))
+      let endTime = element.endtimeutc
+      endTime = Number(endTime.slice(6, -2))
+
+      if (startTime < now && endTime > now) {
+          setLive(element)
+      } else {
+      }
+    });
+  }
+
   return (
     <Pressable onPress={() => props.onPress(schedule)}>
       <View style={styles.bottomBar}>
@@ -28,6 +71,7 @@ export default function MiniPlayer(props) {
           <View style={styles.programContainer}>
             <Text style={styles.programTitle}>{soundManager.program.title}</Text>
             <Text style={styles.programTime}>{soundManager.getStartAndEndTime()}</Text>
+            <ProgressBar progress={timeElapsed} width={null} color={'white'} style={styles.progressBar} />
           </View>
           <PressableScale style={styles.play} onPress={() => { soundManager.playRadio(), setRefresh({ refresh: !refresh }), props.setRefreshList(!props.refreshList) }}>
             <Fontisto name={isPlaying()} size={30} color="white" />
