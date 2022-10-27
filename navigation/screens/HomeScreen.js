@@ -130,7 +130,7 @@ export function HomeScreen({ navigation}) {
             } />
         )}
       />
-      {soundManager.isPlaying ? <MiniPlayer
+      {soundManager.showMiniplayer ? <MiniPlayer
         setRefreshList={setRefresh}
         refreshList={refresh}
         onPress={

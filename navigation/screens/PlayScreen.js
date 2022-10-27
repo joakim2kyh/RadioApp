@@ -72,18 +72,14 @@ export function PlayScreen({ route }) {
     let totalLengthInSeconds = (Number(live.endtimeutc.slice(6, -2)) - Number(live.starttimeutc.slice(6, -2)) )
     let timeElapsedInSeconds = Date.now() - Number(live.starttimeutc.slice(6, -2)) 
     let progress = timeElapsedInSeconds/totalLengthInSeconds
-    console.log("time elapsed: ", timeElapsedInSeconds);
-    console.log("progress: ", progress);
     setTimeElapsed(progress)
   }
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (!ids.includes(item.id)) {
       setFavorites([...favorites, item])
-      console.log("added " + item.id)
     } else {
       setFavorites(favorites.filter(e => e.id != item.id))
-      console.info("deleted item " + item.id + " from " + favorites)
     }
   }
 
@@ -147,9 +143,9 @@ export function PlayScreen({ route }) {
   return (
 
     <View style={styles.container}>
-      <View style={{ position: 'absolute', top: 10, right: 10 }}>
+      <View style={{ position: 'absolute', top: 38, right: 10 }}>
         <TouchableOpacity onPress={() => addFavorite(route.params.item)}>
-          <MaterialIcons style={styles.heart} name={isFavorited()} size={40} color="black" />
+          <MaterialIcons style={styles.heart} name={isFavorited()} size={35} color="black" />
         </TouchableOpacity>
       </View>
       <Image style={styles.programImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} ></Image>
