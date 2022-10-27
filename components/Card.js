@@ -25,7 +25,8 @@ export default Card = (props) => {
     const interval = setInterval(() => {
       getLive()
     }, TENSEC_MS);
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    return () => clearInterval(interval); 
   }, [schedule])
 
   const isFavorited = () => {
