@@ -7,6 +7,7 @@ export default class SoundHandler {
     isPlaying = false;
     channel = {};
     program = {};
+    schedule = [];
 
     constructor() {
         if (SoundHandler._instance) {
