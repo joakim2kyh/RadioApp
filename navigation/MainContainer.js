@@ -18,9 +18,9 @@ export default function MainContainer() {
     }
 
     return (
-       
+        <SafeAreaView style={{ flex: 1 }}>
         <NavigationContainer backgroundColor={'#f5eee7'}>
-            <StatusBar backgroundColor={'#f5eee7'}/>
+            <StatusBar  />
             <Stack.Navigator>
                 <Stack.Screen name="TabScreen" component={TabScreen} options={{
                     headerShown: false
@@ -31,6 +31,7 @@ export default function MainContainer() {
                 }} />
             </Stack.Navigator>
         </NavigationContainer>
+        </SafeAreaView>
 
     )
 }

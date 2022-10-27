@@ -144,8 +144,7 @@ export function HomeScreen({ navigation}) {
 
 const styles = StyleSheet.create({
   container: {
-    height: '92%',
-    marginTop: 30,
+    height: '100%',
     backgroundColor: '#f5eee7'
   },
 

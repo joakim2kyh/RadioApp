@@ -244,7 +244,6 @@ const styles = StyleSheet.create({
 
   infoContainer: {
     marginHorizontal: 5,
-
   },
   
   programContainer: {

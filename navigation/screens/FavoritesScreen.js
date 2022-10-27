@@ -13,21 +13,21 @@ export function FavoritesScreen({ navigation }) {
   const soundManager = new SoundHandler()
 
   useFocusEffect(
-    React.useCallback(() => {      
+    React.useCallback(() => {
       getData()
     }, [])
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     storeData(favorites)
-  },[favorites])
+  }, [favorites])
 
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (ids.includes(item.id)) {
       setFavorites(favorites.filter(e => e.id != item.id))
       console.info("deleted item " + item.id + " from " + favorites)
-    } 
+    }
   }
 
   const storeData = async (value) => {
@@ -58,6 +58,11 @@ export function FavoritesScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+<View style={styles.filterButtons}>
+      <Text style={{ color: 'black', fontWeight: 'bold' }}>Rikskanaler</Text>
+      </View>
+      
   <FlatList
       style={styles.flatlist}
       data={favorites} 
@@ -85,12 +90,18 @@ export function FavoritesScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: '92%',
-    marginTop: 30,
-    backgroundColor: '#F5FCFF',
+    height: '100%',
+   // marginTop: 30,
+    backgroundColor: '#f5eee7',
   },
   flatlist: {
     backgroundColor: '#f5eee7'
-   }
+  },
+  filterButtons: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 10,
+    backgroundColor: '#f5eee7'
+  },
 });
 

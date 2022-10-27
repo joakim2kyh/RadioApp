@@ -59,6 +59,6 @@ export default class SoundHandler {
           return timeFormat
         }
     
-       return " u did it"
+       return ""
     }
 }
