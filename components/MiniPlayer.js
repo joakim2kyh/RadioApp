@@ -32,7 +32,6 @@ export default function MiniPlayer(props) {
   useEffect(() => {
     const interval = setInterval(() => {
         getLive()
-      
     }, ONESEC_MS);
     return () => clearInterval(interval); 
   }, [schedule])
@@ -76,7 +75,7 @@ export default function MiniPlayer(props) {
         <View style={styles.channelContainer}>
           <Image style={styles.channelImage} source={{ uri: soundManager.channel.image }} />
           <View style={styles.programContainer}>
-            <Text style={styles.programTitle}>{soundManager.program.title}</Text>
+            <Text style={styles.programTitle} numberOfLines={1}>{soundManager.program.title === undefined ? soundManager.channel.name : soundManager.program.title}</Text>
             <Text style={styles.programTime}>{soundManager.getStartAndEndTime()}</Text>
             <ProgressBar progress={timeElapsed} width={null} color={'white'} style={styles.progressBar} />
           </View>
