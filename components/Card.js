@@ -65,11 +65,7 @@ export default Card = (props) => {
       endTime = Number(endTime.slice(6, -2))
 
       if (startTime < now && endTime > now) {
-        
           setLive(element)
-          console.log(element);
-        
-        
       } else {
         //console.log("No Live Program") 
       }
