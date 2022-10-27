@@ -153,7 +153,7 @@ export function PlayScreen({ route }) {
         <View style={styles.rowContainer}>
           <Image style={styles.channelCover} source={{ uri: route.params.item.image }} />
           <View style={styles.programContainer}>
-            <Text style={styles.programTitle}>{live.title}</Text>
+            <Text style={styles.programTitle} numberOfLines={2} adjustsFontSizeToFit={true}>{live.title}</Text>
             <Text style={styles.getTime}>{soundManager.getStartAndEndTime(live)}</Text>
             <ProgressBar progress={timeElapsed} width={null} color={'black'} style={styles.progressBar} />
           </View>
@@ -191,19 +191,19 @@ const styles = StyleSheet.create({
 
   rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 
   programImage: {
     aspectRatio: 1,
     width: '100%',
     marginBottom: 50,
-    borderRadius: 20
+    borderRadius: 20,
+    borderColor: 'black',
+    borderWidth: 2,
   },
 
   programTitle: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
   },
 
@@ -240,6 +240,8 @@ const styles = StyleSheet.create({
 
   infoContainer: {
     marginHorizontal: 5,
+    maxHeight: '30%',
+    justifyContent: 'space-between'
   },
   
   programContainer: {
@@ -247,7 +249,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     padding: 5,
     paddingTop: 0,
-    marginRight: 20
+    marginTop: 0,
+    marginRight: 20,
+    maxHeight: '40%',    
   }
 })
 

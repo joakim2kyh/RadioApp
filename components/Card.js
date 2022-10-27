@@ -78,7 +78,6 @@ export default Card = (props) => {
 
   return (
     <PressableScale onPress={() => props.onPress(schedule)}>
-      <View style={styles.container}>
         <View style={[styles.cardContainer, { backgroundColor: '#' + props.item.color }]}>
           <View style={styles.imgTextContainer}>
             <Image style={styles.cardImage} source={{ uri: props.item.image }} />
@@ -97,7 +96,6 @@ export default Card = (props) => {
             <MaterialIcons name={isFavorited()} size={30} color="black" />
           </PressableScale>
         </View>
-      </View>
     </PressableScale>
   );
 }
@@ -113,6 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: '#fff',
     borderWidth: 1,
+    marginHorizontal: 10,
     backgroundColor: '#219ebc',
     marginBottom: 20,
     shadowColor: 'black',
@@ -127,8 +126,8 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    flexDirection: 'row',
-    marginHorizontal: 10,
+   // flexDirection: 'row',
+   // marginHorizontal: 10,
   },
 
   imgTextContainer: {

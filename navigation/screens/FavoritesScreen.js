@@ -60,7 +60,7 @@ export function FavoritesScreen({ navigation }) {
     <View style={styles.container}>
 
 <View style={styles.heading}>
-      <Text style={{ color: 'black', fontWeight: 'bold' }}>Mina sparade kanaler</Text>
+      <Text style={{ color: 'black', fontWeight: 'bold' }}></Text>
       </View>
       
   <FlatList
