@@ -1,12 +1,10 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
 import CommonDataManager from '../../components/CommonDataManager';
 import MiniPlayer from '../../components/MiniPlayer';
 import SoundHandler from '../../components/SoundHandler';
-
 
 export function FavoritesScreen({ navigation }) {
 
@@ -14,13 +12,9 @@ export function FavoritesScreen({ navigation }) {
   const [refresh, setRefresh] = useState([true])
   const soundManager = new SoundHandler()
 
-  const route = useRoute();
-
   useFocusEffect(
     React.useCallback(() => {      
       getData()
-        // .then(console.info("fav " + favorites))
-
     }, [])
   );
 

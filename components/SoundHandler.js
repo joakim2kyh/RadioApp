@@ -46,7 +46,6 @@ export default class SoundHandler {
           startTime = startTime.slice(6, -2)
           let endTime = program.endtimeutc
           endTime = endTime.slice(6, -2)
-          //console.log(endTime);
     
           var startTimeUtc = new Date(parseInt(startTime))
           var endTimeUtc = new Date(parseInt(endTime))

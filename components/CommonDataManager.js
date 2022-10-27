@@ -4,7 +4,6 @@ export default class CommonDataManager {
 
     _favIDs = [];
 
-
     /**
      * @returns {CommonDataManager}
      */
@@ -15,11 +14,9 @@ export default class CommonDataManager {
 
         return this.myInstance;
     }
-
     getFavIDs() {
         return this._favIDs;
     }
-
     setFavIds(idArray) {
         this._favIDs = idArray;
     }
