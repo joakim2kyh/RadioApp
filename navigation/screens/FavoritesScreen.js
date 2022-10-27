@@ -17,23 +17,23 @@ export function FavoritesScreen({ navigation }) {
   const route = useRoute();
 
   useFocusEffect(
-    React.useCallback(() => {      
+    React.useCallback(() => {
       getData()
-        // .then(console.info("fav " + favorites))
+      // .then(console.info("fav " + favorites))
 
     }, [])
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     storeData(favorites)
-  },[favorites])
+  }, [favorites])
 
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (ids.includes(item.id)) {
       setFavorites(favorites.filter(e => e.id != item.id))
       console.info("deleted item " + item.id + " from " + favorites)
-    } 
+    }
   }
 
   const storeData = async (value) => {
@@ -64,39 +64,49 @@ export function FavoritesScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-  <FlatList
-      style={styles.flatlist}
-      data={favorites} 
-      extraData = {refresh}
-      renderItem={({ item }) => (
-        <Card item={item} playRadio={(live) => {soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
-          addFavorite={() => addFavorite(item)} onPress={
-            (schedule) => {
-              navigation.navigate('PlayScreen', { item: item, schedule: schedule })
-            }
-          } />
-      )}
-      /> 
-      { soundManager.isPlaying ? <MiniPlayer 
-      setRefreshList={setRefresh} 
-      refreshList={refresh} 
-      onPress={
-            (schedule) => {
-              navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
-            }
-          }  /> : null}
-</View>
+      <View style={styles.filterButtons}>
+      <Text style={{ color: 'black', fontWeight: 'bold' }}>Rikskanaler</Text>
+      </View>
+
+      <FlatList
+        style={styles.flatlist}
+        data={favorites}
+        extraData={refresh}
+        renderItem={({ item }) => (
+          <Card item={item} playRadio={(live) => { soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
+            addFavorite={() => addFavorite(item)} onPress={
+              (schedule) => {
+                navigation.navigate('PlayScreen', { item: item, schedule: schedule })
+              }
+            } />
+        )}
+      />
+      {soundManager.isPlaying ? <MiniPlayer
+        setRefreshList={setRefresh}
+        refreshList={refresh}
+        onPress={
+          (schedule) => {
+            navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
+          }
+        } /> : null}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: '92%',
-    marginTop: 30,
-    backgroundColor: '#F5FCFF',
+    height: '100%',
+   // marginTop: 30,
+    backgroundColor: '#f5eee7',
   },
   flatlist: {
     backgroundColor: '#f5eee7'
-   }
+  },
+  filterButtons: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 10,
+    backgroundColor: '#f5eee7'
+  },
 });
 

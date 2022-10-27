@@ -16,8 +16,9 @@ export default function TabScreen({ navigation }) {
       screenOptions={({ route }) => ({
         tabBarInactiveTintColor: 'grey',
         tabBarActiveTintColor: 'tomato',
-        tabBarLabelStyle: { paddingBottom: 10, fontSize: 10 },
-        //tabBarStyle: { marginTop: 10},
+        tabBarLabelStyle: { paddingBottom: 10, paddingTop: 0, fontSize: 10 },
+       // tabBarIconStyle: { paddingBottom: 15 },
+        tabBarStyle: { height: '8%'},
 
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;

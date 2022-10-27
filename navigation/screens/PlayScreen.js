@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15
   },
   infoContainer: {
-    marginHorizontal: 20,
+    marginHorizontal: 5,
   },
   programContainer: {
     flex: 4.5,
