@@ -18,7 +18,8 @@ export default class SoundHandler {
     console.log("SoundHandler created");
   };
 
-  playRadio(item = this.channel, live = this.program) {
+  playRadio(item = this.channel, live = this.program, schedule = this.schedule) {
+    this.schedule = schedule
     if (this.isPlaying && this.channel.id == item.id) {
       console.log("PAUSE");
       this.isPlaying = false

@@ -118,9 +118,10 @@ export function HomeScreen({ navigation}) {
           refresh
         }
         renderItem={({ item }) => (
-          <Card item={item} playRadio={(live) => { soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
+          <Card item={item} playRadio={(live, schedule) => { soundManager.playRadio(item, live, schedule), setRefresh({ refresh: !refresh }) }}
             addFavorite={() => addFavorite(item)} 
               onPress={ (schedule) => {
+                soundManager.schedule = schedule,
                 navigation.navigate('PlayScreen', { item: item, schedule: schedule })
               }
             } />

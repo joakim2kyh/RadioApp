@@ -9,7 +9,7 @@ export default function MiniPlayer(props) {
 
   const soundManager = new SoundHandler()
   const [refresh, setRefresh] = useState([true])
-  const [schedule, setSchedule] = useState(soundManager.schedule)
+  //const [schedule, setSchedule] = useState(soundManager.schedule)
   const [live, setLive] = useState(soundManager.program)
   const [timeElapsed, setTimeElapsed] = useState(0)
   const ONESEC_MS = 1000;
@@ -19,25 +19,24 @@ export default function MiniPlayer(props) {
     getLive()
   }, [])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (Object.keys(live).length != 0) {
-        getProgress()
-      }
-    }, ONESEC_MS);
-    return () => clearInterval(interval);
-  }, [live])
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (Object.keys(live).length != 0) {
+  //       getProgress()
+  //     }
+  //   }, ONESEC_MS);
+  //   return () => clearInterval(interval);
+  // }, [live])
 
   useEffect(() => {
     const interval = setInterval(() => {
       getLive()
     }, ONESEC_MS);
     return () => clearInterval(interval);
-  }, [schedule])
+  }, [])
 
   const isPlaying = () => {
-    if (
-      soundManager.isPlaying) {
+    if (soundManager.isPlaying) {
       return "pause"
     } else {
       return "play"
@@ -53,13 +52,14 @@ export default function MiniPlayer(props) {
 
   const getLive = () => {
     var now = Date.now()
-    schedule.forEach(element => {
+    soundManager.schedule.forEach(element => {
       let startTime = element.starttimeutc
       startTime = Number(startTime.slice(6, -2))
       let endTime = element.endtimeutc
       endTime = Number(endTime.slice(6, -2))
 
       if (startTime < now && endTime > now) {
+        soundManager.program = element
         setLive(element)
       } else {
       }
@@ -67,14 +67,14 @@ export default function MiniPlayer(props) {
   }
 
   return (
-    <Pressable onPress={() => props.onPress(schedule)}>
+    <Pressable onPress={() => props.onPress(soundManager.schedule)}>
       <View style={styles.container}>
         <View style={styles.channelContainer}>
           <Image style={styles.channelImage} source={{ uri: soundManager.channel.image }} />
           <View style={styles.programContainer}>
             <Text style={styles.programTitle} numberOfLines={1}>{soundManager.program.title === undefined ? soundManager.channel.name : soundManager.program.title}</Text>
             <Text style={styles.programTime}>{soundManager.getStartAndEndTime()}</Text>
-            <ProgressBar progress={timeElapsed} width={null} color={'white'} />
+            {/* <ProgressBar progress={timeElapsed} width={null} color={'white'} /> */}
           </View>
           <PressableScale style={styles.play} onPress={() => { soundManager.playRadio(), setRefresh({ refresh: !refresh }), props.setRefreshList(!props.refreshList) }}>
             <Fontisto name={isPlaying()} size={30} color="white" />
