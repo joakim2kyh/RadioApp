@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import React, { useState } from 'react';
-import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 import SoundHandler from './SoundHandler';
 import { PressableScale } from 'react-native-pressable-scale';
@@ -29,7 +28,6 @@ export default function MiniPlayer(props) {
       startTime = startTime.slice(6, -2)
       let endTime = soundManager.program.endtimeutc
       endTime = endTime.slice(6, -2)
-      //console.log(endTime);
 
       var startTimeUtc = new Date(parseInt(startTime))
       var endTimeUtc = new Date(parseInt(endTime))
@@ -70,14 +68,11 @@ const styles = StyleSheet.create({
   container: {
     height: '92%',
     marginTop: 50,
-    // backgroundColor: '#F5FCFF',
     backgroundColor: 'black'
   },
 
   bottomBar: {
     backgroundColor: 'black',
-
-    // width: '100%',
     height: '11%'
   },
 
@@ -86,7 +81,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'black',
     padding: 10
-    // height: 80
   },
 
   channelImage: {
@@ -112,13 +106,11 @@ const styles = StyleSheet.create({
     height: '50%',
     width: 200,
     flex: 3,
-
   },
 
   programTime: {
     color: 'white',
     height: '50%',
-
   },
 
   play: {
@@ -126,16 +118,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+
   filterButtons: {
     flexDirection: 'row',
     flexWrap: 'wrap'
-
   },
+
   button: {
     margin: 4
-
   },
-  text: {
-    // color: 'tomato'
-  }
 });

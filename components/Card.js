@@ -14,19 +14,15 @@ export default Card = (props) => {
   const TENSEC_MS = 10000;
 
   useEffect(() => {
-    // if (live != "") return
     fetchSchedule(props.item.id)
   }, [])
 
   useEffect(() => {
     getLive()
-    // console.log("schedule loaded for " + props.item.name)
-    // console.log("image url " + image )
   }, [schedule])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      //console.log('Logs every 10sec ');
       getLive()
     }, TENSEC_MS);
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
@@ -67,7 +63,6 @@ export default Card = (props) => {
       if (startTime < now && endTime > now) {
           setLive(element)
       } else {
-        //console.log("No Live Program") 
       }
     });
   }
@@ -84,7 +79,6 @@ export default Card = (props) => {
     <PressableScale onPress={() => props.onPress(schedule)}>
       <View style={styles.container}>
         <View style={[styles.cardContainer, { backgroundColor: '#' + props.item.color }]}>
-          {/* <TouchableOpacity style ={styles.card} onPress={onPress}> */}
           <View style={styles.imgTextContainer}>
             <Image style={styles.cardImage} source={{ uri: props.item.image }} />
             <View style={styles.infoTextContainer}>
@@ -130,15 +124,18 @@ const styles = StyleSheet.create({
       height: 3
     }
   },
+
   container: {
     flexDirection: 'row',
     marginHorizontal: 10,
   },
+
   imgTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
   },
+
   card: {
     backgroundColor: '#50A0B7',
     marginBottom: 20,
@@ -153,12 +150,14 @@ const styles = StyleSheet.create({
       height: 3
     }
   },
+
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     width: "15%"
   },
+
   cardImage: {
     height: 100,
     width: 100,
@@ -167,6 +166,7 @@ const styles = StyleSheet.create({
     margin: 5,
     resizeMode: 'cover'
   },
+
   programImage: {
     height: 50,
     width: 50,
@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
     margin: 5,
     resizeMode: 'cover'
   },
+
   cardText: {
     padding: 1,
     fontSize: 20,
@@ -182,18 +183,20 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
+
   programText: {
     fontSize: 12,
     fontWeight: '400'
   },
+
   play: {
     marginEnd: 10,
   },
+
   infoTextContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     flex: 1
   },
-
 });

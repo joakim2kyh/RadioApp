@@ -1,18 +1,16 @@
 
-import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { AntDesign, Fontisto, MaterialIcons } from '@expo/vector-icons';
+import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 import SoundHandler from '../../components/SoundHandler';
 import { PressableScale } from 'react-native-pressable-scale';
-import { shadow } from 'react-native-paper';
 import CommonDataManager from '../../components/CommonDataManager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProgressBar from 'react-native-progress/Bar';
-import { color } from 'react-native-reanimated';
 
 
-export function PlayScreen({ navigation, route }) {
+export function PlayScreen({ route }) {
 
   let schedule = route.params.schedule
   const [live, setLive] = useState({})
@@ -100,9 +98,9 @@ export function PlayScreen({ navigation, route }) {
     }
   }
 
-  const handleFav = (value) => {
-    route.params.addFavorite(value)
-  }
+  // const handleFav = (value) => {
+  //   route.params.addFavorite(value)
+  // }
 
   const getData = async () => {
     try {
@@ -142,7 +140,6 @@ export function PlayScreen({ navigation, route }) {
         setLive(element)
         
       } else {
-        //console.log("No Live Program") 
       }
     });
   }
@@ -150,14 +147,6 @@ export function PlayScreen({ navigation, route }) {
   return (
 
     <View style={styles.container}>
-      {/*<ImageBackground style={styles.channelImage} imageStyle={{ borderRadius: 20, borderColor: 'black', borderWidth: 3}} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} >
-        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-        <TouchableOpacity onPress={()=>addFavorite(route.params.item)}>
-          <MaterialIcons style={styles.heart} name={isFavorited()} size={60} color="white" />
-        </TouchableOpacity>
-      </View>
-      </ImageBackground>
-  */}
       <View style={{ position: 'absolute', top: 10, right: 10 }}>
         <TouchableOpacity onPress={() => addFavorite(route.params.item)}>
           <MaterialIcons style={styles.heart} name={isFavorited()} size={40} color="black" />
@@ -191,6 +180,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 50
   },
+
   heart: {
     margin: 10,
     shadowColor: 'black',
@@ -202,31 +192,38 @@ const styles = StyleSheet.create({
       height: 3
     }
   },
+
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   programImage: {
     aspectRatio: 1,
     width: '100%',
     marginBottom: 50,
     borderRadius: 20
   },
+
   programTitle: {
     fontSize: 25,
     fontWeight: 'bold',
   },
+
   getTime: {
     fontSize: 14,
     fontWeight: '600',
   },
+
   progressBar: {
-    marginTop: 5
+    marginTop: 5,
   },
+
   play: {
     marginTop: 20
   },
+
   channelCover: {
     flex: 1.5,
     aspectRatio: 1,
@@ -235,23 +232,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginLeft: 5
   },
+
   programDescription: {
     fontSize: 14,
     color: 'black',
     justifyContent: 'center',
     alignItems: 'center',
-    // fontStyle: 'italic',
     marginVertical: 15,
     marginHorizontal: 15
   },
+
   infoContainer: {
-    marginHorizontal: 20,
+    marginHorizontal: 5,
+
   },
+  
   programContainer: {
     flex: 4.5,
-    marginLeft: 5,
+    marginLeft: 10,
     padding: 5,
     paddingTop: 0,
+    marginRight: 20
   }
 })
 
