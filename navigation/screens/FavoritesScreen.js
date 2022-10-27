@@ -1,12 +1,10 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
 import CommonDataManager from '../../components/CommonDataManager';
 import MiniPlayer from '../../components/MiniPlayer';
 import SoundHandler from '../../components/SoundHandler';
-
 
 export function FavoritesScreen({ navigation }) {
 
@@ -14,13 +12,9 @@ export function FavoritesScreen({ navigation }) {
   const [refresh, setRefresh] = useState([true])
   const soundManager = new SoundHandler()
 
-  const route = useRoute();
-
   useFocusEffect(
     React.useCallback(() => {
       getData()
-      // .then(console.info("fav " + favorites))
-
     }, [])
   );
 
@@ -64,32 +58,33 @@ export function FavoritesScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.filterButtons}>
+
+<View style={styles.filterButtons}>
       <Text style={{ color: 'black', fontWeight: 'bold' }}>Rikskanaler</Text>
       </View>
-
-      <FlatList
-        style={styles.flatlist}
-        data={favorites}
-        extraData={refresh}
-        renderItem={({ item }) => (
-          <Card item={item} playRadio={(live) => { soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
-            addFavorite={() => addFavorite(item)} onPress={
-              (schedule) => {
-                navigation.navigate('PlayScreen', { item: item, schedule: schedule })
-              }
-            } />
-        )}
-      />
-      {soundManager.isPlaying ? <MiniPlayer
-        setRefreshList={setRefresh}
-        refreshList={refresh}
-        onPress={
-          (schedule) => {
-            navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
-          }
-        } /> : null}
-    </View>
+      
+  <FlatList
+      style={styles.flatlist}
+      data={favorites} 
+      extraData = {refresh}
+      renderItem={({ item }) => (
+        <Card item={item} playRadio={(live) => {soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
+          addFavorite={() => addFavorite(item)} onPress={
+            (schedule) => {
+              navigation.navigate('PlayScreen', { item: item, schedule: schedule })
+            }
+          } />
+      )}
+      /> 
+      { soundManager.isPlaying ? <MiniPlayer 
+      setRefreshList={setRefresh} 
+      refreshList={refresh} 
+      onPress={
+            () => {
+              navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: soundManager.schedule })
+            }
+          }  /> : null}
+</View>
   );
 }
 

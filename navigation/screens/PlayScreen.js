@@ -1,18 +1,16 @@
 
-import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { AntDesign, Fontisto, MaterialIcons } from '@expo/vector-icons';
+import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 import SoundHandler from '../../components/SoundHandler';
 import { PressableScale } from 'react-native-pressable-scale';
-import { shadow } from 'react-native-paper';
 import CommonDataManager from '../../components/CommonDataManager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProgressBar from 'react-native-progress/Bar';
-import { color } from 'react-native-reanimated';
 
 
-export function PlayScreen({ navigation, route }) {
+export function PlayScreen({ route }) {
 
   let schedule = route.params.schedule
   const [live, setLive] = useState({})
@@ -20,6 +18,8 @@ export function PlayScreen({ navigation, route }) {
   const soundManager = new SoundHandler()
   const [favorites, setFavorites] = useState([])
   const [timeElapsed, setTimeElapsed] = useState(0)
+  const TENSEC_MS = 10000;
+  const ONESEC_MS = 1000;
 
   var ids = []
   let dataManager = null
@@ -36,9 +36,6 @@ export function PlayScreen({ navigation, route }) {
 
   useEffect(() => {
     soundManager.program = live
-    if (Object.keys(live).length != 0) {
-      getProgress()
-    }
   }, [live])
 
   useEffect(() => {
@@ -46,7 +43,22 @@ export function PlayScreen({ navigation, route }) {
   }, [favorites])
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log('Logs every 10sec ');
+      getLive()
+    }, TENSEC_MS);
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log('Logs every 2sec ');
+      if (Object.keys(live).length != 0) {
+        getProgress()
+      }
+    }, ONESEC_MS);
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [live])
 
   const isPlaying = () => {
     if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying) {
@@ -60,6 +72,8 @@ export function PlayScreen({ navigation, route }) {
     let totalLengthInSeconds = (Number(live.endtimeutc.slice(6, -2)) - Number(live.starttimeutc.slice(6, -2)) )
     let timeElapsedInSeconds = Date.now() - Number(live.starttimeutc.slice(6, -2)) 
     let progress = timeElapsedInSeconds/totalLengthInSeconds
+    console.log("time elapsed: ", timeElapsedInSeconds);
+    console.log("progress: ", progress);
     setTimeElapsed(progress)
   }
   const addFavorite = (item) => {
@@ -76,7 +90,7 @@ export function PlayScreen({ navigation, route }) {
   const isFavorited = () => {
     dataManager = CommonDataManager.getInstance()
     ids = dataManager.getFavIDs()
-    console.log("icon updated")
+    //console.log("icon updated")
     if (ids.includes(route.params.item.id)) {
       return "favorite"
     } else {
@@ -84,9 +98,9 @@ export function PlayScreen({ navigation, route }) {
     }
   }
 
-  const handleFav = (value) => {
-    route.params.addFavorite(value)
-  }
+  // const handleFav = (value) => {
+  //   route.params.addFavorite(value)
+  // }
 
   const getData = async () => {
     try {
@@ -124,8 +138,8 @@ export function PlayScreen({ navigation, route }) {
 
       if (startTime < now && endTime > now) {
         setLive(element)
+        
       } else {
-        //console.log("No Live Program") 
       }
     });
   }
@@ -133,14 +147,6 @@ export function PlayScreen({ navigation, route }) {
   return (
 
     <View style={styles.container}>
-      {/*<ImageBackground style={styles.channelImage} imageStyle={{ borderRadius: 20, borderColor: 'black', borderWidth: 3}} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} >
-        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-        <TouchableOpacity onPress={()=>addFavorite(route.params.item)}>
-          <MaterialIcons style={styles.heart} name={isFavorited()} size={60} color="white" />
-        </TouchableOpacity>
-      </View>
-      </ImageBackground>
-  */}
       <View style={{ position: 'absolute', top: 10, right: 10 }}>
         <TouchableOpacity onPress={() => addFavorite(route.params.item)}>
           <MaterialIcons style={styles.heart} name={isFavorited()} size={40} color="black" />
@@ -174,6 +180,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 50
   },
+
   heart: {
     margin: 10,
     shadowColor: 'black',
@@ -185,31 +192,38 @@ const styles = StyleSheet.create({
       height: 3
     }
   },
+
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   programImage: {
     aspectRatio: 1,
     width: '100%',
     marginBottom: 50,
     borderRadius: 20
   },
+
   programTitle: {
     fontSize: 25,
     fontWeight: 'bold',
   },
+
   getTime: {
     fontSize: 14,
     fontWeight: '600',
   },
+
   progressBar: {
-    marginTop: 5
+    marginTop: 5,
   },
+
   play: {
     marginTop: 20
   },
+
   channelCover: {
     flex: 1.5,
     aspectRatio: 1,
@@ -218,23 +232,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginLeft: 5
   },
+
   programDescription: {
     fontSize: 14,
     color: 'black',
     justifyContent: 'center',
     alignItems: 'center',
-    // fontStyle: 'italic',
     marginVertical: 15,
     marginHorizontal: 15
   },
+
   infoContainer: {
     marginHorizontal: 5,
   },
+  
   programContainer: {
     flex: 4.5,
-    marginLeft: 5,
+    marginLeft: 10,
     padding: 5,
     paddingTop: 0,
+    marginRight: 20
   }
 })
 

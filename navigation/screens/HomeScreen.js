@@ -1,4 +1,4 @@
-import { View, Text, Button, FlatList, StyleSheet, Pressable } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,7 +7,7 @@ import CommonDataManager from '../../components/CommonDataManager';
 import MiniPlayer from '../../components/MiniPlayer';
 import SoundHandler from '../../components/SoundHandler';
 
-export function HomeScreen({ navigation, component }) {
+export function HomeScreen({ navigation}) {
 
   const [channels, setChannels] = useState([])
   const [favorites, setFavorites] = useState([])
@@ -20,20 +20,17 @@ export function HomeScreen({ navigation, component }) {
       console.log('Screen was focused');
 
       getData()
-      // .then(console.info("fav " + favorites))
-
+     
     }, [])
   );
 
   useEffect(() => {
     fetchList2("Rikskanal")
     getData()
-    //console.log("used effect 2")
   }, [])
 
   useEffect(() => {
     storeData(favorites)
-    //console.log("used effect 1")
   }, [favorites])
 
   const storeData = async (value) => {
@@ -77,7 +74,6 @@ export function HomeScreen({ navigation, component }) {
 
   const fetchList2 = async (channeltype) => {
     try {
-      // let response = await fetch(`http://api.sr.se/api/v2/channels?format=json${page}`);
       let response = await fetch(`https://api.sr.se/api/v2/channels?format=json&pagination=false&filter=channel.channeltype&filtervalue=${channeltype}`)
       let json = await response.json();
       setChannels(json.channels)
@@ -112,11 +108,6 @@ export function HomeScreen({ navigation, component }) {
         }}>
           <Text style={{ color: filter === 2 ? 'black' : 'gray', fontWeight: filter === 2 ? 'bold' : 'normal' }}>Minoritet & språk</Text>
         </Pressable>
-        {/* <Pressable style={styles.button} onPress={() => {
-            fetchList2("Extrakanaler")
-            setFilter(3)}}>
-            <Text style={{color: filter === 3 ? 'black' : 'gray', fontWeight: filter === 3 ? 'bold' : 'normal'}}>Extrakanaler</Text>
-          </Pressable> */}
         <Pressable style={styles.button} onPress={() => {
           fetchList2("Fler%20kanaler")
           setFilter(4)
@@ -132,8 +123,8 @@ export function HomeScreen({ navigation, component }) {
         }
         renderItem={({ item }) => (
           <Card item={item} playRadio={(live) => { soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
-            addFavorite={() => addFavorite(item)} onPress={
-              (schedule) => {
+            addFavorite={() => addFavorite(item)} 
+              onPress={ (schedule) => {
                 navigation.navigate('PlayScreen', { item: item, schedule: schedule })
               }
             } />
@@ -143,8 +134,8 @@ export function HomeScreen({ navigation, component }) {
         setRefreshList={setRefresh}
         refreshList={refresh}
         onPress={
-          (schedule) => {
-            navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
+          () => {
+            navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: soundManager.schedule })
           }
         } /> : null}
     </View>
@@ -154,8 +145,6 @@ export function HomeScreen({ navigation, component }) {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-   // marginTop: 30,
-    // backgroundColor: '#F5FCFF',
     backgroundColor: '#f5eee7'
   },
 
@@ -170,7 +159,6 @@ const styles = StyleSheet.create({
   },
 
   flatlist: {
-    // backgroundColor: '#F5FCFF'
     backgroundColor: '#f5eee7'
   }
 
