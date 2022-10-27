@@ -94,7 +94,7 @@ export default Card = (props) => {
             </View>
           </View>
           <View style={styles.buttonContainer}>
-            <PressableScale onPress={() => props.playRadio(live)}>
+            <PressableScale onPress={() => {soundManager.schedule = schedule, props.playRadio(live)}}>
               <Fontisto style={styles.play} name={isPlaying()} size={25} color="black" />
             </PressableScale>
           </View>

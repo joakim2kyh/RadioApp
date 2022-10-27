@@ -81,8 +81,8 @@ export function FavoritesScreen({ navigation }) {
       setRefreshList={setRefresh} 
       refreshList={refresh} 
       onPress={
-            (schedule) => {
-              navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
+            () => {
+              navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: soundManager.schedule })
             }
           }  /> : null}
 </View>
