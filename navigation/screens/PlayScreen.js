@@ -55,7 +55,7 @@ export function PlayScreen({ navigation, route }) {
       getLive()
     }, TENSEC_MS);
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  }, [schedule])
+  }, [])
 
   const isPlaying = () => {
     if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying) {
