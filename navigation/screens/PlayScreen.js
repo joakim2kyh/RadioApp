@@ -141,12 +141,14 @@ export function PlayScreen({ route }) {
   return (
 
     <View style={styles.container}>
-      <View style={{ position: 'absolute', top: 38, right: 10 }}>
+      <View style={styles.heartContainer}>
         <TouchableOpacity onPress={() => addFavorite(route.params.item)}>
           <MaterialIcons style={styles.heart} name={isFavorited()} size={35} color="black" />
         </TouchableOpacity>
       </View>
-      <Image style={styles.programImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} ></Image>
+      <View style={styles.imgContainer}>
+        <Image style={styles.programImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} ></Image>
+      </View>
       <View style={styles.infoContainer}>
         <View style={styles.rowContainer}>
           <Image style={styles.channelCover} source={{ uri: route.params.item.image }} />
@@ -158,10 +160,11 @@ export function PlayScreen({ route }) {
         </View>
         <Text style={styles.programDescription} numberOfLines={5}>{live.description}</Text>
       </View>
-
-      <PressableScale onPress={() => { soundManager.playRadio(route.params.item, live), setRefresh({ refresh: !refresh }) }}>
-        <Fontisto style={styles.play} name={isPlaying()} size={40} color="black" />
-      </PressableScale>
+      <View style={styles.playContainer}>
+        <PressableScale onPress={() => { soundManager.playRadio(route.params.item, live), setRefresh({ refresh: !refresh }) }}>
+          <Fontisto style={styles.play} name={isPlaying()} size={40} color="black" />
+        </PressableScale>
+      </View>
     </View>
   );
 }
@@ -173,6 +176,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 50
+  },
+
+  heartContainer: {
+    position: 'absolute',
+    top: 38,
+    right: 10,
   },
 
   heart: {
@@ -187,8 +196,9 @@ const styles = StyleSheet.create({
     }
   },
 
-  rowContainer: {
-    flexDirection: 'row',
+  imgContainer: {
+    flex: 4,
+    marginTop: '20%',
   },
 
   programImage: {
@@ -198,6 +208,34 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: 'black',
     borderWidth: 2,
+  },
+
+  infoContainer: {
+    width: '90%',
+    marginHorizontal: 5,
+    height: '20%',
+    flex: 2
+  },
+
+  rowContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 0,
+  },
+
+  channelCover: {
+    flex: 1.5,
+    aspectRatio: 1,
+    borderRadius: 5,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginLeft: 5,
+  },
+
+  programContainer: {
+    flex: 4.5,
+    marginLeft: 10,
+    padding: 5,
+    paddingTop: 0,
   },
 
   programTitle: {
@@ -215,16 +253,11 @@ const styles = StyleSheet.create({
   },
 
   play: {
-    marginTop: 20
+    // marginTop: 20
   },
 
-  channelCover: {
-    flex: 1.5,
-    aspectRatio: 1,
-    borderRadius: 5,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginLeft: 5,
+  playContainer: {
+    flex: 1
   },
 
   programDescription: {
@@ -236,18 +269,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 15
   },
 
-  infoContainer: {
-    marginHorizontal: 5,
-    maxHeight: '30%',
-    justifyContent: 'space-between'
-  },
 
-  programContainer: {
-    flex: 4.5,
-    marginLeft: 10,
-    padding: 5,
-    paddingTop: 0,
-    marginRight: 20,
-    maxHeight: '40%',
-  }
 })
