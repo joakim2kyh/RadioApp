@@ -20,6 +20,7 @@ export function PlayScreen({ navigation, route }) {
   const soundManager = new SoundHandler()
   const [favorites, setFavorites] = useState([])
   const [timeElapsed, setTimeElapsed] = useState(0)
+  const TENSEC_MS = 10000;
 
   var ids = []
   let dataManager = null
@@ -47,6 +48,14 @@ export function PlayScreen({ navigation, route }) {
 
   useEffect(() => {
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log('Logs every 10sec ');
+      getLive()
+    }, TENSEC_MS);
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [schedule])
 
   const isPlaying = () => {
     if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying) {
