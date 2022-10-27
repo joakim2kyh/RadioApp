@@ -1,4 +1,4 @@
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
@@ -59,8 +59,8 @@ export function FavoritesScreen({ navigation }) {
   return (
     <View style={styles.container}>
 
-<View style={styles.filterButtons}>
-      <Text style={{ color: 'black', fontWeight: 'bold' }}>Rikskanaler</Text>
+<View style={styles.heading}>
+      <Text style={{ color: 'black', fontWeight: 'bold' }}>Mina sparade kanaler</Text>
       </View>
       
   <FlatList
@@ -76,7 +76,7 @@ export function FavoritesScreen({ navigation }) {
           } />
       )}
       /> 
-      { soundManager.isPlaying ? <MiniPlayer 
+      { soundManager.showMiniplayer ? <MiniPlayer 
       setRefreshList={setRefresh} 
       refreshList={refresh} 
       onPress={
@@ -97,10 +97,9 @@ const styles = StyleSheet.create({
   flatlist: {
     backgroundColor: '#f5eee7'
   },
-  filterButtons: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  heading: {
     padding: 10,
+    marginLeft: 6,
     backgroundColor: '#f5eee7'
   },
 });

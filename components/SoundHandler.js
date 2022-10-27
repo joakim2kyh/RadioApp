@@ -8,6 +8,7 @@ export default class SoundHandler {
     channel = {};
     program = {};
     schedule = [];
+    showMiniplayer = false;
 
     constructor() {
         if (SoundHandler._instance) {
@@ -25,6 +26,7 @@ export default class SoundHandler {
         } else {
           console.log("PLAY");
           this.isPlaying = true
+          this.showMiniplayer = true
           this.loadSound(item, live)
         }
       }
