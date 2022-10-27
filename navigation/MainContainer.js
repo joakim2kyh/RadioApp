@@ -32,7 +32,5 @@ export default function MainContainer() {
             </Stack.Navigator>
         </NavigationContainer>
         </SafeAreaView>
-
     )
 }
-

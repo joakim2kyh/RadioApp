@@ -8,9 +8,9 @@ import { PressableScale } from 'react-native-pressable-scale';
 
 export default Card = (props) => {
 
+  const soundManager = new SoundHandler()
   const [schedule, setSchedule] = useState([])
   const [live, setLive] = useState({})
-  const soundManager = new SoundHandler()
   const TENSEC_MS = 10000;
   const ONESEC_MS = 1000;
 
@@ -26,8 +26,7 @@ export default Card = (props) => {
     const interval = setInterval(() => {
       getLive()
     }, ONESEC_MS);
-    // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [schedule])
 
   const isFavorited = () => {
@@ -55,7 +54,7 @@ export default Card = (props) => {
 
   const getLive = () => {
     var now = Date.now()
-    
+
     schedule.forEach(element => {
       let startTime = element.starttimeutc
       startTime = Number(startTime.slice(6, -2))
@@ -63,7 +62,7 @@ export default Card = (props) => {
       endTime = Number(endTime.slice(6, -2))
 
       if (startTime < now && endTime > now) {
-          setLive(element)
+        setLive(element)
       } else {
       }
     });
@@ -79,24 +78,24 @@ export default Card = (props) => {
 
   return (
     <PressableScale onPress={() => props.onPress(schedule)}>
-        <View style={[styles.cardContainer, { backgroundColor: '#' + props.item.color }]}>
-          <View style={styles.imgTextContainer}>
-            <Image style={styles.cardImage} source={{ uri: props.item.image }} />
-            <View style={styles.infoTextContainer}>
-              <Text style={styles.cardText} numberOfLines={1}>{props.item.name}</Text>
-              <Text style={styles.programText} numberOfLines={1}>{live.title}</Text>
-              <Text>{soundManager.getStartAndEndTime(live)}</Text>
-            </View>
+      <View style={[styles.cardContainer, { backgroundColor: '#' + props.item.color }]}>
+        <View style={styles.imgTextContainer}>
+          <Image style={styles.cardImage} source={{ uri: props.item.image }} />
+          <View style={styles.infoTextContainer}>
+            <Text style={styles.cardText} numberOfLines={1}>{props.item.name}</Text>
+            <Text style={styles.programText} numberOfLines={1}>{live.title}</Text>
+            <Text>{soundManager.getStartAndEndTime(live)}</Text>
           </View>
-          <View style={styles.buttonContainer}>
-            <PressableScale onPress={() => {soundManager.schedule = schedule, props.playRadio(live)}}>
-              <Fontisto style={styles.play} name={isPlaying()} size={25} color="black" />
-            </PressableScale>
-          </View>
-          <PressableScale onPress={() => props.addFavorite()}>
-            <MaterialIcons name={isFavorited()} size={30} color="black" />
+        </View>
+        <View style={styles.buttonContainer}>
+          <PressableScale onPress={() => { soundManager.schedule = schedule, props.playRadio(live) }}>
+            <Fontisto style={styles.play} name={isPlaying()} size={25} color="black" />
           </PressableScale>
         </View>
+        <PressableScale onPress={() => props.addFavorite()}>
+          <MaterialIcons name={isFavorited()} size={30} color="black" />
+        </PressableScale>
+      </View>
     </PressableScale>
   );
 }
@@ -116,7 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#219ebc',
     marginBottom: 20,
     shadowColor: 'black',
-    shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 5,
@@ -126,30 +124,10 @@ const styles = StyleSheet.create({
     }
   },
 
-  container: {
-   // flexDirection: 'row',
-   // marginHorizontal: 10,
-  },
-
   imgTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-  },
-
-  card: {
-    backgroundColor: '#50A0B7',
-    marginBottom: 20,
-    marginLeft: '2%',
-    width: '96%',
-    shadowColor: 'black',
-    shadowOpacity: 1,
-    shadowRadius: 1,
-    elevation: 9,
-    shadowOffset: {
-      width: 3,
-      height: 3
-    }
   },
 
   buttonContainer: {
@@ -164,15 +142,6 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 12,
     padding: 15,
-    margin: 5,
-    resizeMode: 'cover'
-  },
-
-  programImage: {
-    height: 50,
-    width: 50,
-    borderRadius: 5,
-    padding: 3,
     margin: 5,
     resizeMode: 'cover'
   },

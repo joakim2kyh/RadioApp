@@ -18,9 +18,7 @@ export function HomeScreen({ navigation}) {
   useFocusEffect(
     React.useCallback(() => {
       console.log('Screen was focused');
-
       getData()
-     
     }, [])
   );
 
@@ -84,7 +82,6 @@ export function HomeScreen({ navigation}) {
     }
   }
 
-
   return (
 
     <View style={styles.container}>
@@ -116,7 +113,6 @@ export function HomeScreen({ navigation}) {
         </Pressable>
       </View>
       <FlatList
-        style={styles.flatlist}
         data={channels}
         extraData={
           refresh
@@ -133,8 +129,7 @@ export function HomeScreen({ navigation}) {
       {soundManager.showMiniplayer ? <MiniPlayer
         setRefreshList={setRefresh}
         refreshList={refresh}
-        onPress={
-          () => {
+        onPress={() => {
             navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: soundManager.schedule })
           }
         } /> : null}
@@ -157,10 +152,4 @@ const styles = StyleSheet.create({
   button: {
     marginLeft: 6
   },
-
-  flatlist: {
-    backgroundColor: '#f5eee7'
-  }
-
-
 });
