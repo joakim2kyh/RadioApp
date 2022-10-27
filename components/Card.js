@@ -11,7 +11,7 @@ export default Card = (props) => {
   const [schedule, setSchedule] = useState([])
   const [live, setLive] = useState({})
   const soundManager = new SoundHandler()
-  const MINUTE_MS = 30000;
+  const TENSEC_MS = 10000;
 
   useEffect(() => {
     fetchSchedule(props.item.id)
@@ -24,9 +24,8 @@ export default Card = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       getLive()
-    }, MINUTE_MS);
-    // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-    return () => clearInterval(interval); 
+    }, TENSEC_MS);
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [schedule])
 
   const isFavorited = () => {
@@ -89,7 +88,7 @@ export default Card = (props) => {
             </View>
           </View>
           <View style={styles.buttonContainer}>
-            <PressableScale onPress={() => props.playRadio(live)}>
+            <PressableScale onPress={() => {soundManager.schedule = schedule, props.playRadio(live)}}>
               <Fontisto style={styles.play} name={isPlaying()} size={25} color="black" />
             </PressableScale>
           </View>

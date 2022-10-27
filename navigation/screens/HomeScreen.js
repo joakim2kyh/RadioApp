@@ -123,8 +123,8 @@ export function HomeScreen({ navigation}) {
         }
         renderItem={({ item }) => (
           <Card item={item} playRadio={(live) => { soundManager.playRadio(item, live), setRefresh({ refresh: !refresh }) }}
-            addFavorite={() => addFavorite(item)} onPress={
-              (schedule) => {
+            addFavorite={() => addFavorite(item)} 
+              onPress={ (schedule) => {
                 navigation.navigate('PlayScreen', { item: item, schedule: schedule })
               }
             } />
@@ -134,8 +134,8 @@ export function HomeScreen({ navigation}) {
         setRefreshList={setRefresh}
         refreshList={refresh}
         onPress={
-          (schedule) => {
-            navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: schedule })
+          () => {
+            navigation.navigate('PlayScreen', { item: soundManager.channel, schedule: soundManager.schedule })
           }
         } /> : null}
     </View>
