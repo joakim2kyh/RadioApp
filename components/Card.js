@@ -11,7 +11,7 @@ export default Card = (props) => {
   const [schedule, setSchedule] = useState([])
   const [live, setLive] = useState({})
   const soundManager = new SoundHandler()
-  const MINUTE_MS = 30000;
+  const TENSEC_MS = 10000;
 
   useEffect(() => {
     // if (live != "") return
@@ -26,9 +26,9 @@ export default Card = (props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      //console.log('Logs every 30sec ');
+      //console.log('Logs every 10sec ');
       getLive()
-    }, MINUTE_MS);
+    }, TENSEC_MS);
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [schedule])
 
@@ -65,11 +65,7 @@ export default Card = (props) => {
       endTime = Number(endTime.slice(6, -2))
 
       if (startTime < now && endTime > now) {
-        
           setLive(element)
-          //console.log(element);
-        
-        
       } else {
         //console.log("No Live Program") 
       }
