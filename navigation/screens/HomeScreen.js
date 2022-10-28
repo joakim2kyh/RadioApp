@@ -22,22 +22,20 @@ export function HomeScreen({ navigation}) {
     }, [])
   );
 
-  // Fetch channel list from SR's API on appear;
-  // fetch favorites list from internal storage
+  // Fetch channel list from SR's API & favorites list from internal storage, on appear
   useEffect(() => {
     fetchList("Rikskanal")
     getData()
   }, [])
 
-
-  // Update favorites list in local storage and refresh view when collection is updated
+  // Update favorites list in internal storage and refresh view when collection is updated
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
 
-   /**
-     * saves favorites list to internal storage and updates singleton class
-     */  
+  /**
+   * saves favorites list to internal storage and updates singleton class
+   */  
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)
@@ -52,7 +50,6 @@ export function HomeScreen({ navigation}) {
       console.log(e)
     }
   }
-
 
   /**
      * fetches favorites list from internal storage
@@ -71,7 +68,7 @@ export function HomeScreen({ navigation}) {
   }
 
   /**
-     * adds removes current item from/to favorites list when user presses favorite button
+     * adds/removes current item from/to favorites list when user presses favorite button
      */
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
