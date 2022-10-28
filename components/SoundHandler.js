@@ -14,7 +14,7 @@ export default class SoundHandler {
   schedule = [];
   showMiniplayer = false;
 
-  //Singleton
+  // Singleton
   constructor() {
     if (SoundHandler._instance) {
       return SoundHandler._instance
@@ -22,7 +22,9 @@ export default class SoundHandler {
     SoundHandler._instance = this;
   };
 
-  // Play or pause
+  /**
+    * plays/pauses audio
+    */
   playRadio(item = this.channel, live = this.program, schedule = this.schedule) {
     this.schedule = schedule
     if (this.isPlaying && this.channel.id == item.id) {
@@ -37,7 +39,9 @@ export default class SoundHandler {
     }
   }
 
-  // Load sound from url
+  /**
+   * loads sound from url
+   */
   async loadSound(item, live) {
     await this.sound.unloadAsync()
       .then(
@@ -49,7 +53,9 @@ export default class SoundHandler {
     await this.sound.playAsync()
   }
 
-  // Returns formated start and endtime for program
+  /**
+   *  returns formated start and end time for program
+   */ 
   getStartAndEndTime(program = this.program) {
 
     if (program.starttimeutc != null) {

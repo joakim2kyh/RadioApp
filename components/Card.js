@@ -13,17 +13,17 @@ export default Card = (props) => {
   const [live, setLive] = useState({})
   const ONESEC_MS = 1000;
 
-
+  // Fetch schedule when screen appears
   useEffect(() => {
     fetchSchedule(props.item.id)
   }, [])
 
-
+  // Set current program when schedule changes
   useEffect(() => {
     getLive()
   }, [schedule])
 
-
+  // Updates current program every second
   useEffect(() => {
     const interval = setInterval(() => {
       getLive()
@@ -31,7 +31,7 @@ export default Card = (props) => {
     return () => clearInterval(interval);
   }, [schedule])
 
-  //checks if current item is favorited, returns correct icon name
+  // Checks if current item is favorited, returns correct icon name
   const isFavorited = () => {
     let dataManager = CommonDataManager.getInstance()
     let ids = dataManager.getFavIDs()
@@ -41,7 +41,9 @@ export default Card = (props) => {
       return "favorite-outline"
     }
   }
-//Here we fetch the API to get the programs
+  /**
+   *  fetches program schedule for current channel from SR's API
+   */ 
   const fetchSchedule = async (id) => {
     const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
 
@@ -55,7 +57,9 @@ export default Card = (props) => {
     }
   }
 
-
+  /**
+     * sets 'live' variable from current program in schedule
+     */
   const getLive = () => {
     var now = Date.now()
 
@@ -72,7 +76,7 @@ export default Card = (props) => {
     });
   }
 
-  //checks if audio is playing, returns correct icon name for play/pause button
+  // Checks if audio is playing, returns correct icon name for play/pause button
   const isPlaying = () => {
     if (soundManager.channel.id == props.item.id && soundManager.isPlaying) {
       return "pause"
@@ -83,15 +87,22 @@ export default Card = (props) => {
 
   return (
     <PressableScale onPress={() => props.onPress(schedule)}>
+      {/* Gets background color from channel info API result */}
       <View style={[styles.cardContainer, { backgroundColor: '#' + props.item.color }]}>
         <View style={styles.imgTextContainer}>
+
+          {/* Channel image */}
           <Image style={styles.cardImage} source={{ uri: props.item.image }} />
+
+          {/* Channel, program name & start/end time */}
           <View style={styles.infoTextContainer}>
             <Text style={styles.cardText} numberOfLines={1}>{props.item.name}</Text>
             <Text style={styles.programText} numberOfLines={1}>{live.title}</Text>
             <Text>{soundManager.getStartAndEndTime(live)}</Text>
           </View>
         </View>
+
+        {/* Play/pause & favorite buttons */}
         <View style={styles.buttonContainer}>
           <PressableScale onPress={() => { props.playRadio(live, schedule)}}>
             <Fontisto style={styles.play} name={isPlaying()} size={25} color="black" />

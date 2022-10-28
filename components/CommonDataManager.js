@@ -1,4 +1,8 @@
-//singelton for get and set current favorite channels ids. Used for faster updating favorites ids. Updates every time when is updatet local storage and loaded on app start
+/**  
+ * Singleton for getting and setting current favorite channel ids. 
+ * Used for faster updating of favorite ids. Updates every time 
+ * local storage is updated. Loads local storage contents on app start.
+ * */
 
 export default class CommonDataManager {
 
@@ -10,7 +14,7 @@ export default class CommonDataManager {
      * @returns {CommonDataManager}
      */
 
-    //check and create new instance
+    // Create new instance if there is not already an instance
     static getInstance() {
         if (CommonDataManager.myInstance == null) {
             CommonDataManager.myInstance = new CommonDataManager();
@@ -18,12 +22,12 @@ export default class CommonDataManager {
 
         return this.myInstance;
     }
-    //getter
+    // Getter
     getFavIDs() {
         return this._favIDs;
     }
 
-    //setter
+    // Setter
     setFavIds(idArray) {
         this._favIDs = idArray;
     }

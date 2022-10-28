@@ -11,14 +11,16 @@ const favoritesName = "Favoriter"
 
 export default function TabScreen({ navigation }) {
   return (
+    // Tab UI
     <Tab.Navigator
       initialRouteName={homeName}
       screenOptions={({ route }) => ({
         tabBarInactiveTintColor: 'grey',
-        tabBarActiveTintColor: 'tomato',
+        tabBarActiveTintColor: 'black',
         tabBarLabelStyle: { paddingBottom: 10, paddingTop: 0, fontSize: 10 },
         tabBarStyle: { height: '8%'},
 
+        // Icon UI
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let rn = route.name
@@ -31,9 +33,13 @@ export default function TabScreen({ navigation }) {
           return <Ionicons name={iconName} size={size} color={color} />
         },
       })} >
+
+      {/* HomeScreen tab */}
       <Tab.Screen name={homeName} component={HomeScreen} options={{
         headerShown: false,
       }} />
+
+      {/* FavoritesScreen tab */}
       <Tab.Screen name={favoritesName} component={FavoritesScreen} options={{
         headerShown: false,
       }} />

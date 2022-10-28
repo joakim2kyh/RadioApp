@@ -13,12 +13,12 @@ export default function MiniPlayer(props) {
   const ONESEC_MS = 1000;
   const TENSEC_MS = 10000;
 
-  // Get current live program when Miniplayer first run
+  // Get current live program when Miniplayer first runs
   useEffect(() => {
     getLive()
   }, [])
 
-  // Update current live program once a second
+  // Updates current program every second
   useEffect(() => {
     const interval = setInterval(() => {
       getLive()
@@ -60,8 +60,10 @@ export default function MiniPlayer(props) {
     <Pressable onPress={() => props.onPress(soundManager.schedule)}>
       <View style={styles.container}>
         <View style={styles.channelContainer}>
+
           {/* Channel Image */}
           <Image style={styles.channelImage} source={{ uri: soundManager.channel.image }} />
+         
           {/* Program info */}
           <View style={styles.programContainer}>
             <Text style={styles.programTitle} numberOfLines={1}>
@@ -69,6 +71,7 @@ export default function MiniPlayer(props) {
               </Text>
             <Text style={styles.programTime}>{soundManager.getStartAndEndTime()}</Text>
           </View>
+         
           {/* Play button */}
           <PressableScale style={styles.play} onPress={() => { soundManager.playRadio(), setRefresh({ refresh: !refresh }), props.setRefreshList(!props.refreshList) }}>
             <Fontisto name={isPlaying()} size={30} color="white" />
