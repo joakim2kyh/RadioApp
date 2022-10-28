@@ -13,20 +13,22 @@ export function FavoritesScreen({ navigation }) {
   const [refresh, setRefresh] = useState([true])
 
 
-  //get data about favotite when favorite screen is opened
+  // Fetch favorites data from local storage when screen appears
   useFocusEffect(
     React.useCallback(() => {
       getData()
     }, [])
   );
 
-  //updating local storage every time when fav array change
+  // Update local storage when favorites list changes
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
 
 
-  //honestly it is remove favorite because update collection when fav chanel revomed
+  /**
+     * removes current item from favorites list when user clicks favorite button
+     */
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (ids.includes(item.id)) {
@@ -36,7 +38,9 @@ export function FavoritesScreen({ navigation }) {
   }
 
 
-  //store data to local storage and update view with refreser state
+  /**
+     * saves favorites list to internal storage and updates singleton class
+     */  
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)
@@ -52,7 +56,9 @@ export function FavoritesScreen({ navigation }) {
     }
   }
 
-  //loading data from local storage
+  /**
+     * fetches favorites list from internal storage
+     */
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('idArray');
