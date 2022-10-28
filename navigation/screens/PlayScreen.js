@@ -9,7 +9,6 @@ import CommonDataManager from '../../components/CommonDataManager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProgressBar from 'react-native-progress/Bar';
 
-
 export function PlayScreen({ route }) {
 
   const soundManager = new SoundHandler()
@@ -29,10 +28,6 @@ export function PlayScreen({ route }) {
     React.useCallback(() => {
       getData()
       getLive()
-      if (live.title == undefined) {
-        console.log("undefined", soundManager.channel.name)
-        console.log("soundManager.program.title", soundManager.program.title)
-      }
       if (!soundManager.isPlaying || soundManager.channel.id != route.params.item.id) {
         soundManager.playRadio(route.params.item, live)
       }
@@ -64,6 +59,9 @@ export function PlayScreen({ route }) {
     return () => clearInterval(interval);
   }, [live])
 
+  /**
+     * checks if audio is playing, returns correct icon name for play/pause button
+     */
   const isPlaying = () => {
     if (soundManager.channel.id == route.params.item.id && soundManager.isPlaying) {
       return "pause"
@@ -72,6 +70,9 @@ export function PlayScreen({ route }) {
     }
   }
 
+  /**
+     * sets 'timeElapsed' variable based on the number of seconds from current program's start time
+     */
   const getProgress = () => {
     let totalLengthInSeconds = (Number(live.endtimeutc.slice(6, -2)) - Number(live.starttimeutc.slice(6, -2)))
     let timeElapsedInSeconds = Date.now() - Number(live.starttimeutc.slice(6, -2))
@@ -79,7 +80,10 @@ export function PlayScreen({ route }) {
     setTimeElapsed(progress)
   }
 
-  //check if channel favorited and add or remove channel 
+  //Denis: check if channel favorited and add or remove channel 
+  /**
+     * adds current item to favorites list
+     */
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (!ids.includes(item.id)) {
@@ -89,7 +93,10 @@ export function PlayScreen({ route }) {
     }
   }
 
-  // calculated propeties of icons and updating it
+  //Denis: calculated propeties of icons and updating it
+  /**
+     * checks if current item is favorited, returns correct icon name
+     */
   const isFavorited = () => {
     dataManager = CommonDataManager.getInstance()
     ids = dataManager.getFavIDs()
@@ -100,7 +107,10 @@ export function PlayScreen({ route }) {
     }
   }
 
-  //getting data from local storage about fav channels
+  //Denis: getting data from local storage about fav channels
+  /**
+     * fetches favorites list from internal storage
+     */
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('idArray');
@@ -112,7 +122,10 @@ export function PlayScreen({ route }) {
     }
   }
 
-  //store data  about fav channels to local storage and updating singelton class
+  //Denis: store data  about fav channels to local storage and updating singelton class
+  /**
+     * saves favorites list to internal storage
+     */
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)
@@ -128,6 +141,9 @@ export function PlayScreen({ route }) {
     }
   }
 
+  /**
+     * sets 'live' variable from the object that represents current program from schedule
+     */
   const getLive = () => {
     const now = Date.now()
     schedule.forEach(element => {
@@ -138,7 +154,6 @@ export function PlayScreen({ route }) {
 
       if (startTime < now && endTime > now) {
         setLive(element)
-
       } else {
       }
     });
@@ -147,14 +162,19 @@ export function PlayScreen({ route }) {
   return (
 
     <View style={styles.container}>
+      {/* Favorite button */}
       <View style={styles.heartContainer}>
         <TouchableOpacity onPress={() => addFavorite(route.params.item)}>
           <MaterialIcons style={styles.heart} name={isFavorited()} size={35} color="black" />
         </TouchableOpacity>
       </View>
+
+      {/* Program image */}
       <View style={styles.imgContainer}>
         <Image style={styles.programImage} source={{ uri: live.imageurl == null ? route.params.item.image : live.imageurl }} ></Image>
       </View>
+
+      {/* Program information */}
       <View style={styles.infoContainer}>
         <View style={styles.rowContainer}>
           <Image style={styles.channelCover} source={{ uri: route.params.item.image }} />
@@ -166,6 +186,8 @@ export function PlayScreen({ route }) {
         </View>
         <Text style={styles.programDescription} numberOfLines={5}>{live.description}</Text>
       </View>
+
+      {/* Play/pause button */}
       <View style={styles.playContainer}>
         <PressableScale onPress={() => { soundManager.playRadio(route.params.item, live), setRefresh({ refresh: !refresh }) }}>
           <Fontisto style={styles.play} name={isPlaying()} size={40} color="black" />
@@ -258,10 +280,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  play: {
-    // marginTop: 20
-  },
-
   playContainer: {
     flex: 1
   },
@@ -274,6 +292,4 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     marginHorizontal: 15
   },
-
-
 })
