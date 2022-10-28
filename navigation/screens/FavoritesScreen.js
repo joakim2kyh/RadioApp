@@ -58,9 +58,12 @@ export function FavoritesScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+      {/* Empty text to match spacing on HomeScreen */}
       <View style={styles.heading}>
-        <Text style={{ color: 'black', fontWeight: 'bold' }}></Text>
+        <Text></Text>
       </View>
+      {/* List of channels */}
       <FlatList
         data={favorites}
         extraData={refresh}
@@ -73,6 +76,8 @@ export function FavoritesScreen({ navigation }) {
             } />
         )}
       />
+
+      {/* Miniplayer */}
       {soundManager.showMiniplayer ? <MiniPlayer
         setRefreshList={setRefresh}
         refreshList={refresh}
@@ -91,7 +96,5 @@ const styles = StyleSheet.create({
   },
   heading: {
     padding: 10,
-    marginLeft: 6,
-    backgroundColor: '#f5eee7'
   },
 });
