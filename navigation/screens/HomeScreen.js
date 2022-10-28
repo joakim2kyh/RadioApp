@@ -86,6 +86,7 @@ export function HomeScreen({ navigation}) {
 
     <View style={styles.container}>
 
+      {/* Filter buttons */}
       <View style={styles.filterButtons}>
         <Pressable style={styles.button} onPress={() => {
           fetchList2("Rikskanal")
@@ -112,6 +113,8 @@ export function HomeScreen({ navigation}) {
           <Text style={{ color: filter === 4 ? 'black' : 'gray', fontWeight: filter === 4 ? 'bold' : 'normal' }}>Fler kanaler</Text>
         </Pressable>
       </View>
+
+      {/* List of channels */}
       <FlatList
         data={channels}
         extraData={
@@ -127,6 +130,7 @@ export function HomeScreen({ navigation}) {
             } />
         )}
       />
+      {/* Miniplayer */}
       {soundManager.showMiniplayer ? <MiniPlayer
         setRefreshList={setRefresh}
         refreshList={refresh}
