@@ -142,7 +142,7 @@ export function PlayScreen({ route }) {
   }
 
   /**
-     * sets 'live' variable from the object that represents current program from schedule
+     * sets 'live' variable from current program in schedule
      */
   const getLive = () => {
     const now = Date.now()

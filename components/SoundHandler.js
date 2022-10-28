@@ -1,6 +1,10 @@
 import { Audio } from "expo-av";
 import moment from "moment";
 
+/**  
+ * Handles loading, playing and pausing sound
+ * Stores channel and program currently playing
+ * */
 export default class SoundHandler {
 
   sound = new Audio.Sound();
@@ -10,14 +14,15 @@ export default class SoundHandler {
   schedule = [];
   showMiniplayer = false;
 
+  //Singleton
   constructor() {
     if (SoundHandler._instance) {
       return SoundHandler._instance
     }
     SoundHandler._instance = this;
-    console.log("SoundHandler created");
   };
 
+  // Play or pause
   playRadio(item = this.channel, live = this.program, schedule = this.schedule) {
     this.schedule = schedule
     if (this.isPlaying && this.channel.id == item.id) {
@@ -32,9 +37,11 @@ export default class SoundHandler {
     }
   }
 
+  // Load sound from url
   async loadSound(item, live) {
     await this.sound.unloadAsync()
       .then(
+        // Set channel and program currently playing
         this.channel = item,
         this.program = live,
       )
@@ -42,6 +49,7 @@ export default class SoundHandler {
     await this.sound.playAsync()
   }
 
+  // Returns formated start and endtime for program
   getStartAndEndTime(program = this.program) {
 
     if (program.starttimeutc != null) {
