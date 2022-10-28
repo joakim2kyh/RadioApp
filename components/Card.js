@@ -11,16 +11,18 @@ export default Card = (props) => {
   const soundManager = new SoundHandler()
   const [schedule, setSchedule] = useState([])
   const [live, setLive] = useState({})
-  const TENSEC_MS = 10000;
   const ONESEC_MS = 1000;
+
 
   useEffect(() => {
     fetchSchedule(props.item.id)
   }, [])
 
+
   useEffect(() => {
     getLive()
   }, [schedule])
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,6 +31,7 @@ export default Card = (props) => {
     return () => clearInterval(interval);
   }, [schedule])
 
+  //checks if current item is favorited, returns correct icon name
   const isFavorited = () => {
     let dataManager = CommonDataManager.getInstance()
     let ids = dataManager.getFavIDs()
@@ -38,7 +41,7 @@ export default Card = (props) => {
       return "favorite-outline"
     }
   }
-
+//Here we fetch the API to get the programs
   const fetchSchedule = async (id) => {
     const uri = `http://api.sr.se/v2/scheduledepisodes?channelid=${id}&format=json&pagination=false`
 
@@ -51,6 +54,7 @@ export default Card = (props) => {
       console.error(error);
     }
   }
+
 
   const getLive = () => {
     var now = Date.now()
@@ -68,6 +72,7 @@ export default Card = (props) => {
     });
   }
 
+  //checks if audio is playing, returns correct icon name for play/pause button
   const isPlaying = () => {
     if (soundManager.channel.id == props.item.id && soundManager.isPlaying) {
       return "pause"
