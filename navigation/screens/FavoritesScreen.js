@@ -37,7 +37,6 @@ export function FavoritesScreen({ navigation }) {
     }
   }
 
-
   /**
      * saves favorites list to internal storage and updates singleton class
      */  
