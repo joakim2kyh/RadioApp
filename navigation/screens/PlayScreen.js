@@ -23,7 +23,7 @@ export function PlayScreen({ route }) {
   var ids = []
   let dataManager = null
 
-  // Fetch favorites data from internal storage when screen appears
+  // Fetch favorites data from internal storage on appear
   useFocusEffect(
     React.useCallback(() => {
       getData()
@@ -39,7 +39,7 @@ export function PlayScreen({ route }) {
     soundManager.program = live
   }, [live])
 
-  // Update internal storage when favorites list changes
+  // Update internal storage on change of favorites list
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
