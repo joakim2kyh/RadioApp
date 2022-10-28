@@ -24,6 +24,7 @@ export function PlayScreen({ route }) {
   var ids = []
   let dataManager = null
 
+  //get data and updates only when screen appears first time
   useFocusEffect(
     React.useCallback(() => {
       getData()
@@ -42,6 +43,7 @@ export function PlayScreen({ route }) {
     soundManager.program = live
   }, [live])
 
+  //updating local storage when fav collection changes
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
@@ -77,6 +79,7 @@ export function PlayScreen({ route }) {
     setTimeElapsed(progress)
   }
 
+  //check if channel favorited and add or remove channel 
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (!ids.includes(item.id)) {
@@ -86,6 +89,7 @@ export function PlayScreen({ route }) {
     }
   }
 
+  // calculated propeties of icons and updating it
   const isFavorited = () => {
     dataManager = CommonDataManager.getInstance()
     ids = dataManager.getFavIDs()
@@ -96,6 +100,7 @@ export function PlayScreen({ route }) {
     }
   }
 
+  //getting data from local storage about fav channels
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('idArray');
@@ -107,6 +112,7 @@ export function PlayScreen({ route }) {
     }
   }
 
+  //store data  about fav channels to local storage and updating singelton class
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)

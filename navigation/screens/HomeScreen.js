@@ -15,9 +15,9 @@ export function HomeScreen({ navigation}) {
   const [filter, setFilter] = useState(0)
   const soundManager = new SoundHandler()
 
+  //get fav data from local storage on appear
   useFocusEffect(
     React.useCallback(() => {
-      console.log('Screen was focused');
       getData()
     }, [])
   );
@@ -27,6 +27,8 @@ export function HomeScreen({ navigation}) {
     getData()
   }, [])
 
+
+  //update fav local storage on collection update and refresh view
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
@@ -46,6 +48,8 @@ export function HomeScreen({ navigation}) {
     }
   }
 
+
+  //get fav data from local storage
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('idArray');
@@ -59,6 +63,8 @@ export function HomeScreen({ navigation}) {
     }
   }
 
+
+  //check if channel favorited and update collection
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (!ids.includes(item.id)) {
