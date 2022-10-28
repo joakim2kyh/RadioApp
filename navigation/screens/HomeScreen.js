@@ -15,24 +15,29 @@ export function HomeScreen({ navigation}) {
   const [filter, setFilter] = useState(0)
   const soundManager = new SoundHandler()
 
-  //get fav data from local storage on appear
+  // Fetch favorites list from internal storage when HomeScreen focused
   useFocusEffect(
     React.useCallback(() => {
       getData()
     }, [])
   );
 
+  // Fetch channel list from SR's API on appear;
+  // fetch favorites list from internal storage
   useEffect(() => {
     fetchList("Rikskanal")
     getData()
   }, [])
 
 
-  //update fav local storage on collection update and refresh view
+  // Update favorites list in local storage and refresh view when collection is updated
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
 
+   /**
+     * saves favorites list to internal storage and updates singleton class
+     */  
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)
@@ -49,7 +54,9 @@ export function HomeScreen({ navigation}) {
   }
 
 
-  //get fav data from local storage
+  /**
+     * fetches favorites list from internal storage
+     */
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('idArray');
@@ -63,8 +70,9 @@ export function HomeScreen({ navigation}) {
     }
   }
 
-
-  //check if channel favorited and update collection
+  /**
+     * adds removes current item from/to favorites list when user presses favorite button
+     */
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
     if (!ids.includes(item.id)) {
@@ -76,6 +84,10 @@ export function HomeScreen({ navigation}) {
     }
   }
 
+  /**
+   * fetches channel list from SR's API
+   * @param {*} channeltype filter for API results
+   */
   const fetchList = async (channeltype) => {
     try {
       let response = await fetch(`https://api.sr.se/api/v2/channels?format=json&pagination=false&filter=channel.channeltype&filtervalue=${channeltype}`)

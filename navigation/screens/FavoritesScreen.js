@@ -27,7 +27,7 @@ export function FavoritesScreen({ navigation }) {
 
 
   /**
-     * removes current item from favorites list when user clicks favorite button
+     * removes current item from favorites list when user presses favorite button
      */
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)

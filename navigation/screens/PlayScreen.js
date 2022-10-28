@@ -23,7 +23,7 @@ export function PlayScreen({ route }) {
   var ids = []
   let dataManager = null
 
-  // Fetch favorites data from local storage when screen appears
+  // Fetch favorites data from internal storage when screen appears
   useFocusEffect(
     React.useCallback(() => {
       getData()
@@ -34,16 +34,17 @@ export function PlayScreen({ route }) {
     }, [])
   )
 
-  // TODO
+  // Set current program in sound manager class on change of current program
   useEffect(() => {
     soundManager.program = live
   }, [live])
 
-  // Update local storage when favorites list changes
+  // Update internal storage when favorites list changes
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
 
+  // Update current program every ten seconds
   useEffect(() => {
     const interval = setInterval(() => {
       getLive()
@@ -51,6 +52,7 @@ export function PlayScreen({ route }) {
     return () => clearInterval(interval);
   }, [])
 
+  // Update 'timeElapsed' every second
   useEffect(() => {
     const interval = setInterval(() => {
       if (Object.keys(live).length != 0) {
