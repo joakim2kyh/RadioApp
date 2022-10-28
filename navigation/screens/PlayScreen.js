@@ -23,7 +23,7 @@ export function PlayScreen({ route }) {
   var ids = []
   let dataManager = null
 
-  //get data and updates only when screen appears first time
+  // Fetch favorites data from local storage when screen appears
   useFocusEffect(
     React.useCallback(() => {
       getData()
@@ -34,11 +34,12 @@ export function PlayScreen({ route }) {
     }, [])
   )
 
+  // TODO
   useEffect(() => {
     soundManager.program = live
   }, [live])
 
-  //updating local storage when fav collection changes
+  // Update local storage when favorites list changes
   useEffect(() => {
     storeData(favorites)
   }, [favorites])
@@ -80,9 +81,8 @@ export function PlayScreen({ route }) {
     setTimeElapsed(progress)
   }
 
-  //Denis: check if channel favorited and add or remove channel 
   /**
-     * adds current item to favorites list
+     * adds/removes current item to/from favorites list when user clicks favorite button
      */
   const addFavorite = (item) => {
     let ids = favorites.map(o => o.id)
@@ -93,7 +93,6 @@ export function PlayScreen({ route }) {
     }
   }
 
-  //Denis: calculated propeties of icons and updating it
   /**
      * checks if current item is favorited, returns correct icon name
      */
@@ -107,7 +106,6 @@ export function PlayScreen({ route }) {
     }
   }
 
-  //Denis: getting data from local storage about fav channels
   /**
      * fetches favorites list from internal storage
      */
@@ -122,9 +120,8 @@ export function PlayScreen({ route }) {
     }
   }
 
-  //Denis: store data  about fav channels to local storage and updating singelton class
   /**
-     * saves favorites list to internal storage
+     * saves favorites list to internal storage and updates singleton class
      */
   const storeData = async (value) => {
     try {
