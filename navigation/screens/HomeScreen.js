@@ -23,7 +23,7 @@ export function HomeScreen({ navigation}) {
   );
 
   useEffect(() => {
-    fetchList2("Rikskanal")
+    fetchList("Rikskanal")
     getData()
   }, [])
 
@@ -76,7 +76,7 @@ export function HomeScreen({ navigation}) {
     }
   }
 
-  const fetchList2 = async (channeltype) => {
+  const fetchList = async (channeltype) => {
     try {
       let response = await fetch(`https://api.sr.se/api/v2/channels?format=json&pagination=false&filter=channel.channeltype&filtervalue=${channeltype}`)
       let json = await response.json();
@@ -95,25 +95,25 @@ export function HomeScreen({ navigation}) {
       {/* Filter buttons */}
       <View style={styles.filterButtons}>
         <Pressable style={styles.button} onPress={() => {
-          fetchList2("Rikskanal")
+          fetchList("Rikskanal")
           setFilter(0)
         }}>
           <Text style={{ color: filter === 0 ? 'black' : 'gray', fontWeight: filter === 0 ? 'bold' : 'normal' }}>Rikskanaler</Text>
         </Pressable>
         <Pressable style={styles.button} onPress={() => {
-          fetchList2("Lokal%20kanal")
+          fetchList("Lokal%20kanal")
           setFilter(1)
         }}>
           <Text style={{ color: filter === 1 ? 'black' : 'gray', fontWeight: filter === 1 ? 'bold' : 'normal' }}>Lokala kanaler</Text>
         </Pressable>
         <Pressable style={styles.button} onPress={() => {
-          fetchList2("Minoritet%20och%20spr&aring;k")
+          fetchList("Minoritet%20och%20spr&aring;k")
           setFilter(2)
         }}>
           <Text style={{ color: filter === 2 ? 'black' : 'gray', fontWeight: filter === 2 ? 'bold' : 'normal' }}>Minoritet & språk</Text>
         </Pressable>
         <Pressable style={styles.button} onPress={() => {
-          fetchList2("Fler%20kanaler")
+          fetchList("Fler%20kanaler")
           setFilter(4)
         }}>
           <Text style={{ color: filter === 4 ? 'black' : 'gray', fontWeight: filter === 4 ? 'bold' : 'normal' }}>Fler kanaler</Text>
